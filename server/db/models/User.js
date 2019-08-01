@@ -38,7 +38,7 @@ const User = db.define('user', {
         type: Sequelize.STRING,
     },
     zip: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
     },
     imageUrl: {
         type: Sequelize.STRING,
