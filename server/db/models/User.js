@@ -28,7 +28,7 @@ const User = db.define('user', {
     streetAddress: {
         type: Sequelize.STRING,
     },
-    streetAddress2: {
+    suite: {
         type: Sequelize.STRING,
     },
     city: {
