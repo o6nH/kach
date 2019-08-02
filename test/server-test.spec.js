@@ -1,4 +1,4 @@
-const supertest = require('supertest')(require('../server/routes/routes'))
+const supertest = require('supertest')(require('../server/routes'))
 const expect = require('chai').expect
 
 const product = {
