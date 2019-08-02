@@ -45,8 +45,12 @@
     "mocha-snapshots": "^4.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+<<<<<<< HEAD
     "supertest": "^4.0.2",
     "supertest-session": "^4.0.0",
+=======
+    "react-router-dom": "^5.0.1",
+>>>>>>> 85230a3da1939de14f19a38d12f72dded3befbaf
     "webpack": "^4.38.0",
     "webpack-cli": "^3.3.6"
   },
