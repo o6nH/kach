@@ -21,7 +21,12 @@ const users = [
     return {firstName, lastName, email, password}
 })
 
-const products = [];
+const products = [
+    {name: 'Standup Desk', description: 'a desk for standing while working', imageUrls: [''], price: 199.99, quantity: 100, category: 'office'},
+    {name: 'Ergonomic Keyboard', description: 'an ergonomic keyboard', imageUrls: [''], price: 79.98, quantity: 100, category: 'office'},
+    {name: 'Ergonomic Mouse', description: 'an ergonomic mouse', imageUrls: [''], price: 67.54, quantity: 100, category: 'office'},
+    {name: 'Advil', description: 'ibuprofen', imageUrls: [''], price: 3.49, quantity: 200, category: 'drugs'},
+];
 
 
 
@@ -30,6 +35,7 @@ async function syncAndSeed() {
     try {
         await db.sync({force: true});
         await Promise.all(users.map(user => User.create(user)));
+        await Promise.all(products.map(product => Product.create(product)));
     } catch (err) {
         console.log(err);
     }

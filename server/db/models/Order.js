@@ -10,9 +10,12 @@ const Order = db.define('order', {
     orderDate: {
         type: Sequelize.DATE,
     },
-    isPlaced: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+    orderTime: {
+        type: Sequelize.TIME,
+    },
+    status: {
+        type: Sequelize.ENUM('inCart', 'processing', 'cancelled', 'shipping', 'delivered'),
+        defaultValue: 'inCart',
     },
 });
 

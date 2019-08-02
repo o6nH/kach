@@ -7,8 +7,8 @@ const Product = db.define('product', {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
     },
-    imageUrl: {
-        type: Sequelize.STRING,
+    imageUrls: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
     },
     name: {
         type: Sequelize.STRING,
@@ -16,9 +16,12 @@ const Product = db.define('product', {
     price: {
         type: Sequelize.DECIMAL,
     },
-    inventory: {
+    quantity: {
         type: Sequelize.INTEGER,
     },
+    category: {
+        type: Sequelize.STRING,
+    }
 });
 
 module.exports = Product;
