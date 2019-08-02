@@ -1,0 +1,52 @@
+{
+  "name": "grace-shopper",
+  "version": "1.0.0",
+  "description": "An online e-commerce platform for unauthenticated guests, authenticated users, and administrative users.",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack",
+    "webpack-watch": "webpack -w --mode=development",
+    "postinstall": "npm run webpack",
+    "seed": "node script/seed.js",
+    "start": "node server",
+    "start-watch": "nodemon server --ignore public --ignore client",
+    "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
+    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1904-cpu-projects/kach.git"
+  },
+  "keywords": [
+    "e-commerce",
+    "shopping",
+    "cart",
+    "react",
+    "redux",
+    "sequelize",
+    "express",
+    "sessions"
+  ],
+  "author": "Hugo Campos, Katherine Peterson, Conner Stennett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1904-cpu-projects/kach/issues"
+  },
+  "homepage": "https://github.com/1904-cpu-projects/kach#readme",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "pg": "^7.12.0",
+    "sequelize": "^5.12.2"
+  }
+}
