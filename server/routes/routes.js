@@ -7,11 +7,13 @@ router.get('/', async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {
-                sessionId: req.session.SID
+                sessionId: req.session.id
             }
         })
         if (user){
-            res.send(user)
+            res.send(user);
+        } else {
+            res.send(req.session);
         }
         next();
     } catch (err){
@@ -49,9 +51,11 @@ router.delete('/products/:id', async (req, res, next) => {
 
 router.put('/products/:id', async (req, res, next) => {
     try {
-        const product = await Product.update({
-            price: req.body.price
-        }, {
+        const uProd = {}
+        for(let key in req.body){
+            uProd[key] = req.body
+        }
+        const product = await Product.update( uProd, {
             where: {
                 id: req.params.id
             }
@@ -62,11 +66,11 @@ router.put('/products/:id', async (req, res, next) => {
     }
 });
 
-router.get('/user:id', async (req, res, next) => {
+router.get('/user', async (req, res, next) => {
     try {
         res.send(await User.findone({
         where: {
-            id: req.params.id
+            sessionId: req.session.id
         }
     }))
 } catch (err){
@@ -76,6 +80,7 @@ router.get('/user:id', async (req, res, next) => {
 
 router.post('/user', async (req, res, next) => {
     try {
+        req.body.sessionId = req.session.id
         res.send(await User.create(req.body))
     } catch (err){
         console.error(err);
@@ -86,7 +91,7 @@ router.delete('/user:id', async (req, res, next) => {
     try {
         res.send(await User.destroy({
             where: {
-                id: req.params.id
+                sessionId: req.session.id
             }
         }))
     } catch (err){
