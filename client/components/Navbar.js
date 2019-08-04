@@ -2,8 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 const marketName = 'Generic';
-const marketLogo = '../../public/img/bottle_64.png';
-const cartImg = '../../public/img/cart_64.png';
+const marketLogo = './img/bottle_64.png';
+const cartImg = './img/cart_64.png';
 
 // Fake Store (TODO: substitute fake store for redux store)
 const fakeUser = {userId: '123', isAuthenticated: true};
