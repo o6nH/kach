@@ -51,6 +51,31 @@ const User = db.define('user', {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
     },
+}, {
+    hooks: {
+        beforeCreate: user => {
+            user.password = hash(user.password);
+        }
+    }
 });
+
+
+
+User.login = async function (username, password) {
+    return await this.findOne({
+      where: {
+        username, 
+        password: hash(password)
+      }
+    })
+}
+  
+  
+
+User.remove = async function (id) {
+    const user = await this.findByPk(id);
+    await user.destroy();
+  };
+
 
 module.exports = User;
