@@ -16,7 +16,7 @@ app.use(session({
       db: sessionDB
     }),
     checkExpirationInterval: 15 * 60 * 1000,
-    expiration: 24 * 60 * 60 * 1000,
+    expiration: 90 * 24 * 60 * 60 * 1000,
     resave: false,
     saveUninitialized: false,
   }))
