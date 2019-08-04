@@ -57,7 +57,7 @@
     "query-string": "^6.8.2",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
-    "redux-thunks": "^1.0.0",
+    "redux-thunk": "^2.3.0",
     "sequelize": "^5.12.2"
   }
 }
