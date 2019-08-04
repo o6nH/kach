@@ -59,7 +59,7 @@ function Products(props) {
     <ul name='categories'>{categoriesLi}</ul>
   </div>
 
-  const inSearch = (product, searchTerm = parsedQueryObj.search) =>  {
+  const inSearch = (product, searchTerm) =>  {
     const splitName = product.name.split(' ');
     const splitDescription = product.description.split(' ');
     return (splitName.includes(searchTerm)) || (splitDescription.includes(searchTerm))
@@ -67,15 +67,17 @@ function Products(props) {
 
   const filterCategorizedProducts = (products, categorizeProducts) => {
     const parsedQuery = props.location.search ? queryString.parse(props.location.search) : 'No Query';
-    if(parsedQuery['?category']) {
+    if(parsedQuery['?category'] || parsedQuery['category']) {
       const catProdObj = categorizeProducts(products);
-      return catProdObj[parsedQuery['?category']];
+      return catProdObj[parsedQuery['?category']] || catProdObj[parsedQuery['category']];
     }
-    else if (parsedQuery['?search']) {
-      return products.filter(product => inSearch(product, parsedQuery.search));
+    else if (parsedQuery['?search'] || parsedQuery['search']) {
+      return products.filter(product => {
+        return inSearch(product, parsedQuery['?search']) || inSearch(product, parsedQuery['search'])
+      });
     }
-    else if (parsedQuery['?category'] && parsedQuery['search']) {
-      return categorizeProducts(products)[parsedQuery['?category']];
+    else if ((parsedQuery['?category']||parsedQuery['category']) && (parsedQuery['?search']) || parsedQuery['search']) {
+      return categorizeProducts(products)[parsedQuery['?category']] || categorizeProducts(products)[parsedQuery['category']];
     }
     else return products;
   };
