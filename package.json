@@ -11,7 +11,7 @@
     "start": "node server",
     "start-watch": "nodemon server --ignore public --ignore client",
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
-    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
+    "test": "NODE_ENV='test' mocha \"./test/*.spec.js\" --require @babel/polyfill"
   },
   "repository": {
     "type": "git",
@@ -46,8 +46,12 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
+    "connect-session-sequelize": "^6.0.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "pg": "^7.12.0",
-    "query-string": "^6.8.2",
-    "sequelize": "^5.12.2"
+    "sequelize": "^5.12.2",
+    "query-string": "^6.8.2"
   }
 }
