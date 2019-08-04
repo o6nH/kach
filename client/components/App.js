@@ -3,6 +3,8 @@ import {HashRouter, Route} from 'react-router-dom';
 import Navbar from './Navbar';
 import Products from './Products';
 
+
+
 export default class App extends React.Component{
   render(){
     return(

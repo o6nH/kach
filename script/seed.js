@@ -17,7 +17,7 @@ const users = [
     const firstName = nameArr[0];
     const lastName = nameArr[1];
     const email = `${firstName}${lastName}@email.com`;
-    const password = hash('password1234');
+    const password = 'password1234';
     return {firstName, lastName, email, password}
 })
 

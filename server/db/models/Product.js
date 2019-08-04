@@ -24,4 +24,11 @@ const Product = db.define('product', {
     }
 });
 
+Product.getCategories = function() {
+    return this.findAll({
+        attributes: ['category'],
+    })
+}
+
+
 module.exports = Product;
