@@ -15,6 +15,8 @@ const ACT = {
 
 
 //Reducers
+const value = 'placeholder'
+
 const userReducer = (state={}, action) => {
   switch (action) {
     case value:
