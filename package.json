@@ -11,7 +11,7 @@
     "start": "node server",
     "start-watch": "nodemon server --ignore public --ignore client",
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
-    "test": "NODE_ENV='test' mocha \"./test/*.spec.js\" --require @babel/polyfill"
+    "test": "NODE_ENV='test' mocha \"./test/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -39,10 +39,12 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
+    "chai": "^4.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "redux-logger": "^3.0.6",
+    "supertest": "^4.0.2",
     "webpack": "^4.38.0",
     "webpack-cli": "^3.3.6"
   },
