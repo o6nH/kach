@@ -15,7 +15,7 @@ const ACT = {
 
 
 //Reducers
-const userReducer = (state={}, action) {
+const userReducer = (state={}, action) => {
   switch (action) {
     case value:
       return;
@@ -25,7 +25,7 @@ const userReducer = (state={}, action) {
   }
 };
 
-const usersReducer = (state=[], action) {
+const usersReducer = (state=[], action) => {
   switch (action) {
     case value:
       return;
@@ -35,7 +35,7 @@ const usersReducer = (state=[], action) {
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[], action) {
+const ordersReducer = (state=[], action) => {
   switch (action) {
     case value:
       return;
