@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 // const User = require('../db/models/User');
-const productsRoute = require('./productRoutes');
+const productsRoutes = require('./productRoutes');
 
 /* router.get('/', async (req, res, next) => {
     try {
@@ -21,6 +21,6 @@ const productsRoute = require('./productRoutes');
     }
 }) */
 
-router.use('/products', productsRoute);
+router.use('/products', productsRoutes);
 
 module.exports = router
