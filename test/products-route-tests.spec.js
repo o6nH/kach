@@ -1,5 +1,6 @@
-const { supertest } = require('./main-get-tests')
-const expect = require('chai').expect
+const session = require('supertest-session');
+const { app } = require('../server/index');
+const expect = require('chai').expect;
 
 const product = {
     name: 'Lettuce',
@@ -10,7 +11,7 @@ const product = {
 describe('/api/products routes', () => {
     describe('/products GET URI', () => {
         it('should send a valid JSON response', () => {
-            return supertest
+            app
                 .get('/products')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -19,7 +20,7 @@ describe('/api/products routes', () => {
 
     describe('/products POST URI', () => {
         it('should create a product', () => {
-            return supertest
+            app
                 .post('/api/products')
                 .send(product)
                 .expect(201)
@@ -32,7 +33,7 @@ describe('/api/products routes', () => {
 
     describe('/products DELETE URI', () => {
         it('should successfully delete a product', () => {
-            return supertest
+            app
                 .delete(`/api/products/${product.id}`)
                 .expect(204)
                 .expect('Content-Type', /json/)
@@ -44,7 +45,7 @@ describe('/api/products routes', () => {
 
     describe('/products PUT URI', () => {
         it('should successfully update a product', () => {
-            return supertest
+            app
                 .put('/api/products')
                 .expect(202)
                 .expect('Content-Type', /json/)

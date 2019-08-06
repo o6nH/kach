@@ -24,7 +24,7 @@ const sequelizeSessionStore = new sequelizeStore({
 })
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 app.use(session({
     secret: process.env.SECRET || 'Darn cool secret!',
     store: sequelizeSessionStore,

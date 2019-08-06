@@ -1,10 +1,13 @@
-const supertest = require('supertest')(require('../server/routes'))
-const expect = require('chai').expect
+const expect = require('chai').expect;
+const request = require('supertest');
+const myApp = require('../server/index');
+const app = request(myApp);
 
 describe('Server', () => {
     describe('Main GET Route', () => {
         it('checks to see if the user already exists', () => {
-            return supertest
+            app
+            .get('/')
         })
     })
 })
@@ -58,5 +61,5 @@ describe('Server', () => {
 // })
 
 module.exports = {
-    supertest,
+    app,
 }

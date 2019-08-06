@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger';
@@ -15,31 +16,22 @@ const ACT = {
 
 
 //Reducers
-const userReducer = (state={}, action) => {
+const userReducer = (state = {}, action) => {
   switch (action) {
-    case value:
-      return;
-  
     default:
       return state;
   }
 };
 
-const usersReducer = (state=[], action) => {
+const usersReducer = (state = [], action) => {
   switch (action) {
-    case value:
-      return;
-  
     default:
       return state;
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[], action) => {
+const ordersReducer = (state = [], action) => {
   switch (action) {
-    case value:
-      return;
-  
     default:
       return state;
   }
@@ -47,9 +39,6 @@ const ordersReducer = (state=[], action) => {
 
 const productsReducer = (state = [], action) => {
   switch (action.type) {
-    case value:
-      
-      return
     default:
       return state;
   }

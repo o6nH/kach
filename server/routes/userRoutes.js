@@ -1,13 +1,25 @@
 const router = require('./index');
 const User = require('../db/models/User');
+const crypto = require('crypto');
 
-router.get('/user', async (req, res, next) => {
+const secret = process.env.SECRET || 'abcdefg';
+const hash = crypto.createHmac('sha256', secret)
+                   .update('I love cupcakes')
+                   .digest('hex');
+console.log(hash);
+// Prints:
+//   c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
+
+router.get('/user/signin', async (req, res, next) => {
     try {
-        res.send(await User.findone({
+            res.send(await User.findone({
         where: {
-            sessionId: req.session.id
+            sessionId: req.session.id,
+            username: req.body.username,
+            password: hash(req.body.password)
         }
     }))
+
 } catch (err){
     console.error(err);
 }

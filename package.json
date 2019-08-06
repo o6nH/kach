@@ -11,7 +11,8 @@
     "start": "node server",
     "start-watch": "nodemon server --ignore public --ignore client",
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
-    "test": "NODE_ENV='test' mocha \"./test/*.spec.js\" --require @babel/polyfill"
+    "test": "NODE_ENV='test' mocha \"./test/*.spec.js\"",
+    "test:users": "NODE_ENV='test' mocha \"./test/user-route-tests.spec.js\""
   },
   "repository": {
     "type": "git",
