@@ -18,11 +18,22 @@ router.route('/')
     });
 
 router.route('/:productId')
+    .get(async (req, res, next) => {
+        try {
+            res.send(await Product.findOne({
+                where: {
+                    id: req.params.productId
+                }
+            }))
+        } catch (err) {
+            console.error(err);
+        }
+    })
     .delete(async (req, res, next) => {
         try {
             res.send(await Product.destroy({
                 where: {
-                    id: req.params.id
+                    id: req.params.productId
                 }
             }))
         } catch (err) {
@@ -37,7 +48,7 @@ router.route('/:productId')
             }
             const product = await Product.update( uProd, {
                 where: {
-                    id: req.params.id
+                    id: req.params.productId
                 }
             })
             res.send(product[0]);
