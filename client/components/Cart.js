@@ -14,9 +14,15 @@ class Cart extends Component {
         return ( 
             <div>
                 <h1>Your Cart</h1>
+                <hr/>
                 {
-                    cart.map(prod => <div key={prod.id}>{prod.name}</div>)
+                    cart.map(prod => 
+                    <div key={prod.id}>
+                        <h2>{prod.name}</h2>
+                        Quantity: {prod.quantity}
+                    </div>)
                 }
+                <br/>
                 <br/>
                 <Link to={`/cart/${cartId}/checkout`}>Check Out</Link>
             </div>
