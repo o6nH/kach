@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import queryString from 'querystring';
 import {connect} from 'react-redux';
 
 class SearchForm extends Component {
