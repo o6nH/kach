@@ -28,12 +28,6 @@ const removeFromCart = (product) => {
       product: product,
   }
 }
-const editCart = (product) => {
-  return {
-      type: ACT.EDITCART,
-      product: product,
-  }
-}
 
 
 //Reducers
@@ -73,7 +67,6 @@ const ordersReducer = (state=[], action) => {
 const productsReducer = (state = [], action) => {
   switch (action.type) {
     case value:
-      
       return
     default:
       return state;
@@ -86,14 +79,6 @@ const cartReducer = (state = [], action) => {
       return [...state, action.product];
     case ACT.REMOVEFROMCART:
       return state.filter(prod => prod !== product);
-    case ACT.EDITCART:
-      return state.map(prod => {
-        if (prod.id === product.id) {
-          return product;
-        } else {
-          return prod;
-        }
-      });
     default:
       return state;
   }
@@ -111,4 +96,4 @@ export default createStore(
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
 
-export { addToCart, removeFromCart, editCart }
+export { addToCart, removeFromCart }
