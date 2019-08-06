@@ -1,11 +1,11 @@
-const supertest = require('supertest')(require('../server/routes'))
+const { app } = require('./main-get-tests.spec');
 const expect = require('chai').expect
 
 describe('/api/user routes', () => {
     describe('/user/:id GET URI', () => {
         it('should fetch a user', () => {
-            return supertest
-                .get(`/api/user`)
+            app
+            .get(`/api/user`)
         })
     })
 })
