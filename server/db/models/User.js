@@ -1,5 +1,6 @@
 const db = require('../index');
 const Sequelize = require('sequelize');
+const hash = require('../../../script/hash');
 
 const User = db.define('user', {
     id: {

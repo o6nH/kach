@@ -10,11 +10,10 @@ console.log(hash);
 // Prints:
 //   c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
 
-router.get('/user/signin', async (req, res, next) => {
+router.put('/user/login', async (req, res, next) => {
     try {
             res.send(await User.findone({
         where: {
-            sessionId: req.session.id,
             username: req.body.username,
             password: hash(req.body.password)
         }
@@ -25,7 +24,7 @@ router.get('/user/signin', async (req, res, next) => {
 }
 })
 
-router.post('/user', async (req, res, next) => {
+router.post('/user/signup', async (req, res, next) => {
     try {
         req.body.sessionId = req.session.id
         res.send(await User.create(req.body))
