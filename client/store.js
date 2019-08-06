@@ -73,9 +73,17 @@ const productsReducer = (state = [], action) => {
   }
 };
 
-const cartReducer = (state = [{id: '39208403', name: 'product1'}], action) => {
+const cartReducer = (state = [{id: 39208403, name: 'product1', quantity: 1}], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].id === action.product.id) {
+          state[i].quantity++;
+          return state;
+        }
+      }
+      const newProd = action.product;
+      newProd.quantity = 1;
       return [...state, action.product];
     case ACT.REMOVEFROMCART:
       return state.filter(prod => prod !== product);
