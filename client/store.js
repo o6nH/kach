@@ -73,7 +73,7 @@ const productsReducer = (state = [], action) => {
   }
 };
 
-const cartReducer = (state = [{id: 39208403, name: 'product1', quantity: 1}], action) => {
+const cartReducer = (state = [{id: '1', name: 'Acetaminophen', quantity: 1}], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
       for (let i = 0; i < state.length; i++) {

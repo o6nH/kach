@@ -18,7 +18,7 @@ class Cart extends Component {
                 {
                     cart.map(prod => 
                     <div key={prod.id}>
-                        <h2>{prod.name}</h2>
+                        <h3><Link to={`/products/${prod.id}`}>{prod.name}</Link></h3>
                         Quantity: {prod.quantity}
                     </div>)
                 }
