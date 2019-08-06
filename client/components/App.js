@@ -13,7 +13,7 @@ export default class App extends React.Component{
         <Route path='/' component={Navbar}/>
         <Route exact path='/products' component={Products}/>
         <Route path='/products/:productId' component={Product}/>
-        <Route path='/cart/:cartId' component={Cart}/>
+        <Route exact path='/cart/:cartId' component={Cart}/>
         <Route path='/cart/:cartId/checkout' component={Checkout}/> 
         {/* <Route exact path='/users' component={Users}/> //admin only
         <Route exact path='/users/:userId' component={User}/>

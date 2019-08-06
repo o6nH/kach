@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+const cartId = 'ord123' //TODO: replace
 
 class Cart extends Component {
     constructor(props) {
@@ -9,6 +12,7 @@ class Cart extends Component {
         return ( 
             <div>
                 <h1>Your Cart</h1>
+                <Link to={`/cart/${cartId}/checkout`}>Check Out</Link>
             </div>
          );
     }

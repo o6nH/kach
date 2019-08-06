@@ -6,6 +6,9 @@ import axios from 'axios';
 //Actions
 const ACT = {
   //ACT_1:...
+  ADDTOCART: 'ADDTOCART',
+  REMOVEFROMCART: 'REMOVEFROMCART',
+  EDITCART: 'EDITCART',
 
 }
 
@@ -13,8 +16,28 @@ const ACT = {
 
 //Creators (Action or Thunk)
 
+const addToCart = (product) => {
+  return {
+      type: ACT.ADDTOCART,
+      product: product,
+  }
+}
+const removeFromCart = (product) => {
+  return {
+      type: ACT.REMOVEFROMCART,
+      product: product,
+  }
+}
+const editCart = (product) => {
+  return {
+      type: ACT.EDITCART,
+      product: product,
+  }
+}
+
 
 //Reducers
+
 const value = 'placeholder'
 
 const userReducer = (state={}, action) => {
@@ -57,6 +80,25 @@ const productsReducer = (state = [], action) => {
   }
 };
 
+const cartReducer = (state = [], action) => {
+  switch (action.type) {
+    case ACT.ADDTOCART:
+      return [...state, action.product];
+    case ACT.REMOVEFROMCART:
+      return state.filter(prod => prod !== product);
+    case ACT.EDITCART:
+      return state.map(prod => {
+        if (prod.id === product.id) {
+          return product;
+        } else {
+          return prod;
+        }
+      });
+    default:
+      return state;
+  }
+};
+
 //Store
 export default createStore(
   combineReducers({
@@ -64,6 +106,9 @@ export default createStore(
     users: usersReducer,
     orders: ordersReducer,
     products: productsReducer, //TODO: refactor to limit number of products downloaded
+    cart: cartReducer
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
+
+export { addToCart, removeFromCart, editCart }
