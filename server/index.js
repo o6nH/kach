@@ -31,7 +31,7 @@ app.use(session({
     checkExpirationInterval: 15 * 60 * 1000,
     expiration: 90 * 24 * 60 * 60 * 1000,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   }))
 app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '../public')));
