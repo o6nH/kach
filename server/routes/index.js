@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../db/models/User');
+// const User = require('../db/models/User');
+const productsRoute = require('./productRoutes');
 
-router.get('/', async (req, res, next) => {
+/* router.get('/', async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {
@@ -18,6 +19,8 @@ router.get('/', async (req, res, next) => {
     } catch (err){
         console.error(err);
     }
-})
+}) */
+
+router.use('/products', productsRoute);
 
 module.exports = router
