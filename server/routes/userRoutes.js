@@ -12,7 +12,7 @@ console.log(hash);
 
 router.put('/user/login', async (req, res, next) => {
     try {
-            res.send(await User.findone({
+            res.send(await User.findOne({
         where: {
             username: req.body.username,
             password: hash(req.body.password)

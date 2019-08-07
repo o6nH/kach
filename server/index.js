@@ -19,30 +19,33 @@ function extendDefaultFields(defaults, _session){
 
 const sequelizeSessionStore = new SequelizeStore({
   db: sessionDB,
-  table: 'session',
-  extendDefaultFields
+  sessionModel: 'sessions'
 })
+
+console.log("ssstore", sequelizeSessionStore);
 
 let sess = {
   secret: process.env.SECRET || 'Darn cool secret!',
   store: sequelizeSessionStore,
-  checkExpirationInterval: 15 * 60 * 1000,
-  expiration: 90 * 24 * 60 * 60 * 1000,
+  // checkExpirationInterval: 15 * 60 * 1000,
+  // expiration: 90 * 24 * 60 * 60 * 1000,
   resave: false,
   saveUninitialized: true,
-  cookie: {}
+  // cookie: {}
 }
 
-if (app.get('env') === 'production') {
-  app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
-}
+// if (app.get('env') === 'production') {
+//   app.set('trust proxy', 1) // trust first proxy
+//   sess.cookie.secure = true // serve secure cookies
+// }
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(session(sess))
 app.use('/api', routes);
 app.use('/', express.static(path.join(__dirname, '../public')));
+
+sequelizeSessionStore.sync();
 
 app.listen(port, () => console.log(`listening on port ${port}`));
 

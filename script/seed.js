@@ -1,7 +1,7 @@
 const db = require('../server/db/index');
 const Order = require('../server/db/models/Order')
 const Product = require('../server/db/models/Product')
-const Session = require('../server/db/models/Session')
+//const Session = require('../server/db/models/Session')
 const User = require('../server/db/models/User')
 const hash = require('./hash')
 
