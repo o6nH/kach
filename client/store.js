@@ -75,8 +75,6 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 
 //Reducers
 
-const value = 'placeholder'
-
 const userReducer = (state={}, action) => {
   switch (action.type) {
     case ACT:

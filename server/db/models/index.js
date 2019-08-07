@@ -12,4 +12,4 @@ OrderProduct.belongsTo(User);
 Product.hasMany(OrderProduct);
 OrderProduct.belongsTo(Product);
 
-module.exports = {Order, Product, User};
+module.exports = {Order, Product, User, OrderProduct};
