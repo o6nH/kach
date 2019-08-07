@@ -21,6 +21,12 @@ const Product = db.define('product', {
     },
     category: {
         type: Sequelize.STRING,
+    },
+    description: {
+        type: Sequelize.STRING(2000),
+    },
+    aveRating: {
+        type: Sequelize.DECIMAL,
     }
 });
 

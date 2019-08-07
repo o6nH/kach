@@ -1,10 +1,16 @@
 import React from 'react';
 import {HashRouter, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
 import Navbar from './Navbar';
 import Products from './Products';
 import Product from './Product';
+import {fetchProducts} from '../store';
 
-export default class App extends React.Component{
+class App extends React.Component{
+  componentDidMount() {
+    this.props.getAllProducts();
+  }
+
   render(){
     return(
       <HashRouter>
@@ -21,3 +27,9 @@ export default class App extends React.Component{
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  getAllProducts: () => dispatch(fetchProducts()) 
+})
+
+export default connect(null, mapDispatchToProps)(App);
