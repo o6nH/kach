@@ -11,7 +11,7 @@ class Cart extends Component {
     }
     render() { 
         const { cart } = this.props;
-        const totalPrice = cart.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0)
+        const totalPrice = cart.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0).toFixed(2);
         return ( 
             <div>
                 <h1>Your Cart</h1>
@@ -22,13 +22,13 @@ class Cart extends Component {
                         <h3><Link to={`/products/${prod.id}`}>{prod.name}</Link></h3>
                         Quantity: {prod.quantity}
                         <br/>
-                        Price: {prod.price}
+                        Price: ${prod.price}
                         <br/>
-                        Amount: {prod.price * prod.quantity}
+                        Amount: ${(prod.price * prod.quantity).toFixed(2)}
                     </div>)
                 }
                 <br/>
-                <h4>Total: {totalPrice}</h4>
+                <h4>Total: ${totalPrice}</h4>
                 <br/>
                 <Link to={`/cart/${cartId}/checkout`}>Check Out</Link>
             </div>

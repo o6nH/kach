@@ -5,7 +5,7 @@ const OrderProduct = require('../db/models/OrderProduct');
 router.route('/')
     .post(async (req, res, next) => {
         try {
-            const currentCart = await Order.findOrCreate(
+            let currentCart = await Order.findOrCreate(
                     {
                         where: {
                                 userId: req.body.userId,
@@ -13,17 +13,19 @@ router.route('/')
                             },
                     }
                 );
-            console.log('CURRENT CART: ', currentCart[0].dataValues)
+            currentCart = currentCart[0].dataValues;
+            console.log('CURRENT CART: ', currentCart)
             console.log('PRODUCT ID: ', req.body.id)
+            console.log('ORDER ID: ', currentCart.id)
             const orderLine = await OrderProduct.findAll({
                 where: {
                     productId: req.body.id,
-                    orderId: currentCart[0].dataValues.id
+                    orderId: currentCart.id
                 }
             });
             console.log('ORDER LINE: ', orderLine)
             
-            if (orderLine) {
+            if (orderLine[0]) {
                 orderLine[0].dataValues.quantity++;
                 await OrderProduct.update(orderLine[0].dataValues,
                 {
@@ -35,6 +37,7 @@ router.route('/')
                 await OrderProduct.create(
                 {
                     productId: req.body.id,
+                    orderId: currentCart.id,
                     purchaseUnitPrice: req.body.price,
                     quantity: 1
                 }
