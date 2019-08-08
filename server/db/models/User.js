@@ -20,9 +20,6 @@ const User = db.define('user', {
             isEmail: true
         }
     },
-    username: {
-        type: Sequelize.STRING,
-    },
     password: {
         type: Sequelize.STRING,
     },
@@ -62,16 +59,28 @@ const User = db.define('user', {
 
 
 
-User.login = async function (username, password) {
-    return await this.findOne({
+User.login = function (email, password) {
+    return  this.findOne({
       where: {
-        username, 
+        email, 
         password: hash(password)
       }
     })
 }
   
-  
+User.signup = function (user) {
+    console.log('$$$$$$$$$$ ', user);
+    return this.findOrCreate({
+        where: {
+            email: user.email,
+            password: hash(user.password)
+        }
+    });
+}
+
+User.createGuest = function () {
+
+}
 
 User.remove = async function (id) {
     const user = await this.findByPk(id);
