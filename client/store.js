@@ -54,11 +54,14 @@ export const fetchProducts = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-const addToCart = (product) => {
-  return {
+const addToCart = (info) => (dispatch, getState, axios) => {
+  console.log('info: ', info);
+  axios.post('/api/orders', info)
+    .then(({data: product}) => dispatch({
       type: ACT.ADDTOCART,
-      product: product,
-  }
+      product,
+  }))
+    .catch(err => console.error(err));
 }
 const removeFromCart = (product) => {
   return {
@@ -75,7 +78,7 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 
 //Reducers
 
-const userReducer = (state={}, action) => {
+const userReducer = (state={id: 'ae56ef5a-5b1e-436b-bd57-e26e21594e13'}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -127,6 +130,7 @@ const cartReducer = (state = [{id: '1', name: 'Acetaminophen', quantity: 2, pric
   switch (action.type) {
     case ACT.ADDTOCART:
       for (let i = 0; i < state.length; i++) {
+        console.log(action.product)
         if (state[i].id === action.product.id) {
           state[i].quantity++;
           return state;

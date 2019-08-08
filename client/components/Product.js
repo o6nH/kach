@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {fetchSelectedProduct} from '../store';
+import {fetchSelectedProduct, addToCart} from '../store';
 
 class Product extends React.Component {
   constructor(props) {
@@ -9,12 +9,13 @@ class Product extends React.Component {
 
   componentDidMount() {
     //included to allow load of product with direct link to page
+    console.log('USER: ', this.props.user)
     const {match, getSelectedProduct} = this.props;
     getSelectedProduct(match.params.productId);
   }
 
   render() {
-    const {product} = this.props;
+    const {product, user, addToCart} = this.props;
     const {name, imageUrls, price, aveRating, description, quantity} = product;
     const order = {id: 'ord123'};
     const {id:cartId} = order;
@@ -34,7 +35,8 @@ class Product extends React.Component {
               quantity
               ? <button onClick={()=>{
                   console.log('Need .post(`/api/orders/:orderId`, {productId}) to create OrderProduct instance');
-                  window.location.hash = `/order/${cartId}`;
+                  window.location.hash = `/cart/${cartId}`;
+                  addToCart({...product, userId: user.id});
                 }}>Add to Cart</button> 
               : <span>{'Currently Unavailable'}</span>
             }
@@ -49,11 +51,13 @@ class Product extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  product: state.selectedProduct
+  product: state.selectedProduct,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSelectedProduct: (productId) => dispatch(fetchSelectedProduct(productId))
+  getSelectedProduct: (productId) => dispatch(fetchSelectedProduct(productId)),
+  addToCart: (info) => dispatch(addToCart(info))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
