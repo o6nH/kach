@@ -5,8 +5,6 @@ const User = require('../db/models/User');
 router.post('/login', async (req, res, next) => {
     try {
         const user =  await User.login(req.body.email, req.body.password);
-        console.log('this is the user:', user);
-        console.log('!!!!!!!!!!!', req.body);
         if (!user){
             res.status(401).send('Email or password incorrect');
         } else {
