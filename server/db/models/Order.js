@@ -7,6 +7,10 @@ const Order = db.define('order', {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
     },
+    userId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+    },
     orderDate: {
         type: Sequelize.DATE,
     },
@@ -18,5 +22,6 @@ const Order = db.define('order', {
         defaultValue: 'inCart',
     },
 });
+
 
 module.exports = Order;

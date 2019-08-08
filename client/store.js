@@ -5,6 +5,10 @@ import axios from 'axios';
 
 //Actions
 const ACT = {
+  //ACT_1:...
+  ADDTOCART: 'ADDTOCART',
+  REMOVEFROMCART: 'REMOVEFROMCART',
+  EDITCART: 'EDITCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
 }
@@ -50,6 +54,23 @@ export const fetchProducts = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
+const addToCart = (info) => (dispatch, getState, axios) => {
+  console.log('info: ', info);
+  axios.post('/api/orders', info)
+    .then(({data: product}) => dispatch({
+      type: ACT.ADDTOCART,
+      product,
+  }))
+    .catch(err => console.error(err));
+}
+
+const removeFromCart = (product) => {
+  return {
+      type: ACT.REMOVEFROMCART,
+      product: product,
+  }
+}
+
 export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
   axios.get(`/api/products/${productId}`)
   .then(({data: selectedProduct}) => dispatch({type: ACT.SELECT_PRODUCT, selectedProduct}))
@@ -57,7 +78,9 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 };
 
 //Reducers
-const userReducer = (state={}, action) => {
+
+//TODO: create function to set current user on the store
+const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -105,6 +128,25 @@ const selectedProductReducer = (state = {}, action) => {
   }
 };
 
+const cartReducer = (state = [], action) => {
+  switch (action.type) {
+    case ACT.ADDTOCART:
+      console.log('ACTION.PRODUCT: ', action.product)
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].id === action.product.id) {
+          state[i].quantity++;
+          return state;
+        }
+      }
+      const newProd = action.product;
+      newProd.quantity = 1;
+      return [...state, action.product];
+    case ACT.REMOVEFROMCART:
+      return state.filter(prod => prod !== product);
+    default:
+      return state;
+  }
+};
 
 //Store
 export default createStore(
@@ -112,8 +154,11 @@ export default createStore(
     user: userReducer,
     users: usersReducer,
     orders: ordersReducer,
+    cart: cartReducer,
     products: productsReducer, //TODO: refactor to limit number of products downloaded (paginate)
     selectedProduct: selectedProductReducer
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
+
+export { addToCart, removeFromCart }

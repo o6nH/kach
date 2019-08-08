@@ -34,7 +34,7 @@ const Navbar = () => {
           ? <li onClick={()=>{console.log('Need to sign user out')}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/orders/${cartOrderId}`}><img src={cartImg}></img>{cartProdCount}</Link></li>
+        <li><Link to={`/cart/${cartOrderId}`}><img src={cartImg}></img>{cartProdCount}</Link></li>
       </ul>
     </div>
   )

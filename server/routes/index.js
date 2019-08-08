@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const User = require('../db/models/User');
 const productsRoutes = require('./productRoutes');
+const orderRoutes = require('./orderRoutes');
 
 /* router.get('/', async (req, res, next) => {
     try {
@@ -22,5 +23,6 @@ const productsRoutes = require('./productRoutes');
 }) */
 
 router.use('/products', productsRoutes);
+router.use('/orders', orderRoutes)
 
 module.exports = router
