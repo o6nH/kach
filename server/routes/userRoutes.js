@@ -1,28 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../db/models/User');
-const crypto = require('crypto');
 
 router.post('/login', async (req, res, next) => {
     try {
-        const user =  await User.login(req.body.email, req.body.password)
+        const user =  await User.login(req.body.email, req.body.password);
         console.log('this is the user:', user);
         console.log('!!!!!!!!!!!', req.body);
         if (!user){
             res.status(401).send('Email or password incorrect');
         } else {
         req.session.userId = user.id;
-        //req.session.orderId = user.orderId;
-        res.send(user)
-        }
-} catch (err){
-    console.error(err);
-}
-})
+        req.session.orderId = user.orderId;
+        res.send(user);
+         }
+    } catch (err) {
+        console.error(err);
+    }
+    })
 
 router.post('/signup', async (req, res, next) => {
     try {
-        //req.body.sessionId = req.session.id
+        req.body.sessionId = req.session.id
         await User.signup(req.body)
         res.send('It Worked!');
     } catch (err){
@@ -41,8 +40,5 @@ router.delete('/user/:userId', async (req, res, next) => {
         console.error(err);
     }
 });
-
-//curl -d '{"email":"PrestonWallace@email.com", "password":"password1234"}' -H "Content-Type: application/json" -X POST http://localhost:3030/api/user/login
-
 
 module.exports = router;
