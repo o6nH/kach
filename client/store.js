@@ -128,7 +128,7 @@ const selectedProductReducer = (state = {}, action) => {
   }
 };
 
-const cartReducer = (state = [{id: '1', name: 'Acetaminophen', quantity: 2, price: 3.49}], action) => {
+const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
       console.log('ACTION.PRODUCT: ', action.product)

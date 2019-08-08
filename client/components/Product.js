@@ -34,7 +34,6 @@ class Product extends React.Component {
             {
               quantity
               ? <button onClick={()=>{
-                  console.log('Need .post(`/api/orders/:orderId`, {productId}) to create OrderProduct instance');
                   window.location.hash = `/cart/${cartId}`;
                   addToCart({...product, userId: user.id});
                 }}>Add to Cart</button> 
