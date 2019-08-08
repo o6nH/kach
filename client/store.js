@@ -79,7 +79,8 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 
 //Reducers
 
-const userReducer = (state={id: 'ae56ef5a-5b1e-436b-bd57-e26e21594e13'}, action) => {
+//TODO: create function to set current user on the store
+const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
   switch (action.type) {
     case ACT:
       return;

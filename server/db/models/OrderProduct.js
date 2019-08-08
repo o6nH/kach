@@ -7,6 +7,12 @@ const OrderProduct = db.define('orderproduct', {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
     },
+    productId: {
+        type: Sequelize.UUID,
+    },
+    orderId: {
+        type: Sequelize.UUID,
+    },
     purchaseUnitPrice: {
         type: Sequelize.DECIMAL,
     },
