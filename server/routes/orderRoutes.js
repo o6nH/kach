@@ -40,6 +40,7 @@ router.route('/')
                 }
                 )
             }
+            res.send(req.body)
         } catch (err){
             console.error(err);
         }

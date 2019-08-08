@@ -63,6 +63,7 @@ const addToCart = (info) => (dispatch, getState, axios) => {
   }))
     .catch(err => console.error(err));
 }
+
 const removeFromCart = (product) => {
   return {
       type: ACT.REMOVEFROMCART,
@@ -129,8 +130,8 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [{id: '1', name: 'Acetaminophen', quantity: 2, price: 3.49}], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
+      console.log('ACTION.PRODUCT: ', action.product)
       for (let i = 0; i < state.length; i++) {
-        console.log(action.product)
         if (state[i].id === action.product.id) {
           state[i].quantity++;
           return state;

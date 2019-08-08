@@ -47,7 +47,7 @@ function Products(props) {
       <div style={{display:'flex'}}>
       {          
         productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts)).map(product => 
-          <ProductCard product={product}/>)
+          <ProductCard key={product.id} product={product}/>)
       }
       </div>
     </div>
