@@ -57,8 +57,6 @@ const User = db.define('user', {
     }
 });
 
-
-
 User.login = function (email, password) {
     return  this.findOne({
       where: {
@@ -67,13 +65,15 @@ User.login = function (email, password) {
       }
     })
 }
-  
+
 User.signup = function (user) {
     console.log('$$$$$$$$$$ ', user);
     return this.findOrCreate({
         where: {
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
-            password: hash(user.password)
+            password: user.password
         }
     });
 }
