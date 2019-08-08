@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 // const User = require('../db/models/User');
 const productsRoutes = require('./productRoutes');
+const userRoutes = require('./userRoutes');
 
 /* router.get('/', async (req, res, next) => {
     try {
-        const user = await User.findOne({
-            where: {
-                sessionId: req.session.id
-            }
+        const userId = req.session.userId
+        if(!userId){
+            user.createGuest(req.session.id)
+        }
         })
         if (user){
             res.send(user);
@@ -22,5 +23,6 @@ const productsRoutes = require('./productRoutes');
 }) */
 
 router.use('/products', productsRoutes);
+router.use('/user', userRoutes);
 
 module.exports = router
