@@ -23,6 +23,8 @@ const store = new SequelizeStore({
 console.log(store);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/api', routes);
 app.use(session({
   secret: 'a;ldf;alskdf',
   resave: false,
