@@ -13,7 +13,7 @@ const Session = db.define('session', {
       },
       data: Sequelize.STRING,
       expires: Sequelize.DATE,
-      userID: Sequelize.INTEGER,
+      userId: Sequelize.STRING,
       isAuthenticated: Sequelize.BOOLEAN
 })
 
