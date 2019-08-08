@@ -1,6 +1,7 @@
 const db = require('../server/db/index');
 const Order = require('../server/db/models/Order')
 const Product = require('../server/db/models/Product')
+require('dotenv').config();
 //const Session = require('../server/db/models/Session')
 const User = require('../server/db/models/User')
 const hash = require('./hash')
@@ -17,7 +18,7 @@ const users = [
     const firstName = nameArr[0];
     const lastName = nameArr[1];
     const email = `${firstName}${lastName}@email.com`;
-    const password = hash('password1234');
+    const password = 'password1234';
     return {firstName, lastName, email, password}
 })
 
