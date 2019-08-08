@@ -1,33 +1,30 @@
-const router = require('./index');
+const express = require('express');
+const router = express.Router();
 const User = require('../db/models/User');
 const crypto = require('crypto');
 
-const secret = process.env.SECRET || 'abcdefg';
-const hash = crypto.createHmac('sha256', secret)
-                   .update('I love cupcakes')
-                   .digest('hex');
-console.log(hash);
-// Prints:
-//   c0fa1bc00531bd78ef38c628449c5102aeabd49b5dc3a2a516ea6ea959d6658e
-
-router.put('/user/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     try {
-            res.send(await User.findOne({
-        where: {
-            username: req.body.username,
-            password: hash(req.body.password)
+        const user =  await User.login(req.body.email, req.body.password)
+        console.log('this is the user:', user);
+        console.log('!!!!!!!!!!!', req.body);
+        if (!user){
+            res.status(401).send('Email or password incorrect');
+        } else {
+        req.session.userId = user.id;
+        //req.session.orderId = user.orderId;
+        res.send(user)
         }
-    }))
-
 } catch (err){
     console.error(err);
 }
 })
 
-router.post('/user/signup', async (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
     try {
-        req.body.sessionId = req.session.id
-        res.send(await User.create(req.body))
+        //req.body.sessionId = req.session.id
+        await User.signup(req.body)
+        res.send('It Worked!');
     } catch (err){
         console.error(err);
     }
@@ -44,5 +41,8 @@ router.delete('/user/:userId', async (req, res, next) => {
         console.error(err);
     }
 });
+
+//curl -d '{"email":"PrestonWallace@email.com", "password":"password1234"}' -H "Content-Type: application/json" -X POST http://localhost:3030/api/user/login
+
 
 module.exports = router;
