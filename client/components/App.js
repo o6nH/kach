@@ -7,10 +7,12 @@ import Product from './Product';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import {fetchProducts} from '../store';
+import axios from 'axios';
 
 class App extends React.Component{
   componentDidMount() {
     this.props.getAllProducts();
+    //axios.get('/api/sessions');
   }
 
   render(){

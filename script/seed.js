@@ -21,7 +21,8 @@ const users = [
     const lastName = nameArr[1];
     const email = `${firstName}${lastName}@email.com`;
     const password = 'password1234';
-    return {firstName, lastName, email, password}
+    const id = user.id;
+    return {id, firstName, lastName, email, password}
 })
 
 const products = [

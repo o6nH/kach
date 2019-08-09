@@ -58,12 +58,11 @@ export const fetchProducts = () => (dispatch, getState, axios) => {
 
 export const getCart = () => (dispatch, getState, axios) => {
   axios.get('/api/orders/cart')
-  .then(({data: products}) => dispatch({type: ACT.GETCART, products}))
+  .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
   .catch(err => console.error(err));
 };
 
 const addToCart = (info) => (dispatch, getState, axios) => {
-  console.log('info: ', info);
   axios.post('/api/orders', info)
     .then(({data: product}) => dispatch({
       type: ACT.ADDTOCART,
@@ -152,7 +151,7 @@ const cartReducer = (state = [], action) => {
     case ACT.REMOVEFROMCART:
       return state.filter(prod => prod !== product);
     case ACT.GETCART:
-      return action.products;
+      return [action.orderLines];
     default:
       return state;
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getCart } from '../store';
 
 const cartId = 'ord123' //TODO: replace
 
@@ -11,18 +12,23 @@ class Cart extends Component {
     }
 
     componentDidMount() {
-
+        const { getCart, user } = this.props;
+        //getCart();
     }
 
     render() { 
-        const { cart } = this.props;
-        const totalPrice = cart.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0).toFixed(2);
+        const { cart, products } = this.props;
+        const cart2 = cart.map(line => {
+            const productInfo = products.find(product => product.id === line.productId);
+            return {...line, ...productInfo};
+        })
+        const totalPrice = cart2.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0).toFixed(2);
         return ( 
             <div>
                 <h1>Your Cart</h1>
                 <hr/>
                 {
-                    cart.map(prod => 
+                    cart2.map(prod => 
                     <div key={prod.id}>
                         <h3><Link to={`/products/${prod.id}`}>{prod.name}</Link></h3>
                         Quantity: {prod.quantity}
@@ -42,7 +48,9 @@ class Cart extends Component {
 }
 
 const mapStateToProps = state => ({
-    cart: state.cart
+    cart: state.cart,
+    user: state.user,
+    products: state.products,
 })
 const mapDispatchToProps = dispatch => {
     return {
