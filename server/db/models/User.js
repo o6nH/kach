@@ -67,15 +67,25 @@ User.login = function (email, password) {
 }
 
 User.signup = function (user) {
-    console.log('$$$$$$$$$$ ', user);
-    return this.findOrCreate({
+    //if guest and wants to sign up then update user
+    // if email is already taken the tell user that
+    const ifUser = this.findOne({
         where: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password
+            id: user.id
         }
-    });
+    })
+    const ifUsedEmail = this.findOne({
+        where: {
+            email: user.email,
+        }
+    })
+    if (!ifUsedEmail){
+        const updatedUser = ifUser.update(user)
+        console.log(updatedUser);
+        return updatedUser[0];
+    } else {
+        return 'Email already in use, please use another'
+    }
 }
 
 User.createGuest = function () {
