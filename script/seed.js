@@ -32,7 +32,7 @@ const products = [
     {id: 'f3015b76-0c17-42d1-a6a5-496385dc46a8', name: 'Eye drops', category: 'medication', aveRating:4.539, price:5.49, imageUrls:['https://upload.wikimedia.org/wikipedia/commons/6/60/%C3%96gondroppar2.jpg'], description: 'Five pack. Natural tears, dryness relief for your eyes.', quantity: 2}
 ];
 
-id: '', 
+
 async function syncAndSeed() {
     try {
         await db.sync({force: true});
