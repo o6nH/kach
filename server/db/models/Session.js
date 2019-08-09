@@ -11,6 +11,9 @@ const Session = db.define('session', {
           notEmpty: true
         }
       },
+      data: Sequelize.STRING,
+      expires: Sequelize.DATE,
+      userId: Sequelize.STRING,
 })
 
 module.exports = Session;

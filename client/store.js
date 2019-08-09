@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger';
