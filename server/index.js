@@ -3,40 +3,36 @@ const app = express();
 const path = require('path');
 const routes = require('./routes/index');
 const session = require('express-session');
+const db = require('./db/index');
+const sessionModel = require('./db/models/Session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 require('dotenv').config();
 const port = process.env.PORT || 3000;
-const sequelizeStore = require('connect-session-sequelize')(session.Store);
-const sessionDB = require('./db/index');
-
-function extendDefaultFields(defaults, _session){
-  return {
-    data: defaults.data,
-    expires: defaults.expires,
-    userId: _session.userId,
-    isAuthenticated: _session.isAuthenticated,
-  }
-}
-
-const sequelizeSessionStore = new sequelizeStore({
-  db: sessionDB,
+const store = new SequelizeStore({
+  db,
   table: 'session',
-  extendDefaultFields
+  extendDefaults: (defaults, _session) => {
+    return {
+      data: defaults.data,
+      expires: defaults.expires,
+      userId: _session.userId,
+    }
+  }
 })
 
 app.use(express.json());
-app.use(express.urlencoded());
-app.use(session({
-    secret: process.env.SECRET || 'Darn cool secret!',
-    store: sequelizeSessionStore,
-    checkExpirationInterval: 15 * 60 * 1000,
-    expiration: 90 * 24 * 60 * 60 * 1000,
-    resave: false,
-    saveUninitialized: false,
-  }))
+app.use(express.urlencoded({extended: true}));
+app.use('/', express.static(path.join(__dirname, '..', 'public')))
 app.use('/api', routes);
-app.use('/', express.static(path.join(__dirname, '../public')));
-
+app.use(session({
+  secret: 'a;ldf;alskdf',
+  resave: false,
+  saveUninitialized: true,
+  store
+}))
 app.listen(port, () => console.log(`listening on port ${port}`));
+
+db.sync();
 
 module.exports = {
     app,
