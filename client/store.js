@@ -6,7 +6,6 @@ import axios from 'axios';
 
 //Actions
 const ACT = {
-  //ACT_1:...
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
