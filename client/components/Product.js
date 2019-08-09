@@ -1,24 +1,21 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchSelectedProduct, addToCart} from '../store';
 
 class Product extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     //included to allow load of product with direct link to page
-    console.log('USER: ', this.props.user)
     const {match, getSelectedProduct} = this.props;
     getSelectedProduct(match.params.productId);
   }
 
   render() {
-    const {product, user, addToCart} = this.props;
+    const {user, cart, product, addToCart} = this.props;
+    const {isAdmin} = user;
+    const {id:cartId} = cart;
     const {name, imageUrls, price, aveRating, description, quantity} = product;
-    const order = {id: 'ord123'};
-    const {id:cartId} = order;
+
     return (
       <div>
         <h3>{name}</h3>
@@ -27,9 +24,7 @@ class Product extends React.Component {
           <div>
             <ul style={{listStyle:'none'}}>
               <li>Price: ${`${price}`}</li>
-              {
-                aveRating ? <li>AveRating: {`${Math.round(100*aveRating)/100}`}</li> : ''
-              }
+              {aveRating ? <li>AveRating: {`${Number(aveRating).toFixed(2)}`}</li> : ''}
             </ul>
             {
               quantity
@@ -39,6 +34,8 @@ class Product extends React.Component {
                 }}>Add to Cart</button> 
               : <span>{'Currently Unavailable'}</span>
             }
+            <br/>
+            {isAdmin ? <Link to='admin/products/:productId'>Edit</Link> : ''}
           </div>
         </div>
         <div>
@@ -50,8 +47,9 @@ class Product extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  product: state.selectedProduct,
-  user: state.user
+  user: state.user,
+  cart: state.orders.filter(order => order.status === 'inCart')[0],
+  product: state.selectedProduct
 });
 
 const mapDispatchToProps = dispatch => ({

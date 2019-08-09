@@ -80,7 +80,7 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 //Reducers
 
 //TODO: create function to set current user on the store
-const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
+const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520', isAdmin: true}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -100,7 +100,7 @@ const usersReducer = (state=[], action) => {
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[], action) => {
+const ordersReducer = (state=[{id: 'ord123', status:'inCart'}], action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -108,7 +108,7 @@ const ordersReducer = (state=[], action) => {
     default:
       return state;
   }
-}; //userId => [{orderId: ..., status:'inCart'}, {}]
+}; //userId => [{id: ..., status:'inCart'}, {}]
 
 const productsReducer = (state = [], action) => {
   switch (action.type) {
