@@ -9,6 +9,11 @@ class Cart extends Component {
         super(props);
         this.state = {  }
     }
+
+    componentDidMount() {
+
+    }
+
     render() { 
         const { cart } = this.props;
         const totalPrice = cart.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0).toFixed(2);
@@ -41,6 +46,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
     return {
+        getCart: () => dispatch(getCart())
     }
 };
  

@@ -50,4 +50,13 @@ router.route('/')
         }
     });
 
+router.route('/cart')
+    .get(async (req, res, next) => {
+        try {
+            
+        } catch (err){
+            console.error(err);
+        }
+    });
+
 module.exports = router;

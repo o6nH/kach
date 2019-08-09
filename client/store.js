@@ -9,6 +9,7 @@ const ACT = {
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
+  GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
 }
@@ -51,6 +52,12 @@ export const getCategories = categorizedProducts => Object.keys(categorizedProdu
 export const fetchProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
   .then(({data: products}) => dispatch({type: ACT.GET_PRODUCTS, products}))
+  .catch(err => console.error(err));
+};
+
+export const getCart = () => (dispatch, getState, axios) => {
+  axios.get('/api/orders/cart')
+  .then(({data: products}) => dispatch({type: ACT.GETCART, products}))
   .catch(err => console.error(err));
 };
 
@@ -143,6 +150,8 @@ const cartReducer = (state = [], action) => {
       return [...state, action.product];
     case ACT.REMOVEFROMCART:
       return state.filter(prod => prod !== product);
+    case ACT.GETCART:
+      return action.products;
     default:
       return state;
   }
