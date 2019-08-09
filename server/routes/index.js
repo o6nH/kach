@@ -3,6 +3,7 @@ const router = express.Router();
 const productsRoutes = require('./productRoutes');
 const userRoutes = require('./userRoutes');
 const { User } = require('../db/models/index');
+const orderRoutes = require('./orderRoutes');
 
 router.get('/sessions', async (req, res, next) => {
     try {
@@ -34,5 +35,6 @@ router.get('/sessions', async (req, res, next) => {
 
 router.use('/products', productsRoutes);
 router.use('/users', userRoutes);
+router.use('/orders', orderRoutes)
 
 module.exports = router
