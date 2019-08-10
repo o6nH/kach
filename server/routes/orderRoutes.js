@@ -6,6 +6,7 @@ const OrderProduct = require('../db/models/OrderProduct');
 router.route('/')
     .post(async (req, res, next) => {
         try {
+            console.log('REQ.BODY: ', req.body)
             let currentCart = await Order.findOrCreate(
                     {
                         where: {
@@ -31,7 +32,6 @@ router.route('/')
                         },
                         returning: true
                     }) 
-                console.log('IFSTSATEMENTNEWLINE', newLine)
             } else {
                 newLine = await OrderProduct.create(
                     {
@@ -41,11 +41,12 @@ router.route('/')
                         quantity: 1
                     }
                 )
-                console.log('NEWLINE', newLine)
-
+                
             }
-            newLine.product = await Product.findByPk(newLine.productId)
-            console.log('new line:!!! ', newLine)
+            const productFromLine = await Product.findByPk(newLine.productId)
+            newLine.dataValues.product = productFromLine;
+            console.log('PRODUCTTT: ', productFromLine)
+            console.log('NEWLINE', newLine)
             res.send(newLine)
 
         } catch (err){

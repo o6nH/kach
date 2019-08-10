@@ -63,12 +63,11 @@ export const getCart = () => (dispatch, getState, axios) => {
 };
 
 export const addToCart = (info) => (dispatch, getState, axios) => {
-  
   axios.post('/api/orders', info)
     .then(({data: product}) => dispatch({
-      type: ACT.ADDTOCART,
-      product,
-  }))
+        type: ACT.ADDTOCART,
+        product,
+    }))
     .catch(err => console.error(err));
 }
 
@@ -143,13 +142,28 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
       console.log('ACTION.PRODUCT: ', action.product)
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].productId === action.product.productId) {
-          state[i].quantity++;
-          return state;
+      // for (let i = 0; i < state.length; i++) {
+      //   if (state[i].productId === action.product.productId) {
+      //     state[i].quantity++;
+      //     return state;
+      //   }
+      // }
+
+      let newLine = true;
+      state.map((prod) => {
+        if (prod.productId !== action.product.productId) {
+          return prod;
+        } else {
+          newLine = false;
+          prod.quantity++
+          return prod;
         }
-      }
-      return [...state, action.product];
+       })
+       if (newLine) {
+         return [...state, action.product];
+        } else {
+          return state;
+       }
     case ACT.REMOVEFROMCART:
       const decreased = state.map(prod => {
         if (prod.id === action.product.id) {
