@@ -29,7 +29,7 @@ class Cart extends Component {
                 {
                     cart.map(prod => 
                         <div key={prod.productId}>
-                            <h3><Link to={`/products/${prod.productId}`}>Need to insert Product Name. prod.product.name</Link></h3>
+                            <h3><Link to={`/products/${prod.productId}`}>{prod.product.name}</Link></h3>
                             Quantity: {prod.quantity}
                             <br/>
                             Price: ${prod.purchaseUnitPrice}
@@ -37,8 +37,8 @@ class Cart extends Component {
                             Amount: ${(prod.purchaseUnitPrice * prod.quantity).toFixed(2)}
                             <br/>
                             <form>
-                                <button onClick={() => {removeFromCart({...prod, userId: user.id})}}>-</button>
-                                <button onClick={() => {addToCart({...prod, userId: user.id})}}>+</button>
+                                <button onClick={() => {removeFromCart({...prod.product})}}>-</button>
+                                <button onClick={() => {addToCart({...prod.product})}}>+</button>
                             </form>
                         </div>)
                 }

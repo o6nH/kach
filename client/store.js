@@ -62,11 +62,12 @@ export const getCart = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-export const addToCart = (info) => (dispatch, getState, axios) => {
-  axios.post('/api/orders', info)
-    .then(({data: product}) => dispatch({
+export const addToCart = (product) => (dispatch, getState, axios) => {
+  console.log('PRODUCT', product)
+  axios.post('/api/orders', product)
+    .then(({data: line}) => dispatch({
         type: ACT.ADDTOCART,
-        product,
+        line,
     }))
     .catch(err => console.error(err));
 }
@@ -90,7 +91,7 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 //Reducers
 
 //TODO: create function to set current user on the store
-const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
+const userReducer = (state={id: '07fb06de-06ea-4231-81ce-f87de4b506c0'}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -141,7 +142,7 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.product)
+      console.log('ACTION.PRODUCT: ', action.line)
       // for (let i = 0; i < state.length; i++) {
       //   if (state[i].productId === action.product.productId) {
       //     state[i].quantity++;
@@ -151,7 +152,7 @@ const cartReducer = (state = [], action) => {
 
       let newLine = true;
       state.map((prod) => {
-        if (prod.productId !== action.product.productId) {
+        if (prod.productId !== action.line.productId) {
           return prod;
         } else {
           newLine = false;
@@ -160,13 +161,13 @@ const cartReducer = (state = [], action) => {
         }
        })
        if (newLine) {
-         return [...state, action.product];
+         return [...state, action.line];
         } else {
           return state;
        }
     case ACT.REMOVEFROMCART:
       const decreased = state.map(prod => {
-        if (prod.id === action.product.id) {
+        if (prod.id === action.line.id) {
           prod.quantity--
         }
       });

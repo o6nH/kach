@@ -6,11 +6,10 @@ const OrderProduct = require('../db/models/OrderProduct');
 router.route('/')
     .post(async (req, res, next) => {
         try {
-            console.log('REQ.BODY: ', req.body)
             let currentCart = await Order.findOrCreate(
                     {
                         where: {
-                                userId: req.body.userId,
+                                userId: '058007a1-144e-4b42-96fe-1a59482b9520',
                                 status: 'inCart'
                             },
                     }
@@ -45,8 +44,6 @@ router.route('/')
             }
             const productFromLine = await Product.findByPk(newLine.productId)
             newLine.dataValues.product = productFromLine;
-            console.log('PRODUCTTT: ', productFromLine)
-            console.log('NEWLINE', newLine)
             res.send(newLine)
 
         } catch (err){
@@ -58,7 +55,7 @@ router.route('/')
             let currentCart = await Order.findAll(
                 {
                     where: {
-                            userId: req.body.userId,
+                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
                             status: 'inCart'
                         },
                 }
