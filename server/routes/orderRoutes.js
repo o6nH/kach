@@ -45,7 +45,7 @@ router.route('/')
 
             }
             newLine.product = await Product.findByPk(newLine.productId)
-            console.log('new line: ', newLine)
+            console.log('new line:!!! ', newLine)
             res.send(newLine)
 
         } catch (err){
@@ -53,8 +53,6 @@ router.route('/')
         }
     })
     .delete(async (req, res, next) => {
-        console.log('req.body:sdfdsfdss ', req.body)
-        console.log('req.data:sdfdsfdss ', req.data)
         try {
             let currentCart = await Order.findAll(
                 {

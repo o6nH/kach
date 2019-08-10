@@ -19,24 +19,20 @@ class Cart extends Component {
 
     render() { 
         const { cart, products, user, addToCart, removeFromCart } = this.props;
-        const cart2 = cart.map(line => {
-            const productInfo = products.find(product => product.id === line.productId);
-            return {...line, ...productInfo};
-        })
-        const totalPrice = cart2.reduce((acc, prod) => acc + (prod.price * prod.quantity), 0).toFixed(2);
+        const totalPrice = cart.reduce((acc, prod) => acc + (prod.purchaseUnitPrice * prod.quantity), 0).toFixed(2);
         return ( 
             <div>
                 <h1>Your Cart</h1>
                 <hr/>
                 {
-                    cart2.map(prod => 
+                    cart.map(prod => 
                     <div key={prod.id}>
                         <h3><Link to={`/products/${prod.id}`}>{prod.name}</Link></h3>
                         Quantity: {prod.quantity}
                         <br/>
-                        Price: ${prod.price}
+                        Price: ${prod.purchaseUnitPrice}
                         <br/>
-                        Amount: ${(prod.price * prod.quantity).toFixed(2)}
+                        Amount: ${(prod.purchaseUnitPrice * prod.quantity).toFixed(2)}
                         <br/>
                         <form>
                             <button onClick={() => {removeFromCart({...prod, userId: user.id})}}>-</button>
