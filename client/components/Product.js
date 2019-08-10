@@ -14,7 +14,7 @@ class Product extends React.Component {
     const {user, cart, product, addToCart} = this.props;
     const {isAdmin} = user;
     const {id:cartId} = cart;
-    const {name, imageUrls, price, aveRating, description, quantity} = product;
+    const {id:productId, name, imageUrls, price, aveRating, description, quantity} = product;
 
     return (
       <div>
@@ -35,7 +35,7 @@ class Product extends React.Component {
               : <span>{'Currently Unavailable'}</span>
             }
             <br/>
-            {isAdmin ? <Link to='admin/products/:productId'>Edit</Link> : ''}
+          {isAdmin ? <Link to={`/admin/products/${productId}`}>Edit</Link> : ''}
           </div>
         </div>
         <div>

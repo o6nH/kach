@@ -8,21 +8,20 @@ import ProductCard from './ProductCard';
 
 function Products(props) {
   const {products} = props;
-
-  //Filter by Category
   const categorizedProducts = categorizeProducts(products);
   const categoryCounts = getCategoryCounts(categorizedProducts);
   const categories = getCategories(categorizedProducts);
-
+  
+  //Filter Products by Category
   const productsByQueryCategory = (categorizedProducts = categorizedProducts, allProducts = products) => {
     const parsedQuery = props.location.search ? queryString.parse(props.location.search) : {};
     if(parsedQuery['?category'] || parsedQuery['category']) {
       return categorizedProducts[parsedQuery['?category']] || categorizedProducts[parsedQuery['category']];
     }
-    else return allProducts;
+    return allProducts;
   };
 
-  //Filter by SearchTerm
+  //Filter Products by SearchTerm
   const hasSearchTerm = (product, searchTerm) =>  {
     const splitName = product.name.toLowerCase().split(' ');
     const splitDescription = product.description.toLowerCase().split(' ');
@@ -36,8 +35,10 @@ function Products(props) {
         return hasSearchTerm(product, parsedQuery['?search']) || hasSearchTerm(product, parsedQuery['search'])
       });
     }
-    else return allProducts;
+    return allProducts;
   };
+
+  const filteredProducts = productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts));
   
   //Component
   return (/* TODO:remove inline styles*/
@@ -45,9 +46,8 @@ function Products(props) {
       <SearchForm location={props.location}/>
       <CategoriesFilter categories={categories} categoryCounts={categoryCounts}/>
       <div style={{display:'flex'}}>
-      {          
-        productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts)).map(product => 
-          <ProductCard key={product.id} product={product}/>)
+      {
+        filteredProducts.map(product => <ProductCard key={product.id} product={product}/>)
       }
       </div>
     </div>
