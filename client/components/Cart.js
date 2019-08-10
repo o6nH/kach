@@ -19,6 +19,8 @@ class Cart extends Component {
 
     render() { 
         const { cart, products, user, addToCart, removeFromCart } = this.props;
+        console.log('the cart: ', cart)
+        
         const totalPrice = cart.reduce((acc, prod) => acc + (prod.purchaseUnitPrice * prod.quantity), 0).toFixed(2);
         return ( 
             <div>
@@ -26,19 +28,19 @@ class Cart extends Component {
                 <hr/>
                 {
                     cart.map(prod => 
-                    <div key={prod.id}>
-                        <h3><Link to={`/products/${prod.id}`}>{prod.name}</Link></h3>
-                        Quantity: {prod.quantity}
-                        <br/>
-                        Price: ${prod.purchaseUnitPrice}
-                        <br/>
-                        Amount: ${(prod.purchaseUnitPrice * prod.quantity).toFixed(2)}
-                        <br/>
-                        <form>
-                            <button onClick={() => {removeFromCart({...prod, userId: user.id})}}>-</button>
-                            <button onClick={() => {addToCart({...prod, userId: user.id})}}>+</button>
-                        </form>
-                    </div>)
+                        <div key={prod.productId}>
+                            <h3><Link to={`/products/${prod.productId}`}>Need to insert Product Name. prod.product.name</Link></h3>
+                            Quantity: {prod.quantity}
+                            <br/>
+                            Price: ${prod.purchaseUnitPrice}
+                            <br/>
+                            Amount: ${(prod.purchaseUnitPrice * prod.quantity).toFixed(2)}
+                            <br/>
+                            <form>
+                                <button onClick={() => {removeFromCart({...prod, userId: user.id})}}>-</button>
+                                <button onClick={() => {addToCart({...prod, userId: user.id})}}>+</button>
+                            </form>
+                        </div>)
                 }
                 <br/>
                 <h4>Total: ${totalPrice}</h4>
