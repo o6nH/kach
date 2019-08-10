@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getCart } from '../store';
+import { getCart, addToCart, removeFromCart } from '../store';
 
 const cartId = 'ord123' //TODO: replace
 
@@ -16,8 +16,9 @@ class Cart extends Component {
         //getCart();
     }
 
+
     render() { 
-        const { cart, products } = this.props;
+        const { cart, products, user, addToCart, removeFromCart } = this.props;
         const cart2 = cart.map(line => {
             const productInfo = products.find(product => product.id === line.productId);
             return {...line, ...productInfo};
@@ -36,6 +37,11 @@ class Cart extends Component {
                         Price: ${prod.price}
                         <br/>
                         Amount: ${(prod.price * prod.quantity).toFixed(2)}
+                        <br/>
+                        <form>
+                            <button onClick={() => {removeFromCart({...prod, userId: user.id})}}>-</button>
+                            <button onClick={() => {addToCart({...prod, userId: user.id})}}>+</button>
+                        </form>
                     </div>)
                 }
                 <br/>
@@ -54,7 +60,9 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
     return {
-        getCart: () => dispatch(getCart())
+        getCart: () => dispatch(getCart()),
+        addToCart: (info) => dispatch(addToCart(info)),
+        removeFromCart: (info) => dispatch(removeFromCart(info)),
     }
 };
  

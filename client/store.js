@@ -62,20 +62,24 @@ export const getCart = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-const addToCart = (info) => (dispatch, getState, axios) => {
+export const addToCart = (info) => (dispatch, getState, axios) => {
+  
   axios.post('/api/orders', info)
-    .then(({data: product}) => dispatch({
+    .then(({}) => dispatch({
       type: ACT.ADDTOCART,
-      product,
+      info,
   }))
     .catch(err => console.error(err));
 }
 
-const removeFromCart = (product) => {
-  return {
+export const removeFromCart = (info) => (dispatch, getState, axios) => {
+  console.log('INFO:dsfdsfds ', info);
+  axios.delete('/api/orders', {data: info})
+    .then(() => dispatch({
       type: ACT.REMOVEFROMCART,
-      product: product,
-  }
+      info,
+  }))
+    .catch(err => console.error(err));
 }
 
 export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
@@ -149,7 +153,13 @@ const cartReducer = (state = [], action) => {
       newProd.quantity = 1;
       return [...state, action.product];
     case ACT.REMOVEFROMCART:
-      return state.filter(prod => prod !== product);
+      const decreased = state.map(prod => {
+        if (prod.id === action.product.id) {
+          prod.quantity--
+        }
+      });
+      const filtered = decreased.filter((prod) => prod.quantity !== 0);
+      return filtered;
     case ACT.GETCART:
       return [action.orderLines];
     default:
@@ -169,5 +179,3 @@ export default createStore(
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
-
-export { addToCart, removeFromCart }

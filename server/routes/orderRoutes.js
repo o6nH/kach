@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Order = require('../db/models/Order');
+const Product = require('../db/models/Product');
 const OrderProduct = require('../db/models/OrderProduct');
 
 router.route('/')
@@ -20,17 +21,19 @@ router.route('/')
                     orderId: currentCart.id
                 }
             });
-            
-            if (orderLine[0]) {
+            let newLine = {};
+            if (orderLine && orderLine[0]) {
                 orderLine[0].dataValues.quantity++;
-                await OrderProduct.update(orderLine[0].dataValues,
+                [,[newLine]] = await OrderProduct.update(orderLine[0].dataValues,
                     {
                         where: {
                             id: orderLine[0].dataValues.id
-                        }
-                    })  
+                        },
+                        returning: true
+                    }) 
+                console.log('IFSTSATEMENTNEWLINE', newLine)
             } else {
-                const newLine = await OrderProduct.create(
+                newLine = await OrderProduct.create(
                     {
                         productId: req.body.id,
                         orderId: currentCart.id,
@@ -38,12 +41,34 @@ router.route('/')
                         quantity: 1
                     }
                 )
+                console.log('NEWLINE', newLine)
+
             }
-            res.send(req.body)
+            newLine.product = await Product.findByPk(newLine.productId)
+            console.log('new line: ', newLine)
+            res.send(newLine)
+
         } catch (err){
             console.error(err);
         }
-    });
+    })
+    .delete(async (req, res, next) => {
+        console.log('req.body:sdfdsfdss ', req.body)
+        console.log('req.data:sdfdsfdss ', req.data)
+        try {
+            let currentCart = await Order.findAll(
+                {
+                    where: {
+                            userId: req.body.userId,
+                            status: 'inCart'
+                        },
+                }
+            );
+            console.log('CURRENT CARTTTT', currentCart);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 
 router.route('/cart')
     .get(async (req, res, next) => {
