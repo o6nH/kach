@@ -8,6 +8,5 @@ const sessionRoutes = require('./sessionRoutes');
 router.use('/products', productsRoutes);
 router.use('/users', userRoutes);
 router.use('/orders', orderRoutes)
-router.use('/sessions', sessionRoutes);
 
 module.exports = router
