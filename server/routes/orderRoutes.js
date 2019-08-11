@@ -107,7 +107,7 @@ router.route('/cart')
     .get(async (req, res, next) => {
         try {
             //TODO: bring in real userId
-            let currentCart = await Order.findOrCreate(
+            let currentCart = await Order.findAll(
                 {
                     where: {
                             userId: '058007a1-144e-4b42-96fe-1a59482b9520',
