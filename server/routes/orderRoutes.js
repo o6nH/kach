@@ -52,7 +52,7 @@ router.route('/')
     })
     .delete(async (req, res, next) => {
         try {
-            let currentCart = await Order.findAll(
+            let [currentCart] = await Order.findAll(
                 {
                     where: {
                             userId: '058007a1-144e-4b42-96fe-1a59482b9520',
@@ -60,7 +60,46 @@ router.route('/')
                         },
                 }
             );
+            currentCart = currentCart.dataValues;
             console.log('CURRENT CARTTTT', currentCart);
+
+            let [orderLine] = await OrderProduct.findAll({
+                where: {
+                    productId: req.body.id,
+                    orderId: currentCart.id
+                }
+            });
+
+            orderLine = orderLine.dataValues;
+            console.log('ORDERLINE', orderLine)
+
+            orderLine.quantity--;
+
+            let changedLine = {};
+
+            if (!orderLine.quantity) {
+                changedLine = await OrderProduct.destroy({
+                    where: {
+                        productId: req.body.id,
+                        orderId: currentCart.id
+                    }
+                })
+                console.log('deleted line: ', deletedLine)
+            } else {
+                [,[changedLine]] = await OrderProduct.update(orderLine,
+                    {
+                        where: {
+                            id: orderLine.id
+                        },
+                        returning: true
+                    }) 
+                changedLine = changedLine.dataValues;
+                const productFromLine = await Product.findByPk(changedLine.productId)
+                changedLine.product = productFromLine.dataValues;
+                console.log('updatedline: ', changedLine)
+                res.send(changedLine)
+            }
+            
         } catch (err) {
             console.log(err);
         }
