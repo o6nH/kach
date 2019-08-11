@@ -10,6 +10,7 @@ const ACT = {
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
+  GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
 }
@@ -55,21 +56,30 @@ export const fetchProducts = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-const addToCart = (info) => (dispatch, getState, axios) => {
-  console.log('info: ', info);
-  axios.post('/api/orders', info)
-    .then(({data: product}) => dispatch({
-      type: ACT.ADDTOCART,
-      product,
-  }))
+export const getCart = () => (dispatch, getState, axios) => {
+  axios.get('/api/orders/cart')
+  .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
+  .catch(err => console.error(err));
+};
+
+export const addToCart = (product) => (dispatch, getState, axios) => {
+  console.log('PRODUCT', product)
+  axios.post('/api/orders', product)
+    .then(({data: line}) => dispatch({
+        type: ACT.ADDTOCART,
+        line,
+    }))
     .catch(err => console.error(err));
 }
 
-const removeFromCart = (product) => {
-  return {
+export const removeFromCart = (info) => (dispatch, getState, axios) => {
+  console.log('INFO:dsfdsfds ', info);
+  axios.delete('/api/orders', {data: info})
+    .then(() => dispatch({
       type: ACT.REMOVEFROMCART,
-      product: product,
-  }
+      info,
+  }))
+    .catch(err => console.error(err));
 }
 
 export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
@@ -81,7 +91,7 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 //Reducers
 
 //TODO: create function to set current user on the store
-const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
+const userReducer = (state={id: '07fb06de-06ea-4231-81ce-f87de4b506c0'}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -132,18 +142,39 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.product)
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].id === action.product.id) {
-          state[i].quantity++;
-          return state;
+      console.log('ACTION.PRODUCT: ', action.line)
+      // for (let i = 0; i < state.length; i++) {
+      //   if (state[i].productId === action.product.productId) {
+      //     state[i].quantity++;
+      //     return state;
+      //   }
+      // }
+
+      let newLine = true;
+      state.map((prod) => {
+        if (prod.productId !== action.line.productId) {
+          return prod;
+        } else {
+          newLine = false;
+          prod.quantity++
+          return prod;
         }
-      }
-      const newProd = action.product;
-      newProd.quantity = 1;
-      return [...state, action.product];
+       })
+       if (newLine) {
+         return [...state, action.line];
+        } else {
+          return state;
+       }
     case ACT.REMOVEFROMCART:
-      return state.filter(prod => prod !== product);
+      const decreased = state.map(prod => {
+        if (prod.id === action.line.id) {
+          prod.quantity--
+        }
+      });
+      const filtered = decreased.filter((prod) => prod.quantity !== 0);
+      return filtered;
+    case ACT.GETCART:
+      return [action.orderLines];
     default:
       return state;
   }
@@ -161,5 +192,3 @@ export default createStore(
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
-
-export { addToCart, removeFromCart }
