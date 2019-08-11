@@ -9,6 +9,7 @@ const ACT = {
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
+  GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
   ADD_PRODUCT:'ADD_PRODUCT',
@@ -49,6 +50,7 @@ export const getCategoryCounts = categorizedProducts => {
 //Get array of `category` strings
 export const getCategories = categorizedProducts => Object.keys(categorizedProducts);
 
+
 //Creators (Action or Thunk) //TODO: Refactor action creators into own file
 const fetchProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
@@ -71,24 +73,31 @@ const updateProduct = (adminProductUpdates) => (dispatch, getState, axios) => {
     return dispatch({type: ACT.UPDATE_PRODUCT, updatedProduct})
   })
   .catch(err => console.error(err));
-}
+};
 
-const addToCart = (info) => (dispatch, getState, axios) => {
-  console.log('info: ', info);
-  axios.post('/api/orders', info)
-    .then(({data: product}) => dispatch({
-      type: ACT.ADDTOCART,
-      product,
+const getCart = () => (dispatch, getState, axios) => {
+  axios.get('/api/orders/cart')
+  .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
+  .catch(err => console.error(err));
+};
+
+const addToCart = (product) => (dispatch, getState, axios) => {
+  axios.post('/api/orders', product)
+    .then(({data: line}) => dispatch({
+        type: ACT.ADDTOCART,
+        line,
+    }))
+    .catch(err => console.error(err));
+};
+
+const removeFromCart = (product) => (dispatch, getState, axios) => {
+  axios.delete('/api/orders', {data: product})
+    .then(({data: line}) => dispatch({
+      type: ACT.REMOVEFROMCART,
+      line,
   }))
     .catch(err => console.error(err));
-}
-
-const removeFromCart = (product) => {
-  return {
-      type: ACT.REMOVEFROMCART,
-      product: product,
-  }
-}
+};
 
 
 //Reducers
@@ -170,18 +179,31 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.product)
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].id === action.product.id) {
-          state[i].quantity++;
-          return state;
+      let newLine = true;
+      const newState = state.map((prod) => {
+        if (prod.productId === action.line.productId) {
+          newLine = false;
+          console.log('inside if')
+          prod.quantity++
         }
-      }
-      const newProd = action.product;
-      newProd.quantity = 1;
-      return [...state, action.product];
+        return prod;
+       })
+       if (newLine) {
+         return [...state, action.line];
+        } else {
+          return newState;
+       }
     case ACT.REMOVEFROMCART:
-      return state.filter(prod => prod !== product);
+      const decreased = state.map(prod => {
+        if (prod.productId === action.line.productId) {
+          prod.quantity--
+        }
+        return prod;
+      });
+      const filtered = decreased.filter(prod => prod.quantity !== 0);
+      return filtered;
+    case ACT.GETCART:
+      return [...action.orderLines];
     default:
       return state;
   }
@@ -200,4 +222,5 @@ export default createStore(
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
 
-export {fetchSelectedProduct, fetchProducts, updateProduct, addToCart, removeFromCart}
+
+export {fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct, categorizeProducts, getCategoryCounts, getCategories, updateProduct}
