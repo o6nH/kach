@@ -6,7 +6,6 @@ import axios from 'axios';
 
 //Actions
 const ACT = {
-  //ACT_1:...
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
@@ -14,11 +13,13 @@ const ACT = {
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
   CHECKOUT: 'CHECKOUT',
+  ADD_PRODUCT:'ADD_PRODUCT',
+  UPDATE_PRODUCT:'UPDATE_PRODUCT'
 }
 
 //HelperFunction
 //Get object with `category-productArray` key-values
-export const categorizeProducts = products => {
+const categorizeProducts = products => {
   return products.reduce((catProdObj, product) => {
     let {category} = product;
     if(typeof category === 'string' && category) {
@@ -40,7 +41,7 @@ export const categorizeProducts = products => {
 };
 
 //Get object with `category-productCountInt` key-values
-export const getCategoryCounts = categorizedProducts => {
+const getCategoryCounts = categorizedProducts => {
   return getCategories(categorizedProducts).reduce((categoryCounts, category) => {
     categoryCounts[category] = categorizedProducts[category].length;
     return categoryCounts;
@@ -48,31 +49,43 @@ export const getCategoryCounts = categorizedProducts => {
 };
 
 //Get array of `category` strings
-export const getCategories = categorizedProducts => Object.keys(categorizedProducts);
+const getCategories = categorizedProducts => Object.keys(categorizedProducts);
 
-//Creators (Action or Thunk)
-export const fetchProducts = () => (dispatch, getState, axios) => {
+
+//Creators (Action or Thunk) //TODO: Refactor action creators into own file
+const fetchProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
   .then(({data: products}) => dispatch({type: ACT.GET_PRODUCTS, products}))
   .catch(err => console.error(err));
 };
 
-export const getCart = () => (dispatch, getState, axios) => {
+const updateProduct = (adminProductUpdates) => (dispatch, getState, axios) => {
+  //TODO: remove userId from body and get from session after sessions are working (changing adminProductUpdates to only productUpdates)
+  axios.put(`/api/products/${adminProductUpdates.productUpdates.id}`, adminProductUpdates)
+  .then(({data:updatedProduct}) => {
+    console.log('updatedProduct response from axios: ', updatedProduct);
+    
+    return dispatch({type: ACT.UPDATE_PRODUCT, updatedProduct})
+  })
+  .catch(err => console.error(err));
+};
+
+const getCart = () => (dispatch, getState, axios) => {
   axios.get('/api/orders/cart')
   .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
   .catch(err => console.error(err));
 };
 
-export const addToCart = (product) => (dispatch, getState, axios) => {
+const addToCart = (product) => (dispatch, getState, axios) => {
   axios.post('/api/orders', product)
     .then(({data: line}) => dispatch({
         type: ACT.ADDTOCART,
         line,
     }))
     .catch(err => console.error(err));
-}
+};
 
-export const removeFromCart = (product) => (dispatch, getState, axios) => {
+const removeFromCart = (product) => (dispatch, getState, axios) => {
   axios.delete('/api/orders', {data: product})
     .then(({data: line}) => dispatch({
       type: ACT.REMOVEFROMCART,
@@ -90,16 +103,29 @@ export const checkout = (info) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
+const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
   axios.get(`/api/products/${productId}`)
   .then(({data: selectedProduct}) => dispatch({type: ACT.SELECT_PRODUCT, selectedProduct}))
   .catch(err => console.error(err));
 };
 
+
 //Reducers
 
 //TODO: create function to set current user on the store
-const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
+const userReducer = (state = {
+    id: '99035506-f5b0-485d-9331-642809c1f444', 
+    firstName:'Hugo',
+    lastName: 'Campos', 
+    streetAddress: '123 Fake St', 
+    suite: 'A', 
+    city: 'San Luis Obispo', 
+    state: 'CA', 
+    zip: '92555', 
+    email: 'HugoCampos@email.com', 
+    isAdmin: true, 
+    isAuthenticated: true
+  }, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -119,7 +145,7 @@ const usersReducer = (state=[], action) => {
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[], action) => {
+const ordersReducer = (state=[{id:'ord123', userOrderId:'', orderProductsId:'', status:'inCart'}], action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -127,12 +153,24 @@ const ordersReducer = (state=[], action) => {
     default:
       return state;
   }
-}; //userId => [{orderId: ..., status:'inCart'}, {}]
+}; //userId => [{id: ..., status:'inCart'}, {}]
 
 const productsReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.GET_PRODUCTS:
       return action.products
+    case ACT.ADD_PRODUCT:
+      return [...state, action.product]
+    case ACT.UPDATE_PRODUCT:
+      const {updatedProduct} = action;
+      const updatedProducts = state.map(product =>{
+        console.log('updatedProduct: ', updatedProduct);
+        console.log('product: ', product);
+        
+        return (product.id === updatedProduct.id) ? updatedProduct : product 
+      }
+      );
+      return updatedProducts
     default:
       return state;
   }
@@ -142,6 +180,7 @@ const selectedProductReducer = (state = {}, action) => {
   switch (action.type) {
     case ACT.SELECT_PRODUCT:
       return action.selectedProduct
+    
     default:
       return state;
   }
@@ -183,8 +222,8 @@ const cartReducer = (state = [], action) => {
 //Store
 export default createStore(
   combineReducers({
-    user: userReducer,
     users: usersReducer,
+    user: userReducer,
     orders: ordersReducer,
     cart: cartReducer,
     products: productsReducer, //TODO: refactor to limit number of products downloaded (paginate)
@@ -193,4 +232,5 @@ export default createStore(
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
 
-//module.exports = {categorizeProducts, getCategoryCounts, getCategories, fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct}
+
+export {fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct, categorizeProducts, getCategoryCounts, getCategories, updateProduct}

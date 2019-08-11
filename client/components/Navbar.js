@@ -1,18 +1,15 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const marketName = 'Generic';
 const marketLogo = './img/bottle_64.png';
 const cartImg = './img/cart_64.png';
 
-// Fake Store (TODO: substitute fake store for redux store)
-const fakeUser = {userId: '123', isAuthenticated: true};
-const cartOrder = {orderId:'ord123', productCount: 5};
-
 // Component
-const Navbar = () => {
-  const {userId, isAuthenticated: isAuth} = fakeUser;
-  const {orderId:cartOrderId, productCount:cartProdCount} = cartOrder;
+const Navbar = ({user, cart}) => {
+  const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
+  const {id:cartOrderId, productCount:cartProdCount} = cart;
   return (
     // TODO: remove inline styles
     <div style={{display:'flex', justifyContent:'space-between'}}>
@@ -25,6 +22,11 @@ const Navbar = () => {
       <ul style={{display:'flex', width:'30%', justifyContent:'space-between', listStyle:'none'}}>
         <li><Link to='/products'>Products</Link></li>
         {
+          isAdmin
+          ? <li><Link to={`/admin`}>Admin Dashboard</Link></li>
+          : ''
+        }
+        {
           isAuth
           ? <li><Link to={`/users/${userId}`}>Manage Account</Link></li>
           : <li><Link to='/signup'>Create Account</Link></li> 
@@ -34,10 +36,15 @@ const Navbar = () => {
           ? <li onClick={()=>{console.log('Need to sign user out')}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/cart/${cartOrderId}`}><img src={cartImg}></img>{cartProdCount}</Link></li>
+        <li><Link to={`/cart/${cartOrderId}`}><img src={cartImg}></img>#</Link></li>
       </ul>
     </div>
   )
 }
 
-export default Navbar;
+const mapStateToProps = state => ({
+  user: state.user,
+  cart: state.orders.filter(order => order.status === 'inCart')
+})
+
+export default connect(mapStateToProps)(Navbar);

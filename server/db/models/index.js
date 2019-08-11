@@ -1,8 +1,8 @@
-const Order = require('./Order');
-const Product = require('./Product');
 const Session = require('./Session');
 const User = require('./User');
+const Order = require('./Order');
 const OrderProduct = require('./OrderProduct');
+const Product = require('./Product');
 
 User.hasMany(Order);
 Order.belongsTo(User);
@@ -13,7 +13,7 @@ OrderProduct.belongsTo(Order);
 Product.hasMany(OrderProduct);
 OrderProduct.belongsTo(Product);
 
-module.exports = {Order, Product, User, OrderProduct};
+module.exports = {Session, User, Order, OrderProduct, Product};
 // OrderProduct.belongsTo(Order);
 // Order.hasMany(Product, {through: OrderProduct});
 
