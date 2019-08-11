@@ -18,7 +18,7 @@ const ACT = {
 
 //HelperFunction
 //Get object with `category-productArray` key-values
-export const categorizeProducts = products => {
+const categorizeProducts = products => {
   return products.reduce((catProdObj, product) => {
     let {category} = product;
     if(typeof category === 'string' && category) {
@@ -40,7 +40,7 @@ export const categorizeProducts = products => {
 };
 
 //Get object with `category-productCountInt` key-values
-export const getCategoryCounts = categorizedProducts => {
+const getCategoryCounts = categorizedProducts => {
   return getCategories(categorizedProducts).reduce((categoryCounts, category) => {
     categoryCounts[category] = categorizedProducts[category].length;
     return categoryCounts;
@@ -48,7 +48,7 @@ export const getCategoryCounts = categorizedProducts => {
 };
 
 //Get array of `category` strings
-export const getCategories = categorizedProducts => Object.keys(categorizedProducts);
+const getCategories = categorizedProducts => Object.keys(categorizedProducts);
 
 
 //Creators (Action or Thunk) //TODO: Refactor action creators into own file
