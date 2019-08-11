@@ -123,9 +123,34 @@ router.route('/cart')
                 },
                 include: {model: Product}
             });
-            //orderLines = orderLines.dataValues;
-            console.log('ORDER LINES: ', orderLines)
             res.send(orderLines);
+        } catch (err){
+            console.error(err);
+        }
+    });
+
+router.route('/checkout')
+    .put(async (req, res, next) => {
+        try {
+            //TODO: bring in real userId
+            
+            const [,[placedOrder]] = await Order.update({
+                    status: 'processing',
+                }, 
+                {
+                    where: {
+                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            status: 'inCart'
+                        },
+                    returning: true,
+                }
+            );
+            
+            placedOrder.orderedAt = placedOrder.updatedAt;
+
+            await placedOrder.save();
+            
+            res.send(placedOrder)
         } catch (err){
             console.error(err);
         }

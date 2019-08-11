@@ -13,6 +13,7 @@ const ACT = {
   GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
+  CHECKOUT: 'CHECKOUT',
 }
 
 //HelperFunction
@@ -77,6 +78,15 @@ export const removeFromCart = (product) => (dispatch, getState, axios) => {
       type: ACT.REMOVEFROMCART,
       line,
   }))
+    .catch(err => console.error(err));
+}
+
+export const checkout = (info) => (dispatch, getState, axios) => {
+  axios.put('/api/orders/checkout', info) 
+    .then(() => dispatch({
+      type: ACT.CHECKOUT,
+    }
+    ))
     .catch(err => console.error(err));
 }
 

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { checkout } from '../store';
 
 class Checkout extends Component {
     constructor(props) {
@@ -19,6 +21,7 @@ class Checkout extends Component {
 
     onSubmit(ev) {
         ev.preventDefault();
+        this.props.checkout(this.state);
     }
 
     onChange(ev) {
@@ -55,5 +58,14 @@ class Checkout extends Component {
          );
         }
     }
+
+const mapStateToProps = state => ({
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        checkout: (info) => dispatch(checkout(info)),
+    }
+};
  
-export default Checkout;
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
