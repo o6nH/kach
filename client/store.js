@@ -161,8 +161,9 @@ const cartReducer = (state = [], action) => {
         if (prod.productId === action.line.productId) {
           prod.quantity--
         }
+        return prod;
       });
-      const filtered = decreased.filter((prod) => prod.quantity !== 0);
+      const filtered = decreased.filter(prod => prod.quantity !== 0);
       return filtered;
     case ACT.GETCART:
       return [action.orderLines];

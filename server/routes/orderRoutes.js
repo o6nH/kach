@@ -71,9 +71,9 @@ router.route('/')
             });
 
             orderLine = orderLine.dataValues;
-            console.log('ORDERLINE', orderLine)
-
+            
             orderLine.quantity--;
+            console.log('ORDERLINE', orderLine)
 
             let changedLine = {};
 
@@ -82,9 +82,11 @@ router.route('/')
                     where: {
                         productId: req.body.id,
                         orderId: currentCart.id
-                    }
+                    },
+                    returning: true
                 })
-                console.log('deleted line: ', deletedLine)
+                console.log('deleted line: ', orderLine)
+                res.send(orderLine);
             } else {
                 [,[changedLine]] = await OrderProduct.update(orderLine,
                     {
