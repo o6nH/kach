@@ -51,12 +51,15 @@ const User = db.define('user', {
     },
 }, {
     hooks: {
-        beforeCreate: user => {
+        beforeCreate: user =>  {
             if (user.password){
                 user.password = hash(user.password);
             } else {
                 return user
             }
+        },
+        beforeUpdate: user => {
+            user.password = hash(user.password);
         }
     }
 });
