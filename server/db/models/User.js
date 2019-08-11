@@ -52,7 +52,11 @@ const User = db.define('user', {
 }, {
     hooks: {
         beforeCreate: user => {
-            user.password = hash(user.password);
+            if (user.password){
+                user.password = hash(user.password);
+            } else {
+                return user
+            }
         }
     }
 });
@@ -88,8 +92,9 @@ User.signup = function (user) {
     }
 }
 
-User.createGuest = function () {
-
+User.createGuest = async function () {
+    const guest = await this.create();
+    return guest;
 }
 
 User.remove = async function (id) {
