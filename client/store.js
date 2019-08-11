@@ -11,6 +11,8 @@ const ACT = {
   EDITCART: 'EDITCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
+  ADD_PRODUCT:'ADD_PRODUCT',
+  UPDATE_PRODUCT:'UPDATE_PRODUCT'
 }
 
 //HelperFunction
@@ -47,12 +49,29 @@ export const getCategoryCounts = categorizedProducts => {
 //Get array of `category` strings
 export const getCategories = categorizedProducts => Object.keys(categorizedProducts);
 
-//Creators (Action or Thunk)
-export const fetchProducts = () => (dispatch, getState, axios) => {
+//Creators (Action or Thunk) //TODO: Refactor action creators into own file
+const fetchProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
   .then(({data: products}) => dispatch({type: ACT.GET_PRODUCTS, products}))
   .catch(err => console.error(err));
 };
+
+const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
+  axios.get(`/api/products/${productId}`)
+  .then(({data: selectedProduct}) => dispatch({type: ACT.SELECT_PRODUCT, selectedProduct}))
+  .catch(err => console.error(err));
+};
+
+const updateProduct = (adminProductUpdates) => (dispatch, getState, axios) => {
+  //TODO: remove userId from body and get from session after sessions are working (changing adminProductUpdates to only productUpdates)
+  axios.put(`/api/products/${adminProductUpdates.productUpdates.id}`, adminProductUpdates)
+  .then(({data:updatedProduct}) => {
+    console.log('updatedProduct response from axios: ', updatedProduct);
+    
+    return dispatch({type: ACT.UPDATE_PRODUCT, updatedProduct})
+  })
+  .catch(err => console.error(err));
+}
 
 const addToCart = (info) => (dispatch, getState, axios) => {
   console.log('info: ', info);
@@ -71,17 +90,12 @@ const removeFromCart = (product) => {
   }
 }
 
-export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
-  axios.get(`/api/products/${productId}`)
-  .then(({data: selectedProduct}) => dispatch({type: ACT.SELECT_PRODUCT, selectedProduct}))
-  .catch(err => console.error(err));
-};
 
 //Reducers
 
 //TODO: create function to set current user on the store
 const userReducer = (state = {
-    id: '058007a1-144e-4b42-96fe-1a59482b9520', 
+    id: '99035506-f5b0-485d-9331-642809c1f444', 
     firstName:'Hugo',
     lastName: 'Campos', 
     streetAddress: '123 Fake St', 
@@ -112,7 +126,7 @@ const usersReducer = (state=[], action) => {
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[{id:'ord123', status:'inCart'}], action) => {
+const ordersReducer = (state=[{id:'ord123', userOrderId:'', orderProductsId:'', status:'inCart'}], action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -126,6 +140,18 @@ const productsReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.GET_PRODUCTS:
       return action.products
+    case ACT.ADD_PRODUCT:
+      return [...state, action.product]
+    case ACT.UPDATE_PRODUCT:
+      const {updatedProduct} = action;
+      const updatedProducts = state.map(product =>{
+        console.log('updatedProduct: ', updatedProduct);
+        console.log('product: ', product);
+        
+        return (product.id === updatedProduct.id) ? updatedProduct : product 
+      }
+      );
+      return updatedProducts
     default:
       return state;
   }
@@ -135,6 +161,7 @@ const selectedProductReducer = (state = {}, action) => {
   switch (action.type) {
     case ACT.SELECT_PRODUCT:
       return action.selectedProduct
+    
     default:
       return state;
   }
@@ -163,8 +190,8 @@ const cartReducer = (state = [], action) => {
 //Store
 export default createStore(
   combineReducers({
-    user: userReducer,
     users: usersReducer,
+    user: userReducer,
     orders: ordersReducer,
     cart: cartReducer,
     products: productsReducer, //TODO: refactor to limit number of products downloaded (paginate)
@@ -173,4 +200,4 @@ export default createStore(
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
 
-export { addToCart, removeFromCart }
+export {fetchSelectedProduct, fetchProducts, updateProduct, addToCart, removeFromCart}
