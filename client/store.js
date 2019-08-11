@@ -10,6 +10,7 @@ const ACT = {
   ADDTOCART: 'ADDTOCART',
   REMOVEFROMCART: 'REMOVEFROMCART',
   EDITCART: 'EDITCART',
+  GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
 }
@@ -55,21 +56,28 @@ export const fetchProducts = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-const addToCart = (info) => (dispatch, getState, axios) => {
-  console.log('info: ', info);
-  axios.post('/api/orders', info)
-    .then(({data: product}) => dispatch({
-      type: ACT.ADDTOCART,
-      product,
-  }))
+export const getCart = () => (dispatch, getState, axios) => {
+  axios.get('/api/orders/cart')
+  .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
+  .catch(err => console.error(err));
+};
+
+export const addToCart = (product) => (dispatch, getState, axios) => {
+  axios.post('/api/orders', product)
+    .then(({data: line}) => dispatch({
+        type: ACT.ADDTOCART,
+        line,
+    }))
     .catch(err => console.error(err));
 }
 
-const removeFromCart = (product) => {
-  return {
+export const removeFromCart = (product) => (dispatch, getState, axios) => {
+  axios.delete('/api/orders', {data: product})
+    .then(({data: line}) => dispatch({
       type: ACT.REMOVEFROMCART,
-      product: product,
-  }
+      line,
+  }))
+    .catch(err => console.error(err));
 }
 
 export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
@@ -132,18 +140,31 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.product)
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].id === action.product.id) {
-          state[i].quantity++;
-          return state;
+      let newLine = true;
+      const newState = state.map((prod) => {
+        if (prod.productId === action.line.productId) {
+          newLine = false;
+          console.log('inside if')
+          prod.quantity++
         }
-      }
-      const newProd = action.product;
-      newProd.quantity = 1;
-      return [...state, action.product];
+        return prod;
+       })
+       if (newLine) {
+         return [...state, action.line];
+        } else {
+          return newState;
+       }
     case ACT.REMOVEFROMCART:
-      return state.filter(prod => prod !== product);
+      const decreased = state.map(prod => {
+        if (prod.productId === action.line.productId) {
+          prod.quantity--
+        }
+        return prod;
+      });
+      const filtered = decreased.filter(prod => prod.quantity !== 0);
+      return filtered;
+    case ACT.GETCART:
+      return [...action.orderLines];
     default:
       return state;
   }
@@ -162,4 +183,4 @@ export default createStore(
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
 
-export { addToCart, removeFromCart }
+//module.exports = {categorizeProducts, getCategoryCounts, getCategories, fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct}

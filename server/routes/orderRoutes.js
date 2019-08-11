@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Order = require('../db/models/Order');
+const Product = require('../db/models/Product');
 const OrderProduct = require('../db/models/OrderProduct');
 
 router.route('/')
@@ -8,33 +9,30 @@ router.route('/')
             let currentCart = await Order.findOrCreate(
                     {
                         where: {
-                                userId: req.body.userId,
+                                userId: '058007a1-144e-4b42-96fe-1a59482b9520',
                                 status: 'inCart'
                             },
                     }
                 );
             currentCart = currentCart[0].dataValues;
-            console.log('CURRENT CART: ', currentCart)
             const orderLine = await OrderProduct.findAll({
                 where: {
                     productId: req.body.id,
                     orderId: currentCart.id
                 }
             });
-            console.log('ORDER LINE: ', orderLine)
-            
-            if (orderLine[0]) {
+            let newLine = {};
+            if (orderLine && orderLine[0]) {
                 orderLine[0].dataValues.quantity++;
-                await OrderProduct.update(orderLine[0].dataValues,
+                [,[newLine]] = await OrderProduct.update(orderLine[0].dataValues,
                     {
                         where: {
                             id: orderLine[0].dataValues.id
-                        }
-                    })  
+                        },
+                        returning: true
+                    }) 
             } else {
-                console.log('PRODUCT ID: ', req.body.id)
-                console.log('ORDER ID: ', currentCart.id)
-                const newLine = await OrderProduct.create(
+                newLine = await OrderProduct.create(
                     {
                         productId: req.body.id,
                         orderId: currentCart.id,
@@ -42,9 +40,92 @@ router.route('/')
                         quantity: 1
                     }
                 )
-                console.log(newLine)
+                
             }
-            res.send(req.body)
+            const productFromLine = await Product.findByPk(newLine.productId)
+            newLine.dataValues.product = productFromLine;
+            res.send(newLine)
+
+        } catch (err){
+            console.error(err);
+        }
+    })
+    .delete(async (req, res, next) => {
+        try {
+            let [currentCart] = await Order.findAll(
+                {
+                    where: {
+                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            status: 'inCart'
+                        },
+                }
+            );
+            currentCart = currentCart.dataValues;
+
+            let [orderLine] = await OrderProduct.findAll({
+                where: {
+                    productId: req.body.id,
+                    orderId: currentCart.id
+                }
+            });
+
+            orderLine = orderLine.dataValues;
+            
+            orderLine.quantity--;
+
+            let changedLine = {};
+
+            if (!orderLine.quantity) {
+                changedLine = await OrderProduct.destroy({
+                    where: {
+                        productId: req.body.id,
+                        orderId: currentCart.id
+                    },
+                    returning: true
+                })
+                res.send(orderLine);
+            } else {
+                [,[changedLine]] = await OrderProduct.update(orderLine,
+                    {
+                        where: {
+                            id: orderLine.id
+                        },
+                        returning: true
+                    }) 
+                changedLine = changedLine.dataValues;
+                const productFromLine = await Product.findByPk(changedLine.productId)
+                changedLine.product = productFromLine.dataValues;
+                res.send(changedLine)
+            }
+            
+        } catch (err) {
+            console.log(err);
+        }
+    })
+
+router.route('/cart')
+    .get(async (req, res, next) => {
+        try {
+            //TODO: bring in real userId
+            let currentCart = await Order.findOrCreate(
+                {
+                    where: {
+                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            status: 'inCart'
+                        },
+                }
+            );
+            currentCart = currentCart[0].dataValues;
+
+            let orderLines = await OrderProduct.findAll({
+                where: {
+                    orderId: currentCart.id
+                },
+                include: {model: Product}
+            });
+            //orderLines = orderLines.dataValues;
+            console.log('ORDER LINES: ', orderLines)
+            res.send(orderLines);
         } catch (err){
             console.error(err);
         }
