@@ -23,9 +23,10 @@ function Products(props) {
 
   //Filter Products by SearchTerm
   const hasSearchTerm = (product, searchTerm) =>  {
+    searchTerm = searchTerm && searchTerm.toLowerCase();
     const splitName = product.name.toLowerCase().split(' ');
     const splitDescription = product.description.toLowerCase().split(' ');
-    return (splitName.includes(searchTerm)) || (splitDescription.includes(searchTerm))
+    return splitName.includes(searchTerm) || splitDescription.includes(searchTerm)
   };
 
   const productsByQuerySearchTerm = (allProducts = products) => {
