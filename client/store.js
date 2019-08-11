@@ -72,12 +72,11 @@ export const addToCart = (product) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-export const removeFromCart = (info) => (dispatch, getState, axios) => {
-  console.log('INFO:dsfdsfds ', info);
-  axios.delete('/api/orders', {data: info})
-    .then(() => dispatch({
+export const removeFromCart = (product) => (dispatch, getState, axios) => {
+  axios.delete('/api/orders', {data: product})
+    .then(({data: line}) => dispatch({
       type: ACT.REMOVEFROMCART,
-      info,
+      line,
   }))
     .catch(err => console.error(err));
 }
@@ -142,14 +141,6 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.line)
-      // for (let i = 0; i < state.length; i++) {
-      //   if (state[i].productId === action.product.productId) {
-      //     state[i].quantity++;
-      //     return state;
-      //   }
-      // }
-
       let newLine = true;
       state.map((prod) => {
         if (prod.productId !== action.line.productId) {
@@ -167,7 +158,7 @@ const cartReducer = (state = [], action) => {
        }
     case ACT.REMOVEFROMCART:
       const decreased = state.map(prod => {
-        if (prod.id === action.line.id) {
+        if (prod.productId === action.line.productId) {
           prod.quantity--
         }
       });
