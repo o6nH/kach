@@ -22,7 +22,7 @@ class App extends React.Component{
       <HashRouter>
         <Route path='/' component={Navbar}/>
         <Route exact path='/' component={Home}/>
-        <Route exact path='/admin' component={AdminPage}/>
+        <Route path='/admin' component={AdminPage}/>
         <Route exact path='/users/:userId' component={UserInfo}/>
         {/* <Route exact path='/admin/users' component={AllUsers}/> */}
         {/* <Route exact path='/admin/users/:userId' component={EditUser}/> */}
