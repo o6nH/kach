@@ -8,13 +8,13 @@ const cartId = 'ord123' //TODO: replace
 class Cart extends Component {
 
     componentDidMount() {
-        const { getCart, user } = this.props;
-        //getCart();
+        const { getCart } = this.props;
+        getCart();
     }
 
 
     render() { 
-        const { cart, products, user, addToCart, removeFromCart } = this.props;
+        const { cart, addToCart, removeFromCart } = this.props;
         console.log('the cart: ', cart)
         
         const totalPrice = cart.reduce((acc, prod) => acc + (prod.purchaseUnitPrice * prod.quantity), 0).toFixed(2);
@@ -49,8 +49,6 @@ class Cart extends Component {
 
 const mapStateToProps = state => ({
     cart: state.cart,
-    user: state.user,
-    products: state.products,
 })
 const mapDispatchToProps = dispatch => {
     return {
