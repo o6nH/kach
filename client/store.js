@@ -142,19 +142,20 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
       let newLine = true;
-      state.map((prod) => {
-        if (prod.productId !== action.line.productId) {
-          return prod;
-        } else {
+      const newState = state.map((prod) => {
+        if (prod.productId === action.line.productId) {
+        //   return prod;
+        // } else {
           newLine = false;
+          console.log('inside if')
           prod.quantity++
-          return prod;
         }
+        return prod;
        })
        if (newLine) {
          return [...state, action.line];
         } else {
-          return state;
+          return newState;
        }
     case ACT.REMOVEFROMCART:
       const decreased = state.map(prod => {
