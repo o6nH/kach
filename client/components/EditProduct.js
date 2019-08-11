@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchSelectedProduct} from '../store';
+import {fetchSelectedProduct, updateProduct} from '../store';
 
 class EditProduct extends Component {
   constructor(props){
     super(props);
     this.state = {
       product: {
+        id: '',
         name: '',
         quantity: 0,
         price: '',
@@ -27,20 +28,24 @@ class EditProduct extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {product:prevProd} = prevState;
     const {product:selectedProd} = this.props;
-    if(selectedProd.hasOwnProperty('name') && prevProd.name !== selectedProd.name) {
+    if(selectedProd.hasOwnProperty('id') && prevProd.id !== selectedProd.id) {
       this.setState({product:selectedProd});
     }
   }
 
   handleChange(event){
+    const {product} = this.state;
     const {name, value} = event.target;
-    this.setState({product:{...this.state.product, [name]:value}});
+    this.setState({product:{...product, [name]:value}});
   }
 
   handleSubmit(event){
     event.preventDefault();
-    console.log(this.state.product);
-    // TODO: dispatch Product.update();
+    const {history, userId, updateProduct} = this.props;
+    const {product:productUpdates} = this.state;
+    
+    updateProduct({userId, productUpdates}); //TODO: remove userId from body and get from session after sessions are working
+    history.push(`/products/${productUpdates.id}`);
   }
 
   render() {
@@ -77,12 +82,14 @@ class EditProduct extends Component {
 }
 
 const mapStateToProps = state => ({
+  userId: state.user.id,
   isAdmin: state.user.isAdmin,
   product: state.selectedProduct
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: (productId) => dispatch(fetchSelectedProduct(productId))
+  getProduct: (productId) => dispatch(fetchSelectedProduct(productId)),
+  updateProduct: (adminProductUpdates) => dispatch(updateProduct(adminProductUpdates))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);
