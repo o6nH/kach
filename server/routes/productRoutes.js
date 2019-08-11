@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Product = require('../db/models/Product');
+const {User, Product} = require('../db/models/index');
 
 router.route('/')
     .get(async (req, res, next) => {
@@ -42,18 +42,21 @@ router.route('/:productId')
     })
     .put(async (req, res, next) => {
         try {
-            const uProd = {}
-            for(let key in req.body){
-                uProd[key] = req.body
+            const productId = req.params.productId;
+            const {userId, productUpdates} = req.body; //TODO: remove userId from body and get from session after sessions are working
+            // const userId = req.session.userId;
+
+            const user = await User.findByPk(userId);
+            const product = await Product.findByPk(productId);
+            
+            if(!user.isAdmin) {
+                const updatedProduct = await product.update({...productUpdates});
+                res.send(updatedProduct);
+            } else {
+                res.status(401).send('ERROR: You are unauthorized to change product information.');
             }
-            const product = await Product.update( uProd, {
-                where: {
-                    id: req.params.productId
-                }
-            })
-            res.send(product[0]);
         } catch (err){
-            console.error(err);
+            next(err);
         }
     });
 

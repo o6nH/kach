@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 
 class SearchForm extends Component {
   constructor(props){
@@ -41,4 +40,4 @@ class SearchForm extends Component {
 }
 
 
-export default connect(null, null)(SearchForm);
+export default SearchForm;
