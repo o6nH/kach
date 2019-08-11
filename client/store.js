@@ -63,7 +63,6 @@ export const getCart = () => (dispatch, getState, axios) => {
 };
 
 export const addToCart = (product) => (dispatch, getState, axios) => {
-  console.log('PRODUCT', product)
   axios.post('/api/orders', product)
     .then(({data: line}) => dispatch({
         type: ACT.ADDTOCART,
@@ -72,12 +71,11 @@ export const addToCart = (product) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-export const removeFromCart = (info) => (dispatch, getState, axios) => {
-  console.log('INFO:dsfdsfds ', info);
-  axios.delete('/api/orders', {data: info})
-    .then(() => dispatch({
+export const removeFromCart = (product) => (dispatch, getState, axios) => {
+  axios.delete('/api/orders', {data: product})
+    .then(({data: line}) => dispatch({
       type: ACT.REMOVEFROMCART,
-      info,
+      line,
   }))
     .catch(err => console.error(err));
 }
@@ -142,36 +140,28 @@ const selectedProductReducer = (state = {}, action) => {
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.ADDTOCART:
-      console.log('ACTION.PRODUCT: ', action.line)
-      // for (let i = 0; i < state.length; i++) {
-      //   if (state[i].productId === action.product.productId) {
-      //     state[i].quantity++;
-      //     return state;
-      //   }
-      // }
-
       let newLine = true;
-      state.map((prod) => {
-        if (prod.productId !== action.line.productId) {
-          return prod;
-        } else {
+      const newState = state.map((prod) => {
+        if (prod.productId === action.line.productId) {
           newLine = false;
+          console.log('inside if')
           prod.quantity++
-          return prod;
         }
+        return prod;
        })
        if (newLine) {
          return [...state, action.line];
         } else {
-          return state;
+          return newState;
        }
     case ACT.REMOVEFROMCART:
       const decreased = state.map(prod => {
-        if (prod.id === action.line.id) {
+        if (prod.productId === action.line.productId) {
           prod.quantity--
         }
+        return prod;
       });
-      const filtered = decreased.filter((prod) => prod.quantity !== 0);
+      const filtered = decreased.filter(prod => prod.quantity !== 0);
       return filtered;
     case ACT.GETCART:
       return [action.orderLines];
@@ -192,3 +182,5 @@ export default createStore(
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
+
+//module.exports = {categorizeProducts, getCategoryCounts, getCategories, fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct}

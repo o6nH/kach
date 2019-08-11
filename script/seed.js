@@ -38,8 +38,7 @@ const products = [
 async function syncAndSeed() {
     try {
         await db.sync({force: true});
-        await Promise.all(users.map(user => User.create(user)));
-        await Promise.all(products.map(product => Product.create(product)));
+        await Promise.all([users.map(user => User.create(user)), products.map(product => Product.create(product))]);
     } catch (err) {
         console.log(err);
     }

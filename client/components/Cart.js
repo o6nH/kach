@@ -6,10 +6,6 @@ import { getCart, addToCart, removeFromCart } from '../store';
 const cartId = 'ord123' //TODO: replace
 
 class Cart extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
-    }
 
     componentDidMount() {
         const { getCart, user } = this.props;
