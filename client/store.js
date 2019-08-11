@@ -12,6 +12,7 @@ const ACT = {
   EDITCART: 'EDITCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
+  GET_CURRENT_USER: 'GET_CURRENT_USER',
 }
 
 //HelperFunction
@@ -78,14 +79,19 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
   .catch(err => console.error(err));
 };
 
+export const getCurrentUser = () => (dispatch, getState, axios) => {
+  axios.get('/api/products')
+  .then(({data: currentUser}) => dispatch({type: ACT.GET_CURRENT_USER, currentUser}))
+  .catch(err => console.error(err))
+};
 //Reducers
 
 //TODO: create function to set current user on the store
 const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
+    case ACT.GET_CURRENT_USER:
+      state = action.currentUser
+      return state;
     default:
       return state;
   }
