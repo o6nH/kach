@@ -120,9 +120,11 @@ router.route('/cart')
             let orderLines = await OrderProduct.findAll({
                 where: {
                     orderId: currentCart.id
-                }
+                },
+                include: {model: Product}
             });
-            orderLines = orderLines[0].dataValues;
+            //orderLines = orderLines.dataValues;
+            console.log('ORDER LINES: ', orderLines)
             res.send(orderLines);
         } catch (err){
             console.error(err);

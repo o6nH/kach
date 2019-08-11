@@ -89,7 +89,7 @@ export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) =
 //Reducers
 
 //TODO: create function to set current user on the store
-const userReducer = (state={id: '07fb06de-06ea-4231-81ce-f87de4b506c0'}, action) => {
+const userReducer = (state={id: '058007a1-144e-4b42-96fe-1a59482b9520'}, action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -164,7 +164,7 @@ const cartReducer = (state = [], action) => {
       const filtered = decreased.filter(prod => prod.quantity !== 0);
       return filtered;
     case ACT.GETCART:
-      return [action.orderLines];
+      return [...action.orderLines];
     default:
       return state;
   }
