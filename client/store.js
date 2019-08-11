@@ -63,7 +63,6 @@ const getCart = () => (dispatch, getState, axios) => {
 };
 
 const addToCart = (product) => (dispatch, getState, axios) => {
-  console.log('PRODUCT', product)
   axios.post('/api/orders', product)
     .then(({data: line}) => dispatch({
         type: ACT.ADDTOCART,
@@ -144,8 +143,6 @@ const cartReducer = (state = [], action) => {
       let newLine = true;
       const newState = state.map((prod) => {
         if (prod.productId === action.line.productId) {
-        //   return prod;
-        // } else {
           newLine = false;
           console.log('inside if')
           prod.quantity++

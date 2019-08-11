@@ -61,7 +61,6 @@ router.route('/')
                 }
             );
             currentCart = currentCart.dataValues;
-            console.log('CURRENT CARTTTT', currentCart);
 
             let [orderLine] = await OrderProduct.findAll({
                 where: {
@@ -73,7 +72,6 @@ router.route('/')
             orderLine = orderLine.dataValues;
             
             orderLine.quantity--;
-            console.log('ORDERLINE', orderLine)
 
             let changedLine = {};
 
@@ -85,7 +83,6 @@ router.route('/')
                     },
                     returning: true
                 })
-                console.log('deleted line: ', orderLine)
                 res.send(orderLine);
             } else {
                 [,[changedLine]] = await OrderProduct.update(orderLine,
@@ -98,7 +95,6 @@ router.route('/')
                 changedLine = changedLine.dataValues;
                 const productFromLine = await Product.findByPk(changedLine.productId)
                 changedLine.product = productFromLine.dataValues;
-                console.log('updatedline: ', changedLine)
                 res.send(changedLine)
             }
             
@@ -120,7 +116,6 @@ router.route('/cart')
                 }
             );
             currentCart = currentCart[0].dataValues;
-            console.log('current cart: ', currentCart)
 
             let orderLines = await OrderProduct.findAll({
                 where: {
@@ -128,7 +123,6 @@ router.route('/cart')
                 }
             });
             orderLines = orderLines[0].dataValues;
-            console.log('orderLines: ', orderLines);
             res.send(orderLines);
         } catch (err){
             console.error(err);
