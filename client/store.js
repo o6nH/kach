@@ -17,7 +17,7 @@ const ACT = {
 
 //HelperFunction
 //Get object with `category-productArray` key-values
-export const categorizeProducts = products => {
+const categorizeProducts = products => {
   return products.reduce((catProdObj, product) => {
     let {category} = product;
     if(typeof category === 'string' && category) {
@@ -39,7 +39,7 @@ export const categorizeProducts = products => {
 };
 
 //Get object with `category-productCountInt` key-values
-export const getCategoryCounts = categorizedProducts => {
+const getCategoryCounts = categorizedProducts => {
   return getCategories(categorizedProducts).reduce((categoryCounts, category) => {
     categoryCounts[category] = categorizedProducts[category].length;
     return categoryCounts;
@@ -47,22 +47,22 @@ export const getCategoryCounts = categorizedProducts => {
 };
 
 //Get array of `category` strings
-export const getCategories = categorizedProducts => Object.keys(categorizedProducts);
+const getCategories = categorizedProducts => Object.keys(categorizedProducts);
 
 //Creators (Action or Thunk)
-export const fetchProducts = () => (dispatch, getState, axios) => {
+const fetchProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
   .then(({data: products}) => dispatch({type: ACT.GET_PRODUCTS, products}))
   .catch(err => console.error(err));
 };
 
-export const getCart = () => (dispatch, getState, axios) => {
+const getCart = () => (dispatch, getState, axios) => {
   axios.get('/api/orders/cart')
   .then(({data: orderLines}) => dispatch({type: ACT.GETCART, orderLines}))
   .catch(err => console.error(err));
 };
 
-export const addToCart = (product) => (dispatch, getState, axios) => {
+const addToCart = (product) => (dispatch, getState, axios) => {
   console.log('PRODUCT', product)
   axios.post('/api/orders', product)
     .then(({data: line}) => dispatch({
@@ -72,7 +72,7 @@ export const addToCart = (product) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-export const removeFromCart = (product) => (dispatch, getState, axios) => {
+const removeFromCart = (product) => (dispatch, getState, axios) => {
   axios.delete('/api/orders', {data: product})
     .then(({data: line}) => dispatch({
       type: ACT.REMOVEFROMCART,
@@ -81,7 +81,7 @@ export const removeFromCart = (product) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-export const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
+const fetchSelectedProduct = (productId) => (dispatch, getState, axios) => {
   axios.get(`/api/products/${productId}`)
   .then(({data: selectedProduct}) => dispatch({type: ACT.SELECT_PRODUCT, selectedProduct}))
   .catch(err => console.error(err));
@@ -185,3 +185,5 @@ export default createStore(
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );
+
+module.exports = { categorizeProducts, getCategoryCounts, getCategories, fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct }
