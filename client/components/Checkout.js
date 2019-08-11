@@ -6,14 +6,14 @@ class Checkout extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            firstName: '',
-            lastName: '',
-            streetAddress: '',
-            suite: '',
-            city: '',
-            state: '',
-            zip: '',
-            email: '',
+            firstName: null,
+            lastName: null,
+            streetAddress: null,
+            suite: null,
+            city: null,
+            state: null,
+            zip: null,
+            email: null,
          }
          this.onSubmit = this.onSubmit.bind(this);
          this.onChange = this.onChange.bind(this);
@@ -22,6 +22,7 @@ class Checkout extends Component {
     onSubmit(ev) {
         ev.preventDefault();
         this.props.checkout(this.state);
+        window.location.hash = `/orders/confirmation`;
     }
 
     onChange(ev) {

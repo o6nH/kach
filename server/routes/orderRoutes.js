@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Order = require('../db/models/Order');
 const Product = require('../db/models/Product');
+const User = require('../db/models/User');
 const OrderProduct = require('../db/models/OrderProduct');
 
 router.route('/')
@@ -149,6 +150,15 @@ router.route('/checkout')
             placedOrder.orderedAt = placedOrder.updatedAt;
 
             await placedOrder.save();
+
+            const [,[userInfo]] = await User.update(req.body,
+                {
+                    where: {
+                        id: '058007a1-144e-4b42-96fe-1a59482b9520',
+                    }   
+                })
+            
+            console.log('USER INFO: ', userInfo)
             
             res.send(placedOrder)
         } catch (err){

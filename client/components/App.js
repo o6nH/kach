@@ -10,6 +10,8 @@ import AdminPage from './AdminPage';
 import Home from './Home';
 import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
+import OrderConfirmation from './OrderConfirmation';
+import UserOrders from './UserOrders';
 import {fetchProducts} from '../store';
 
 class App extends React.Component{
@@ -26,10 +28,11 @@ class App extends React.Component{
         <Route exact path='/users/:userId' component={UserInfo}/>
         {/* <Route exact path='/admin/users' component={AllUsers}/> */}
         {/* <Route exact path='/admin/users/:userId' component={EditUser}/> */}
-        {/* <Route exact path='/orders' component={UserOrders}/> */}
+        <Route exact path='/orders' component={UserOrders}/>
         {/* <Route exact path='/orders/:orderId' component={UserOrder}/> */}
         <Route exact path='/cart/:cartId' component={Cart}/>
         <Route path='/cart/:cartId/checkout' component={Checkout}/> 
+        <Route path='/orders/confirmation' component={OrderConfirmation}/> 
         {/* <Route exact path='/admin/orders' component={AllOrders}/> */}
         {/* <Route exact path='/admin/orders/:orderId' component={EditOrder}/> */}
         <Route exact path='/products' component={Products}/>
