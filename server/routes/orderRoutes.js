@@ -44,7 +44,6 @@ router.route('/')
                 
             }
             const productFromLine = await Product.findByPk(newLine.productId)
-            console.log('PRODUCT FROM LINE', productFromLine)
             
             productFromLine.quantity--;
             await productFromLine.save();

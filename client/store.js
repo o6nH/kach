@@ -171,6 +171,13 @@ const productsReducer = (state = [], action) => {
       }
       );
       return updatedProducts
+    case ACT.ADDTOCART:
+      const addedProduct = action.line.product;
+      const updated = state.map(product =>{
+        return (product.id === addedProduct.id) ? addedProduct : product 
+      }
+      );
+      return updated
     default:
       return state;
   }
