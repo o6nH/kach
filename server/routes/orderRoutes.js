@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Order = require('../db/models/Order');
 const Product = require('../db/models/Product');
+const User = require('../db/models/User');
 const OrderProduct = require('../db/models/OrderProduct');
 
 router.route('/')
@@ -43,6 +44,10 @@ router.route('/')
                 
             }
             const productFromLine = await Product.findByPk(newLine.productId)
+            
+            productFromLine.quantity--;
+            await productFromLine.save();
+            
             newLine.dataValues.product = productFromLine;
             res.send(newLine)
 
@@ -107,7 +112,7 @@ router.route('/cart')
     .get(async (req, res, next) => {
         try {
             //TODO: bring in real userId
-            let currentCart = await Order.findOrCreate(
+            let currentCart = await Order.findAll(
                 {
                     where: {
                             userId: '058007a1-144e-4b42-96fe-1a59482b9520',
@@ -123,9 +128,43 @@ router.route('/cart')
                 },
                 include: {model: Product}
             });
-            //orderLines = orderLines.dataValues;
-            console.log('ORDER LINES: ', orderLines)
             res.send(orderLines);
+        } catch (err){
+            console.error(err);
+        }
+    });
+
+router.route('/checkout')
+    .put(async (req, res, next) => {
+        try {
+            //TODO: bring in real userId
+            
+            const [,[placedOrder]] = await Order.update({
+                    status: 'processing',
+                }, 
+                {
+                    where: {
+                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            status: 'inCart'
+                        },
+                    returning: true,
+                }
+            );
+            
+            placedOrder.orderedAt = placedOrder.updatedAt;
+
+            await placedOrder.save();
+
+            const [,[userInfo]] = await User.update(req.body,
+                {
+                    where: {
+                        id: '058007a1-144e-4b42-96fe-1a59482b9520',
+                    }   
+                })
+            
+            console.log('USER INFO: ', userInfo)
+            
+            res.send(placedOrder)
         } catch (err){
             console.error(err);
         }
