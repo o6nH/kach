@@ -12,7 +12,7 @@ import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
 import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
-import {fetchProducts} from '../store';
+import {fetchAndCategorizeProducts} from '../actions';
 
 class App extends React.Component{
   componentDidMount() {
@@ -44,9 +44,8 @@ class App extends React.Component{
   }
 };
 
-
 const mapDispatchToProps = (dispatch) => ({
-  getAllProducts: () => dispatch(fetchProducts())
+  getAllProducts: () => dispatch(fetchAndCategorizeProducts())
 });
 
 export default connect(null, mapDispatchToProps)(App);
