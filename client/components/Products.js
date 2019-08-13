@@ -1,22 +1,18 @@
 import React from 'react';
 import queryString from 'querystring';
 import {connect} from 'react-redux';
-import {categorizeProducts, getCategoryCounts, getCategories} from '../store';
 import CategoriesFilter from './CategoriesFilter';
 import SearchForm from './SearchForm';
 import ProductCard from './ProductCard';
 
 function Products(props) {
-  const {products} = props;
-  const categorizedProducts = categorizeProducts(products);
-  const categoryCounts = getCategoryCounts(categorizedProducts);
-  const categories = getCategories(categorizedProducts);
-  
+  const {products, categorizedProducts, categories} = props;
+
   //Filter Products by Category
   const productsByQueryCategory = (categorizedProducts = categorizedProducts, allProducts = products) => {
     const parsedQuery = props.location.search ? queryString.parse(props.location.search) : {};
     if(parsedQuery['?category'] || parsedQuery['category']) {
-      return categorizedProducts[parsedQuery['?category']] || categorizedProducts[parsedQuery['category']];
+      return categorizedProducts[parsedQuery['?category']].products || categorizedProducts[parsedQuery['category']].products;
     }
     return allProducts;
   };
@@ -39,16 +35,19 @@ function Products(props) {
     return allProducts;
   };
 
-  const filteredProducts = productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts));
+  const filteredProducts = categories.length 
+    ? productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts)) : '';
   
   //Component
   return (/* TODO:remove inline styles*/
     <div>
       <SearchForm location={props.location}/>
-      <CategoriesFilter categories={categories} categoryCounts={categoryCounts}/>
+      <CategoriesFilter/>
       <div style={{display:'flex'}}>
       {
-        filteredProducts.map(product => <ProductCard key={product.id} product={product}/>)
+        categories.length 
+        ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 
+        : ''
       }
       </div>
     </div>
@@ -57,7 +56,9 @@ function Products(props) {
 
 //Mappings from redux store to react component's props
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.products,
+  categorizedProducts: state.categorizedProducts,
+  categories: Object.keys(state.categorizedProducts)
 })
 
 export default connect(mapStateToProps)(Products);

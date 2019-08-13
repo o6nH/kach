@@ -1,36 +1,38 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchSelectedProduct, updateProduct} from '../store';
+import {fetchProduct, fetchAndCategorizeProducts, updateProduct, categorizeProducts} from '../actions';
 
 class EditProduct extends Component {
   constructor(props){
     super(props);
     this.state = {
-      product: {
-        id: '',
-        name: '',
-        quantity: 0,
-        price: '',
-        category: '',
-        description: ''
-      }
+      product: {},
+      newCategories: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handleNewCategories = this.handleNewCategories.bind(this);
   }
 
-  componentDidMount() {
-    //included to allow load of product with direct link to page
-    const {match, getProduct} = this.props;
+ componentDidMount() {
+    const {match, getProduct, getUpdatedCategories} = this.props;
     getProduct(match.params.productId);
+    getUpdatedCategories();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {product:prevProd} = prevState;
-    const {product:selectedProd} = this.props;
-    if(selectedProd.hasOwnProperty('id') && prevProd.id !== selectedProd.id) {
-      this.setState({product:selectedProd});
+  componentDidUpdate() {
+    const {selectedProduct} = this.props;
+    const {product} = this.state;
+    
+    if(!product.hasOwnProperty('id') && JSON.stringify(product) !== JSON.stringify(selectedProduct)) {
+      this.setState({product:selectedProduct});
     }
+  }
+
+  componentWillUnmount(){
+    const {getUpdatedCategories} = this.props;
+    getUpdatedCategories();
   }
 
   handleChange(event){
@@ -39,22 +41,49 @@ class EditProduct extends Component {
     this.setState({product:{...product, [name]:value}});
   }
 
+  handleCategoryChange(event){
+    const {product} = this.state;
+    const {categories} = product;
+    const {name:cat} = event.target;
+    const newCheckStatus = event.target.checked;
+    let newCats;
+    
+    if(newCheckStatus === true) newCats = [...categories, cat];
+    else newCats = categories.filter(category => category!==cat);
+
+    this.setState({product:{...product, categories: newCats}});
+  }
+
+  handleNewCategories(event){
+    const {value:catStrings} = event.target;
+    this.setState({newCategories: catStrings});
+  }
+
   handleSubmit(event){
     event.preventDefault();
     const {history, userId, updateProduct} = this.props;
-    const {product:productUpdates} = this.state;
+    const {product:productUpdates, newCategories:catStrings} = this.state;
     
+    const {categories} = productUpdates;
+    catStrings.split(', ')
+    .forEach(catStr => {
+      if (catStr && !categories.includes(catStr)) categories.push(catStr)
+    })
+
     updateProduct({userId, productUpdates}); //TODO: remove userId from body and get from session after sessions are working
+    this.setState({product:{}, newCategories:''});
     history.push(`/products/${productUpdates.id}`);
   }
 
   render() {
-    const {isAdmin} = this.props;
-    const {name, quantity, price, category, description} =this.state.product;
-    const {handleChange, handleSubmit} = this;
+    const {handleChange, handleSubmit, handleCategoryChange, handleNewCategories} = this;
+    const {isAdmin, allCategories} = this.props;
+    const {product:productUpdates, newCategories} = this.state;
+    const {name, quantity, price, categories, description} = productUpdates
 
     return (
-      <div>
+      name
+      ? <div>
         {
           !isAdmin
           ? <h1>Forbidden.</h1>
@@ -67,29 +96,44 @@ class EditProduct extends Component {
               <input type='text' name='quantity' value={quantity} onChange={handleChange}/><br/>
               <label>Price: </label> <br/>
               <input type='text' name='price' value={price} onChange={handleChange}/><br/>
-              <label>Category: </label><br/>
-              <input type='text' name='category' value={category} onChange={handleChange}/><br/>
+              <label>Categories: </label><br/>
+              {
+                allCategories.map((category, index) => 
+                <div key={index}>
+                  }
+                  <input type='checkbox' id={category} name={category} onChange={handleCategoryChange} 
+                  checked={categories && categories.includes(category) ? true : false}/>
+                  <label>{category}</label>
+                </div>)
+              }
+              <br/>
+              <label>Add new (lower-cased, comma-separated) categories : </label>
+              <input type='text' name='newCategories' value={newCategories} onChange={handleNewCategories}/>
+              <br/>
               <label>Description: </label> <br/>
-              <textarea rows={4} name='description' value={description} onChange={handleChange}/>
+              <textarea rows={5} name='description' value={description} onChange={handleChange}/>
               <br/>
               <button type='submit'>Update</button>
             </form>
           </div>
         }
       </div>
+      : ''
     )
   }
 }
 
 const mapStateToProps = state => ({
+  allCategories: Object.keys(state.categorizedProducts),
   userId: state.user.id,
   isAdmin: state.user.isAdmin,
-  product: state.selectedProduct
+  selectedProduct: state.selectedProduct,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: (productId) => dispatch(fetchSelectedProduct(productId)),
-  updateProduct: (adminProductUpdates) => dispatch(updateProduct(adminProductUpdates))
+  getProduct: (productId) => dispatch(fetchProduct(productId)),
+  updateProduct: (adminProductUpdates) => dispatch(updateProduct(adminProductUpdates)),
+  getUpdatedCategories: () => dispatch(fetchAndCategorizeProducts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);

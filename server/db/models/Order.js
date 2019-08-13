@@ -11,11 +11,14 @@ const Order = db.define('order', {
         type: Sequelize.UUID,
         allowNull: true,
     },
-    orderDate: {
+    // orderDate: {
+    //     type: Sequelize.DATE,
+    // },
+    // orderTime: {
+    //     type: Sequelize.TIME,
+    // },
+    orderedAt: {
         type: Sequelize.DATE,
-    },
-    orderTime: {
-        type: Sequelize.TIME,
     },
     status: {
         type: Sequelize.ENUM('inCart', 'processing', 'cancelled', 'shipping', 'delivered'),
