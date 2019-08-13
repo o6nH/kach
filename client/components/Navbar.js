@@ -8,6 +8,7 @@ const cartImg = './img/cart_64.png';
 
 // Component
 const Navbar = ({user, cart}) => {
+  console.log(user)
   const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
   const {id:cartOrderId, productCount:cartProdCount} = cart;
   return (

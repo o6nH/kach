@@ -13,7 +13,9 @@ const ACT = {
   GET_PRODUCTS: 'GET_PRODUCTS',
   SELECT_PRODUCT: 'SELECT_PRODUCT',
   ADD_PRODUCT:'ADD_PRODUCT',
-  UPDATE_PRODUCT:'UPDATE_PRODUCT'
+  UPDATE_PRODUCT:'UPDATE_PRODUCT',
+  SIGNUP_USER: 'SIGNUP_USER',
+  GET_CURRENT_USER: 'GET_CURRENT_USER',
 }
 
 //HelperFunction
@@ -99,26 +101,36 @@ const removeFromCart = (product) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 };
 
+const signUpUser = (user) => (dispatch, getState, axios) => {
+  axios.post('/api/users/signup', user)
+};
 
+const getCurrentUser = () => (dispatch, getState, axios) => {
+  axios.get('/api/users/currentUser')
+    .then(({data: currentUser}) => dispatch({
+      type: ACT.GET_CURRENT_USER,
+      currentUser
+    }))
+}
 //Reducers
 
 //TODO: create function to set current user on the store
 const userReducer = (state = {
-    id: '99035506-f5b0-485d-9331-642809c1f444', 
-    firstName:'Hugo',
-    lastName: 'Campos', 
-    streetAddress: '123 Fake St', 
-    suite: 'A', 
-    city: 'San Luis Obispo', 
-    state: 'CA', 
-    zip: '92555', 
-    email: 'HugoCampos@email.com', 
-    isAdmin: true, 
-    isAuthenticated: true
+    // id: '99035506-f5b0-485d-9331-642809c1f444', 
+    // firstName:'Hugo',
+    // lastName: 'Campos', 
+    // streetAddress: '123 Fake St', 
+    // suite: 'A', 
+    // city: 'San Luis Obispo', 
+    // state: 'CA', 
+    // zip: '92555', 
+    // email: 'HugoCampos@email.com', 
+    // isAdmin: true, 
+    // isAuthenticated: true
   }, action) => {
   switch (action.type) {
     case ACT.GET_CURRENT_USER:
-      state = action.currentUser
+      state = action.currentUser;
       return state;
     default:
       return state;
@@ -127,9 +139,6 @@ const userReducer = (state = {
 
 const usersReducer = (state=[], action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
     default:
       return state;
   }
@@ -223,4 +232,4 @@ export default createStore(
 );
 
 
-export {fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct, categorizeProducts, getCategoryCounts, getCategories, updateProduct}
+export {fetchProducts, getCart, addToCart, removeFromCart, fetchSelectedProduct, categorizeProducts, getCategoryCounts, getCategories, updateProduct, signUpUser, getCurrentUser}
