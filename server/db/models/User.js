@@ -18,6 +18,10 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         validate: {
             isEmail: true
+        },
+        unique: {
+            args: true,
+            msg: 'Email address already in use!'
         }
     },
     password: {
@@ -73,25 +77,32 @@ User.login = function (email, password) {
     })
 }
 
-User.signup = function (user) {
+User.signup = async function (user) {
     //if guest and wants to sign up then update user
     // if email is already taken the tell user that
-    const ifUser = this.findOne({
-        where: {
-            id: user.id
-        }
-    })
-    const ifUsedEmail = this.findOne({
-        where: {
+        //console.log('USER $$$$$$$$ ', user)
+        try {
+            const thing = await this.update({
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
-        }
-    })
-    if (!ifUsedEmail){
-        const updatedUser = ifUser.update(user)
-        console.log(updatedUser);
-        return updatedUser[0];
-    } else {
-        return 'Email already in use, please use another'
+            password: hash(user.password),
+            streetAddress: user.streetAddress,
+            city: user.city,
+            zip: user.zip,
+            state: user.state,
+            suite: user.suite,
+            isAuthenticated: true,
+            isAdmin: false
+        }, {
+            // returning: true,
+            where: {
+                id: user.id
+            }
+        })
+        console.log(thing);
+    } catch (err){
+        console.error(err)
     }
 }
 
