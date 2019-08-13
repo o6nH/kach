@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getCart, addToCart, removeFromCart } from '../store';
+import { getCart, addToCart, removeFromCart } from '../actions';
 
 const cartId = 'ord123' //TODO: replace
 
