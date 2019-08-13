@@ -49,11 +49,11 @@ router.route('/:productId')
             const user = await User.findByPk(userId);
             const product = await Product.findByPk(productId);
             
-            if(!user.isAdmin) {
+            if(user.isAdmin) {
                 const updatedProduct = await product.update({...productUpdates});
                 res.send(updatedProduct);
             } else {
-                res.status(401).send('ERROR: You are unauthorized to change product information.');
+                res.status(401).send(`ERROR: You, ${user.firstName}, are unauthorized to change product information.`);
             }
         } catch (err){
             next(err);

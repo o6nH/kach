@@ -1,47 +1,57 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {fetchSelectedProduct, addToCart} from '../store';
+import {fetchProduct, addToCart} from '../actions';
 
 class Product extends React.Component {
   componentDidMount() {
     //included to allow load of product with direct link to page
-    const {match, getSelectedProduct} = this.props;
-    getSelectedProduct(match.params.productId);
+    const {match, fetchProduct} = this.props;
+    fetchProduct(match.params.productId);
   }
 
   render() {
     const {user, cart, product, addToCart} = this.props;
     const {isAdmin} = user;
     const {id:cartId} = cart;
-    const {id:productId, name, imageUrls, price, aveRating, description, quantity} = product;
+    const {id:productId, name, imageUrls, categories, price, aveRating, description, quantity} = product;
 
     return (
-      <div>
-        <h3>{name}</h3>
+      productId 
+      ? <div>
+        <h2>{name}</h2>
         <div style={{display:'flex'}}>
-          <div><img src={Array.isArray(imageUrls) ? imageUrls[0] : imageUrls} style={{width:'270px'}}/></div>
           <div>
-            <ul style={{listStyle:'none'}}>
-              <li>Price: ${`${price}`}</li>
-              {aveRating ? <li>AveRating: {`${Number(aveRating).toFixed(2)}`}</li> : ''}
-            </ul>
+            <img src={Array.isArray(imageUrls) ? imageUrls[0] : imageUrls} style={{width:'270px'}}/>
+          </div>
+          <div>
+            <div><h3>Price:</h3> ${`${price}`}</div>
+            {aveRating ? <div><h3>AveRating:</h3> {Number(aveRating).toFixed(2)}</div> : ''}
+            <br/>
             {
               quantity
               ? <button onClick={()=>{
-                  window.location.hash = `/cart/${cartId}`;
-                  addToCart({...product, userId: user.id});
-                }}>Add to Cart</button> 
+                window.location.hash = `/cart/${cartId}`;
+                addToCart({...product, userId: user.id});
+              }}>Add to Cart</button> 
               : <span>{'Currently Unavailable'}</span>
             }
             <br/>
-          {isAdmin ? <Link to={`/admin/products/${productId}`}>Edit</Link> : ''}
+            {isAdmin ? <Link to={`/admin/products/${productId}`}>Edit</Link> : ''}
           </div>
         </div>
         <div>
-          <div id='prodDescription'>{`${description}`}</div>
+          <div id='prodDescription'>
+            <h3>Description:</h3>
+            <p>{`${description}`}</p>
+          </div>
+          <div id='categories'>
+            <h3>Categories:</h3>
+            <p>{categories.map(category => `${category}`).join(', ')}</p>
+          </div>
         </div>
       </div>
+      : ''
     )
   }
 }
@@ -53,7 +63,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSelectedProduct: (productId) => dispatch(fetchSelectedProduct(productId)),
+  fetchProduct: (productId) => dispatch(fetchProduct(productId)),
   addToCart: (info) => dispatch(addToCart(info))
 });
 

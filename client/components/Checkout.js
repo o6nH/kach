@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { checkout } from '../store';
+import { checkout } from '../actions';
 
 class Checkout extends Component {
     constructor(props) {
