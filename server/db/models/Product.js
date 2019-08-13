@@ -15,28 +15,31 @@ const Product = db.define('product', {
         allowNull: false,
     },
     price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: false,
     },
     quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
-    category: {
-        type: Sequelize.STRING,
+    categories: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
     },
     description: {
         type: Sequelize.STRING(2000),
     },
     aveRating: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
     }
 });
 
 Product.getCategories = function() {
-    return this.findAll({
-        attributes: ['category'],
-    })
+    const categoriesArr = this.findAll({
+        attributes: ['categories'],
+    });
+    return categoriesArr.reduce((categories, catArr) => 
+        [...categories, ...catArr]
+    , [])
 }
 
 
