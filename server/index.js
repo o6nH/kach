@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/', express.static(path.join(__dirname, '..', 'public')));
 app.use('/', sessionRoutes);
-app.use('/api', routes);
+app.use('/api', routes)
 
 db.sync();
 
