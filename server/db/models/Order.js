@@ -1,4 +1,4 @@
-const {db} = require('../connection');
+const db = require('../connection');
 const Sequelize = require('sequelize');
 
 const Order = db.define('order', {
