@@ -1,4 +1,4 @@
-const db = require('../index');
+const db = require('../connection');
 const Sequelize = require('sequelize');
 const hash = require('../../../script/hash');
 
