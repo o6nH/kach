@@ -1,9 +1,11 @@
-const Sequelize = require('sequelize');
+const db = require('./connection');
+const Session = require('./Session');
+const User = require('./User');
+const Order = require('./Order');
+const OrderProduct = require('./OrderProduct');
+const Product = require('./Product');
 
-const db = new Sequelize(
-    process.env.DATABASE_URL || 'postgres://localhost/kach-grace-shopper',
-    { logging: false }
-  );
+
 
   
-  module.exports = db;
+  module.exports = {db, Session, User, Order, OrderProduct, Product};
