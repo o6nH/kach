@@ -1,11 +1,5 @@
-const db = require('../server/db/index');
-const Order = require('../server/db/models/Order')
-const OrderProduct = require('../server/db/models/OrderProduct')
-const Product = require('../server/db/models/Product')
+const {db, Order, OrderProduct, Product, Session, User} = require('../server/db/index');
 require('dotenv').config();
-const Session = require('../server/db/models/Session')
-const User = require('../server/db/models/User')
-const associations = require('../server/db/models/index')
 const hash = require('./hash')
 
 const users = [

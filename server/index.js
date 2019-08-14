@@ -1,8 +1,7 @@
 const express = require('express');
-const sessionModel = require('./db/models/Session');
 const session = require('express-session');
 const path = require('path');
-const db = require('./db/index');
+const {db} = require('./db/index');
 const routes = require('./routes/index');
 
 const port = process.env.PORT || 3000;

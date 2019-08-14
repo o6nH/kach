@@ -1,4 +1,4 @@
-const db = require('../index');
+const db = require('../connection');
 const Sequelize = require('sequelize');
 
 const Order = db.define('order', {
@@ -7,16 +7,6 @@ const Order = db.define('order', {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
     },
-    userId: {
-        type: Sequelize.UUID,
-        allowNull: true,
-    },
-    // orderDate: {
-    //     type: Sequelize.DATE,
-    // },
-    // orderTime: {
-    //     type: Sequelize.TIME,
-    // },
     orderedAt: {
         type: Sequelize.DATE,
     },
