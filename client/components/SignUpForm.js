@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {signUpUser} from '../store';
+import {signUpUser} from '../actions';
 
 class SignUpForm extends React.Component {
   constructor(props){

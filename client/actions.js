@@ -10,7 +10,9 @@ const ACT = {
   CHECKOUT: 'CHECKOUT',
   ADD_PRODUCT:'ADD_PRODUCT',
   UPDATE_PRODUCT:'UPDATE_PRODUCT',
-  CATEGORIZE_PRODUCTS: 'CATEGORIZE_PRODUCTS'
+  CATEGORIZE_PRODUCTS: 'CATEGORIZE_PRODUCTS',
+  GET_CURRENT_USER: 'GET_CURRENT_USER',
+  SIGNUP_USER: 'SIGNUP_USER'
 }
 
 
@@ -71,4 +73,14 @@ const fetchProduct = (productId) => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
-export {ACT, fetchAndCategorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct}
+const getCurrentUser = () => (dispatch, getState, axios) => {
+  axios.get('/api/users/currentUser')
+    .then(({data: currentUser}) => dispatch({type:ACT.GET_CURRENT_USER, currentUser}))
+    .catch(err => console.error(err));
+};
+
+const signUpUser = (user) => (dispatch, getState, axios) => {
+  axios.post('/api/users/signup', user);
+}
+
+export {ACT, fetchAndCategorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct, getCurrentUser, signUpUser}

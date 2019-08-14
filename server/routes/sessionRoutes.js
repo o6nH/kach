@@ -3,16 +3,16 @@ const { User } = require('../db/models/index');
 
 router.use('/', async (req, res, next) => {
     try {
-        const userId = req.session.userId
-        if (!userId){
-            const guestUser = await User.createGuest()
+        console.log(req.session.userId)
+        if (!req.session.userId){
+            const guestUser = await User.create();
             req.session.userId = guestUser.id;
-            console.log('re.session.userId ^^^^^^^ ', req.session.userId);
-            res.status(201).send('User Created!');
         }
+
+        console.log(req.session.userId);
         next();
     } catch (err){
-        console.error(err);
+        throw err;
     }
 }) 
 

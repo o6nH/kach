@@ -10,15 +10,15 @@ import AdminPage from './AdminPage';
 import Home from './Home';
 import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
-import {fetchProducts, getCurrentUser} from '../store';
 import SignUpForm from './SignUpForm';
 import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
-import {fetchAndCategorizeProducts} from '../actions';
+import {fetchAndCategorizeProducts, getCurrentUser} from '../actions';
 
 class App extends React.Component{
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getAllProducts();
+    console.log('Mounting')
     this.props.getUser();
   }
 
