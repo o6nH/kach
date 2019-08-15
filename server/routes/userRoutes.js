@@ -1,15 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const {User} = require('../db/index');
+const hash = require('../../script/hash');
 
 router.post('/login', async (req, res, next) => {
     try {
-        const user =  await User.login(req.body.email, req.body.password);
+        const guestToDestroy = req.session.userId
+        const user =  await User.findOne({
+            where: {
+                email: req.body.email,
+                password: hash(req.body.password)
+            }
+        });
         if (!user){
             res.status(401).send('Email or password incorrect');
         } else {
         req.session.userId = user.id;
-        req.session.orderId = user.orderId;
+        if (user.orderId){
+            req.session.orderId = user.orderId
+        }
+         await User.destroy({
+            where: {
+                id: guestToDestroy
+            }
+        })
+        res.redirect('/')
          }
     } catch (err) {
         console.error(err);
@@ -58,13 +73,13 @@ router.delete('/:userId', async (req, res, next) => {
     }
 });
 
-router.get('/signout', (req, res, next) => {
+router.get('/signout', async (req, res, next) => {
     if (req.session){
         req.session.destroy( err => {
             if (err){
                 next(err)
             } else {
-                return res.redirect('/')
+                return res.redirect('/');
             }
         });
     }
