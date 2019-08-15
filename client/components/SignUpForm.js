@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {signUpUser, getCurrentUser} from '../actions';
+import axios from 'axios';
 
 class SignUpForm extends React.Component {
   constructor(props){
@@ -33,7 +34,7 @@ handleSubmit(ev){
       sObj[key] = this.state[key]
     }
   }
-  this.props.signUp(sObj);
+  axios.post('/api/users/signup', sObj)
   this.props.getUser();
   this.props.history.push('/');
 }
@@ -88,7 +89,6 @@ handleSubmit(ev){
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  signUp: (user) => dispatch(signUpUser(user)),
   getUser: () => dispatch(getCurrentUser()),
 })
 
