@@ -1,8 +1,5 @@
 const router = require('express').Router();
-const Order = require('../db/models/Order');
-const Product = require('../db/models/Product');
-const User = require('../db/models/User');
-const OrderProduct = require('../db/models/OrderProduct');
+const {Order, Product, User, OrderProduct} = require('../db/index');
 
 router.route('/')
     .post(async (req, res, next) => {

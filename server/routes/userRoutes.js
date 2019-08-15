@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../db/models/User');
-//TODO: user info/routes should only be accessible by user or admin users 
+const {User} = require('../db/index');
+
 router.post('/login', async (req, res, next) => {
     try {
         const user =  await User.login(req.body.email, req.body.password);

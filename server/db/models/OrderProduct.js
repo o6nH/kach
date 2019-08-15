@@ -1,4 +1,4 @@
-const db = require('../index');
+const db = require('../connection');
 const Sequelize = require('sequelize');
 
 const OrderProduct = db.define('orderproduct', {
@@ -6,12 +6,6 @@ const OrderProduct = db.define('orderproduct', {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-    },
-    productId: {
-        type: Sequelize.UUID,
-    },
-    orderId: {
-        type: Sequelize.UUID,
     },
     purchaseUnitPrice: {
         type: Sequelize.DECIMAL,
