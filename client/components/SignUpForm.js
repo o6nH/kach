@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {signUpUser} from '../actions';
+import {signUpUser, getCurrentUser} from '../actions';
 
 class SignUpForm extends React.Component {
   constructor(props){
@@ -33,11 +33,14 @@ handleSubmit(ev){
       sObj[key] = this.state[key]
     }
   }
-  console.log('THING XSDADSFA: ', sObj);
   this.props.signUp(sObj);
+  this.props.getUser();
+  this.props.history.push('/');
 }
 
   render() {
+    //const history = this.props.history;
+    //console.log('HISTORY: ', this.props)
     return (
       <div>
         <form onSubmit = {this.handleSubmit}>
@@ -77,7 +80,7 @@ handleSubmit(ev){
             Confirm Password:
             <input type = 'password' value = {this.state.cPassword} name = 'cPassword' onChange = {this.handleChange} />
           </label>
-          <input disabled = {this.state.password !== this.state.cPassword || this.state.password === '' || this.state.firstName === '' || this.state.lastName === ''} type = 'submit' name = 'Submit' />
+          <input disabled = {this.state.password !== this.state.cPassword || this.state.password === '' || this.state.password.length < 7 || this.state.firstName === '' || this.state.lastName === ''} type = 'submit' name = 'Submit' />
         </form>
       </div>
     )
@@ -86,6 +89,7 @@ handleSubmit(ev){
 
 const mapDispatchToProps = (dispatch) => ({
   signUp: (user) => dispatch(signUpUser(user)),
+  getUser: () => dispatch(getCurrentUser()),
 })
 
 export default connect(null, mapDispatchToProps)(SignUpForm);

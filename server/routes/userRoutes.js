@@ -10,7 +10,6 @@ router.post('/login', async (req, res, next) => {
         } else {
         req.session.userId = user.id;
         req.session.orderId = user.orderId;
-        res.send(user);
          }
     } catch (err) {
         console.error(err);
@@ -32,6 +31,7 @@ router.post('/signup', (req, res, next) => {
         console.log('HIT ', newUser);
         User.signup(newUser)
         res.status(201).redirect('/');
+        console.log("REDIRECTED")
 })
 
 router.get('/currentUser', async (req, res, next) => {
@@ -57,5 +57,17 @@ router.delete('/:userId', async (req, res, next) => {
         console.error(err);
     }
 });
+
+router.get('/signout', (req, res, next) => {
+    if (req.session){
+        req.session.destroy( err => {
+            if (err){
+                next(err)
+            } else {
+                return res.redirect('/')
+            }
+        });
+    }
+})
 
 module.exports = router;
