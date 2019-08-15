@@ -29,7 +29,7 @@ class Product extends React.Component {
             {aveRating ? <div><h3>AveRating:</h3> {Number(aveRating).toFixed(2)}</div> : ''}
             <br/>
             {
-              quantity
+              quantity > 0
               ? <button onClick={()=>{
                 window.location.hash = `/cart/${cartId}`;
                 addToCart({...product, userId: user.id});
