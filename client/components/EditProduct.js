@@ -77,7 +77,7 @@ class EditProduct extends Component {
 
   render() {
     const {handleChange, handleSubmit, handleCategoryChange, handleNewCategories} = this;
-    const {isAdmin, allCategories} = this.props;
+    const {isAdmin, allCategories, history} = this.props;
     const {product:productUpdates, newCategories} = this.state;
     const {name, quantity, price, categories, description} = productUpdates
 
@@ -100,14 +100,13 @@ class EditProduct extends Component {
               {
                 allCategories.map((category, index) => 
                 <div key={index}>
-                  }
                   <input type='checkbox' id={category} name={category} onChange={handleCategoryChange} 
                   checked={categories && categories.includes(category) ? true : false}/>
                   <label>{category}</label>
                 </div>)
               }
-              <br/>
               <label>Add new (lower-cased, comma-separated) categories : </label>
+              <br/>
               <input type='text' name='newCategories' value={newCategories} onChange={handleNewCategories}/>
               <br/>
               <label>Description: </label> <br/>
@@ -115,6 +114,7 @@ class EditProduct extends Component {
               <br/>
               <button type='submit'>Update</button>
             </form>
+              <button onClick={()=>history.push(`/products/${productUpdates.id}`)}>Cancel</button>
           </div>
         }
       </div>
