@@ -18,9 +18,10 @@ class Products extends React.Component{
     const {location} = this.props;
     const parsedQuery = location.search ? queryString.parse(location.search) : {};
     if(parsedQuery['?category'] || parsedQuery['category']) {
-      return categorizedProducts[parsedQuery['?category']].products || categorizedProducts[parsedQuery['category']].products;
+      const filteredProducts = categorizedProducts[parsedQuery['?category']].products || categorizedProducts[parsedQuery['category']].products;
+      return filteredProducts.filter(product => product.quantity > 0);
     }
-    return allProducts;
+    return allProducts.filter(product => product.quantity > 0);
   };
   
   //Filter Products by SearchTerm
