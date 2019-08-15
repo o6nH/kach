@@ -84,8 +84,4 @@ const getCurrentUser = () => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 };
 
-const signUpUser = (user) => (dispatch, getState, axios) => {
-  axios.post('/api/users/signup', user);
-}
-
-export {ACT, fetchAndCategorizeProducts, categorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct, getCurrentUser, signUpUser}
+export {ACT, fetchAndCategorizeProducts, categorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct, getCurrentUser}

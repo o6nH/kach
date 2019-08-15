@@ -1,13 +1,20 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Axios from 'axios';
+import {getCurrentUser} from '../actions';
 
 const marketName = 'ShopWare';
 // const marketLogo = './img/bottle_64.png';
 // const cartImg = './img/cart_64.png';
 
+const signOut = async (getUser) => {
+  await Axios.get('/api/users/signout')
+  getUser();
+}
+
 // Component
-const Navbar = ({user, cart}) => {
+const Navbar = ({user, cart, getUser}) => {
   console.log(user)
   const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
   const {id:cartOrderId, productCount:cartProdCount} = cart;
@@ -34,7 +41,7 @@ const Navbar = ({user, cart}) => {
         }
         {
           isAuth
-          ? <li onClick={()=>{console.log('Need to sign user out')}}><Link to='/'>Sign Out</Link></li> 
+          ? <li onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
         <li><Link to={`/cart/${cartOrderId}`}>🛒</Link></li>{/* <img src={cartImg}></img>#</Link></li> */}
@@ -48,4 +55,8 @@ const mapStateToProps = state => ({
   cart: state.orders.filter(order => order.status === 'inCart')
 })
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = (dispatch) => ({
+  getUser: () => dispatch(getCurrentUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

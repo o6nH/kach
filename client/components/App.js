@@ -14,6 +14,7 @@ import Home from './Home';
 import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
 import SignUpForm from './SignUpForm';
+import SignInForm from './SignInForm';
 import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
 import {fetchAndCategorizeProducts, getCurrentUser} from '../actions';
@@ -46,6 +47,7 @@ class App extends React.Component{
         <Route exact path='/admin/products' component={AdminProductsTable}/>
         <Route exact path='/admin/products/:productId' component={EditProduct}/>
         <Route path = '/signup' component = {SignUpForm} />
+        <Route path = '/signin' component = {SignInForm} />
       </HashRouter>
     )
   }
