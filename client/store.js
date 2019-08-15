@@ -85,6 +85,9 @@ const catProdReducer = (state = {}, action) => {
               catProdObj[_category]= {products: [product]};
             }
             catProdObj[_category].count = catProdObj[_category].products.length;
+            catProdObj[_category].availableCount = catProdObj[_category].products
+              .filter(product => product.quantity > 0)
+              .length;
           }
         })
         return catProdObj;

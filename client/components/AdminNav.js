@@ -8,9 +8,9 @@ function AdminPage({user}) {
       <h2>Hello {user.firstName}</h2>
       {
         <ul>
-          <li><Link to='/admin/users'>Edit Users' Personal Information</Link></li>
-          <li><Link to='/admin/orders'>Edit Orders</Link></li>
-          <li><Link to='/admin/products'>Edit Products</Link></li>
+          <li><Link to='/admin/users'>View All Users</Link></li>
+          <li><Link to='/admin/orders'>View All Orders</Link></li>
+          <li><Link to='/admin/products'>View All Products</Link></li>
         </ul>
       }
     </div>

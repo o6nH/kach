@@ -27,6 +27,11 @@ const fetchAndCategorizeProducts = () => (dispatch, getState, axios) => {
   .catch(err => console.error(err));
 };
 
+const categorizeProducts = () => (dispatch, getState) => {
+  const {products} = getState();
+  dispatch({type: ACT.CATEGORIZE_PRODUCTS, products})
+};
+
 const updateProduct = (adminProductUpdates) => (dispatch, getState, axios) => {
   //TODO: remove userId from body and get from session after sessions are working (changing adminProductUpdates to only productUpdates)
   axios.put(`/api/products/${adminProductUpdates.productUpdates.id}`, adminProductUpdates)
@@ -83,4 +88,4 @@ const signUpUser = (user) => (dispatch, getState, axios) => {
   axios.post('/api/users/signup', user);
 }
 
-export {ACT, fetchAndCategorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct, getCurrentUser, signUpUser}
+export {ACT, fetchAndCategorizeProducts, categorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct, getCurrentUser, signUpUser}

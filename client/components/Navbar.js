@@ -2,9 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-const marketName = 'Generic';
-const marketLogo = './img/bottle_64.png';
-const cartImg = './img/cart_64.png';
+const marketName = 'ShopWare';
+// const marketLogo = './img/bottle_64.png';
+// const cartImg = './img/cart_64.png';
 
 // Component
 const Navbar = ({user, cart}) => {
@@ -16,8 +16,8 @@ const Navbar = ({user, cart}) => {
     <div style={{display:'flex', justifyContent:'space-between'}}>
       <Link to='/'>
         <div style={{display:'flex'}}>
-          <img src={marketLogo} alt="Generic Logo"/>
-          <h1>{`${marketName}`}</h1>
+          {/* <img src={marketLogo} alt="Logo"/> */}
+          <h1>{`💻${marketName}`}</h1>
         </div>
       </Link>
       <ul style={{display:'flex', width:'30%', justifyContent:'space-between', listStyle:'none'}}>
@@ -37,7 +37,7 @@ const Navbar = ({user, cart}) => {
           ? <li onClick={()=>{console.log('Need to sign user out')}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/cart/${cartOrderId}`}><img src={cartImg}></img>#</Link></li>
+        <li><Link to={`/cart/${cartOrderId}`}>🛒</Link></li>{/* <img src={cartImg}></img>#</Link></li> */}
       </ul>
     </div>
   )
