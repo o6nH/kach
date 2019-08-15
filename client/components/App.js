@@ -6,7 +6,10 @@ import Products from './Products';
 import Product from './Product';
 import Cart from './Cart';
 import Checkout from './Checkout';
-import AdminPage from './AdminPage';
+import AdminNav from './AdminNav';
+import AdminProductsTable from './AdminProductsTable';
+import AdminUsersTable from './AdminUsersTable';
+import AdminOrdersTable from './AdminOrdersTable';
 import Home from './Home';
 import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
@@ -24,20 +27,20 @@ class App extends React.Component{
       <HashRouter>
         <Route path='/' component={Navbar}/>
         <Route exact path='/' component={Home}/>
-        <Route path='/admin' component={AdminPage}/>
+        <Route path='/admin' component={AdminNav}/>
         <Route exact path='/users/:userId' component={UserInfo}/>
-        {/* <Route exact path='/admin/users' component={AllUsers}/> */}
-        {/* <Route exact path='/admin/users/:userId' component={EditUser}/> */}
+        <Route exact path='/admin/users' component={AdminUsersTable}/>
+        <Route exact path='admin/users/:userId' component={UserInfo}/>
         <Route exact path='/orders' component={UserOrders}/>
         {/* <Route exact path='/orders/:orderId' component={UserOrder}/> */}
         <Route exact path='/cart/:cartId' component={Cart}/>
         <Route path='/cart/:cartId/checkout' component={Checkout}/> 
         <Route path='/orders/confirmation' component={OrderConfirmation}/> 
-        {/* <Route exact path='/admin/orders' component={AllOrders}/> */}
+        <Route exact path='/admin/orders' component={AdminOrdersTable}/>
         {/* <Route exact path='/admin/orders/:orderId' component={EditOrder}/> */}
         <Route exact path='/products' component={Products}/>
         <Route path='/products/:productId' component={Product}/>
-        {/* <Route exact path='/admin/products' component={AllProducts}/> */}
+        <Route exact path='/admin/products' component={AdminProductsTable}/>
         <Route exact path='/admin/products/:productId' component={EditProduct}/>
       </HashRouter>
     )
