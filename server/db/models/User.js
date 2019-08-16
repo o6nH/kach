@@ -18,6 +18,10 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         validate: {
             isEmail: true
+        },
+        unique: {
+            args: true,
+            msg: 'Email address already in use!'
         }
     },
     password: {
@@ -51,8 +55,12 @@ const User = db.define('user', {
     },
 }, {
     hooks: {
-        beforeCreate: user => {
-            user.password = hash(user.password);
+        beforeCreate: user =>  {
+            if (user.password){
+                user.password = hash(user.password);
+            } else {
+                return user
+            }
         },
         beforeUpdate: user => {
             user.password = hash(user.password);
@@ -69,20 +77,35 @@ User.login = function (email, password) {
     })
 }
 
-User.signup = function (user) {
-    console.log('$$$$$$$$$$ ', user);
-    return this.findOrCreate({
-        where: {
+User.signup = async function (user) {
+        try {
+            const thing = await this.update({
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            password: user.password
-        }
-    });
+            password: hash(user.password),
+            streetAddress: user.streetAddress,
+            city: user.city,
+            zip: user.zip,
+            state: user.state,
+            suite: user.suite,
+            isAuthenticated: true,
+            isAdmin: false
+        }, {
+            // returning: true,
+            where: {
+                id: user.id
+            }
+        })
+        console.log(thing);
+    } catch (err){
+        console.error(err)
+    }
 }
 
-User.createGuest = function () {
-
+User.createGuest = async function () {
+    const guest = await this.create();
+    return guest;
 }
 
 User.remove = async function (id) {

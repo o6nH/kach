@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const {db} = require('./db/index');
 const routes = require('./routes/index');
+const sessionRoutes = require('./routes/sessionRoutes');
 
 const port = process.env.PORT || 3000;
 
@@ -32,7 +33,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
+app.use('/', sessionRoutes)
 app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
 app.use('/api', routes);

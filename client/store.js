@@ -21,9 +21,8 @@ const userReducer = (state = {
     isAuthenticated: true
   }, action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
+    case ACT.GET_CURRENT_USER:
+      return action.currentUser;
     default:
       return state;
   }
@@ -31,9 +30,6 @@ const userReducer = (state = {
 
 const usersReducer = (state=[], action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
     default:
       return state;
   }

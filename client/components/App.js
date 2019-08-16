@@ -13,13 +13,17 @@ import AdminOrdersTable from './AdminOrdersTable';
 import Home from './Home';
 import UserInfo from './UserInfo';
 import EditProduct from './EditProduct';
+import SignUpForm from './SignUpForm';
+import SignInForm from './SignInForm';
 import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
-import {fetchAndCategorizeProducts} from '../actions';
+import {fetchAndCategorizeProducts, getCurrentUser} from '../actions';
 
 class App extends React.Component{
   componentDidMount() {
     this.props.getAllProducts();
+    console.log('Mounting')
+    this.props.getUser();
   }
 
   render(){
@@ -42,12 +46,15 @@ class App extends React.Component{
         <Route path='/products/:productId' component={Product}/>
         <Route exact path='/admin/products' component={AdminProductsTable}/>
         <Route exact path='/admin/products/:productId' component={EditProduct}/>
+        <Route path = '/signup' component = {SignUpForm} />
+        <Route path = '/signin' component = {SignInForm} />
       </HashRouter>
     )
   }
-};
+}
 
 const mapDispatchToProps = (dispatch) => ({
+  getUser: () => dispatch(getCurrentUser()),
   getAllProducts: () => dispatch(fetchAndCategorizeProducts())
 });
 
