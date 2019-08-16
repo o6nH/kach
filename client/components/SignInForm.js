@@ -49,7 +49,7 @@ async handleSubmit(ev){
           </label>
           <label>
             Password:
-            <input type = 'text' name = 'password' onChange = {this.handleChange} />
+            <input type = 'password' name = 'password' onChange = {this.handleChange} />
           </label>
           <input type = 'submit' name = "Submit" />
         </form>
