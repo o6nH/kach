@@ -20,7 +20,7 @@ import UserOrders from './UserOrders';
 import {fetchAndCategorizeProducts, getCurrentUser} from '../actions';
 
 class App extends React.Component{
-  async componentDidMount() {
+  componentDidMount() {
     this.props.getAllProducts();
     console.log('Mounting')
     this.props.getUser();

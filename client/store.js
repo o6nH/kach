@@ -22,8 +22,7 @@ const userReducer = (state = {
   }, action) => {
   switch (action.type) {
     case ACT.GET_CURRENT_USER:
-      state = action.currentUser;
-      return state;
+      return action.currentUser;
     default:
       return state;
   }

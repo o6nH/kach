@@ -78,9 +78,6 @@ User.login = function (email, password) {
 }
 
 User.signup = async function (user) {
-    //if guest and wants to sign up then update user
-    // if email is already taken the tell user that
-        //console.log('USER $$$$$$$$ ', user)
         try {
             const thing = await this.update({
             firstName: user.firstName,
