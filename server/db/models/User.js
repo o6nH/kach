@@ -82,7 +82,7 @@ User.signup = async function (user) {
             const thing = await this.update({
             firstName: user.firstName,
             lastName: user.lastName,
-            email: user.email,
+            email: user.email.toLowerCase(),
             password: hash(user.password),
             streetAddress: user.streetAddress,
             city: user.city,
