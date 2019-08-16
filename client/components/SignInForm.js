@@ -24,8 +24,8 @@ async handleSubmit(ev){
     ev.preventDefault();
   console.log('HIT');
   const sendObj = {
-    email: this.state.email,
-    password: this.state.password.toLowerCase()
+    email: this.state.email.toLowerCase(),
+    password: this.state.password
   }
   const login = await axios.post('/api/users/login', sendObj);
   if ( login.data === 'Email or password incorrect'){

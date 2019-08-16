@@ -58,6 +58,7 @@ const User = db.define('user', {
         beforeCreate: user =>  {
             if (user.password){
                 user.password = hash(user.password);
+                user.email = user.email.toLowerCase();
             } else {
                 return user
             }
