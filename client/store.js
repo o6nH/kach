@@ -6,20 +6,7 @@ import {ACT} from './actions'
 import axios from 'axios';
 
 //Reducers
-//TODO: create function to set current user on the store
-const userReducer = (state = {
-    id: '07fb06de-06ea-4231-81ce-f87de4b506c0', 
-    firstName:'Hugo',
-    lastName: 'Campos', 
-    streetAddress: '123 Fake St', 
-    suite: 'A', 
-    city: 'San Luis Obispo', 
-    state: 'CA', 
-    zip: '92555', 
-    email: 'HugoCampos@email.com', 
-    isAdmin: true, 
-    isAuthenticated: true
-  }, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case ACT.GET_CURRENT_USER:
       return action.currentUser;
@@ -49,8 +36,11 @@ const productsReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.GET_PRODUCTS:
       return action.products
-    case ACT.ADD_PRODUCT:
+    case ACT.CREATE_PRODUCT:
       return [...state, action.product]
+    case ACT.DELETE_PRODUCT:
+      const {productId} = action
+      return state.filter(product => product.id !== productId)
     case ACT.UPDATE_PRODUCT:
       const {updatedProduct} = action;
       const updatedProducts = state.map(product =>{
@@ -100,6 +90,8 @@ const selectedProductReducer = (state = {}, action) => {
   switch (action.type) {
     case ACT.GET_PRODUCT:
       return action.foundProduct;
+    case ACT.DESELECT:
+      return {}
     default:
       return state;
   }
