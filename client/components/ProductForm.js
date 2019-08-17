@@ -68,7 +68,7 @@ class ProductForm extends Component {
     const {categories} = productUpdates;
     catStrings.split(', ')
     .forEach(catStr => {
-      if (catStr && !categories.includes(catStr)) categories.push(catStr)
+      if (catStr && !categories.includes(catStr)) categories.push(catStr) //TODO: verify this is changing state (i.e. productUpdates) prior to updateProduct call
     })
 
     updateProduct({userId, productUpdates}); //TODO: remove userId from body and get from session after sessions are working

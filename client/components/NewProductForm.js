@@ -2,14 +2,21 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchProducts, categorizeProducts, createProduct} from '../actions';
 
-class ProductForm extends Component {
+const initState = {
+  product: {
+    name: '', 
+    quantity: '', 
+    price: '', 
+    categories:[], 
+    description:''},
+  newCategories: '',
+  isDisabled: 'disabled'
+}
+
+class NewProductForm extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      product: {},
-      newCategories: '',
-      isDisabled: true
-    }
+    this.state = initState;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.isDisabled = this.isDisabled.bind(this);
@@ -24,17 +31,30 @@ class ProductForm extends Component {
   }
 
   isDisabled(name, quantity, price){
-    return !(name && quantity && price);
+    return !(name && quantity && price) ? 'disabled' : '';
   }
   
   handleChange(event){
-    const product = this.state.product;
-    const needMore = this.isDisabled(product.name, product.quantity, product.price)
+    const {product} = this.state;
     const {name, value} = event.target;
-    this.setState({
+    let check;
+    switch (name) {
+      case 'name':
+        check = this.isDisabled(value, product.quantity, product.price)
+        break;
+      case 'quantity':
+        check = this.isDisabled(product.name, value, product.price)
+        break;
+      case 'price':
+        check = this.isDisabled(product.name, product.quantity, value)
+        break;
+      default:
+        break;
+    }
+    this.setState( ({product})=> ({
       product: {...product, [name]:value}, 
-      isDisabled: needMore
-    }, console.log);
+      isDisabled: check
+    }));
   }
   
   handleCategoryChange(event){
@@ -58,20 +78,19 @@ class ProductForm extends Component {
 
   async handleSubmit(event){
     event.preventDefault();
-    const {history} = this.props;
+    const {history, createProduct, categorizeProducts} = this.props;
     const {product, newCategories:catStrings} = this.state;
     const {categories} = product;
     
     catStrings.split(', ')
-    .forEach(catStr => {
-      if (catStr && !categories.includes(catStr)) categories.push(catStr)
-    })
-    
-    await createProduct({product});
-    this.setState({product: {}, newCategories: ''});
-    await categorizeProducts();
-    console.log('clicked add');
-    
+      .forEach(catStr => {
+        if (catStr && !categories.includes(catStr)) categories.push(catStr)
+      })
+
+    await createProduct({...product, categories});
+    categorizeProducts();
+    this.setState(initState);
+    history.replace('/admin/products');
   }
 
   render() {
@@ -91,11 +110,12 @@ class ProductForm extends Component {
           ? <h1>Forbidden.</h1>
           : <div>
               <h3>Add New Product:</h3>
-              <form type='submit' onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
               <label>Name: </label> <br/>
               <input type='text' name='name' required value={name} onChange={handleChange}/><br/>
               <label>Qty: </label><br/>
-              <input type='text' name='quantity' required  value={quantity} onChange={handleChange}/><br/>
+              <input type='number' min={0} name='quantity' required  value={quantity} onChange={handleChange}/>
+              <br/>
               <label>Price: </label> <br/>
               <input type='text' name='price' required  value={price} onChange={handleChange}/><br/>
               <label>Categories: </label><br/>
@@ -114,7 +134,7 @@ class ProductForm extends Component {
               <label>Description: </label> <br/>
               <textarea rows={5} name='description' value={description} onChange={handleChange}/>
               <br/>
-              <button type='submit' disabled={isDisabled}>Add</button>
+              <input type='submit' value='Add' disabled={isDisabled}/>
             </form>
           </div>
         }
@@ -135,4 +155,4 @@ const mapDispatchToProps = dispatch => ({
   createProduct: (product) => dispatch(createProduct(product)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewProductForm);
