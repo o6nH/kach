@@ -6,6 +6,20 @@ const hash = require('../../script/hash');
 router.post('/login', async (req, res, next) => {
     try {
         const guestToDestroy = req.session.userId
+        if ( guestToDestroy.orderId && guestToDestroy.email === null ){
+            console.log('In the if statement!')
+            await User.update(
+                {
+                    orderId: guestToDestroy.orderId
+                },
+                {
+                where: {
+                    email: req.body.email,
+                    password: hash(req.body.password)
+                }
+            }
+            )
+        }
         const user =  await User.findOne({
             where: {
                 email: req.body.email,
@@ -43,10 +57,8 @@ router.post('/signup', (req, res, next) => {
 
             }
         }
-        console.log('HIT ', newUser);
         User.signup(newUser)
         res.status(201).redirect('/');
-        console.log("REDIRECTED")
 })
 
 router.get('/currentUser', async (req, res, next) => {
@@ -73,7 +85,7 @@ router.delete('/:userId', async (req, res, next) => {
     }
 });
 
-router.get('/signout', async (req, res, next) => {
+router.get('/signout', (req, res, next) => {
     if (req.session){
         req.session.destroy( err => {
             if (err){
