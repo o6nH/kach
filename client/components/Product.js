@@ -13,7 +13,7 @@ class Product extends React.Component {
   render() {
     const {user, cart, product, addToCart} = this.props;
     const {isAdmin} = user;
-    const {id:cartId} = cart;
+    //const {id:cartId} = cart;
     const {id:productId, name, imageUrls, categories, price, aveRating, description, quantity} = product;
 
     return (
@@ -30,9 +30,9 @@ class Product extends React.Component {
             <br/>
             {
               quantity > 0
-              ? <button onClick={()=>{
-                window.location.hash = `/cart/${cartId}`;
-                addToCart({...product, userId: user.id});
+              ? <button onClick={async ()=>{
+                await addToCart({...product, userId: user.id});
+                this.props.history.push('/cart');
               }}>Add to Cart</button> 
               : <span>{'Currently Unavailable'}</span>
             }

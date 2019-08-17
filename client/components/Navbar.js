@@ -14,7 +14,7 @@ const signOut = async (getUser) => {
 // Component
 const Navbar = ({user, cart, getUser}) => {
   const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
-  const {id:cartOrderId, productCount:cartProdCount} = cart;
+  const {productCount:cartProdCount} = cart;
   return (
     // TODO: remove inline styles
     <div style={{display:'flex', justifyContent:'space-between'}}>
@@ -40,7 +40,7 @@ const Navbar = ({user, cart, getUser}) => {
           ? <li onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/cart/${cartOrderId}`} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
+        <li><Link to={'/cart'} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
       </ul>
     </div>
   )

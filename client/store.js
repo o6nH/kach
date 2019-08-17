@@ -22,7 +22,7 @@ const usersReducer = (state=[], action) => {
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[{id:'ord123', userOrderId:'', orderProductsId:'', status:'inCart'}], action) => {
+const ordersReducer = (state=[], action) => {
   switch (action.type) {
     case ACT:
       return;
