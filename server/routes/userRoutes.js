@@ -11,7 +11,22 @@ router.post('/login', async (req, res, next) => {
                 email: req.body.email,
                 password: hash(req.body.password)
             }
-        });
+        })
+        //TODO: check if user has an order and the combine guest and user orders
+        // if ( guestToDestroy.orderId && guestToDestroy.email === null &&  ){
+        //     console.log('In the if statement!')
+        //     await User.update(
+        //         {
+        //             orderId: guestToDestroy.orderId
+        //         },
+        //         {
+        //         where: {
+        //             email: req.body.email,
+        //             password: hash(req.body.password)
+        //         }
+        //     }
+        //     )
+        // }
         if (!user){
             res.status(401).send('Email or password incorrect');
         } else {
@@ -24,7 +39,8 @@ router.post('/login', async (req, res, next) => {
                 id: guestToDestroy
             }
         })
-        res.redirect('/')
+        //TODO: ask Eliot if res.redirect or history.push is best practice
+        return res.redirect('/')
          }
     } catch (err) {
         console.error(err);
@@ -43,10 +59,8 @@ router.post('/signup', (req, res, next) => {
 
             }
         }
-        console.log('HIT ', newUser);
         User.signup(newUser)
         res.status(201).redirect('/');
-        console.log("REDIRECTED")
 })
 
 router.get('/currentUser', async (req, res, next) => {
@@ -73,7 +87,7 @@ router.delete('/:userId', async (req, res, next) => {
     }
 });
 
-router.get('/signout', async (req, res, next) => {
+router.get('/signout', (req, res, next) => {
     if (req.session){
         req.session.destroy( err => {
             if (err){

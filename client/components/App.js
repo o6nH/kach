@@ -38,7 +38,7 @@ class App extends React.Component{
         <Route exact path='admin/users/:userId' component={UserInfo}/>
         <Route exact path='/orders' component={UserOrders}/>
         {/* <Route exact path='/orders/:orderId' component={UserOrder}/> */}
-        <Route exact path='/cart/:cartId' component={Cart}/>
+        <Route exact path='/cart' component={Cart}/>
         <Route path='/cart/:cartId/checkout' component={Checkout}/> 
         <Route path='/orders/confirmation' component={OrderConfirmation}/> 
         <Route exact path='/admin/orders' component={AdminOrdersTable}/>
