@@ -5,8 +5,6 @@ import Axios from 'axios';
 import {getCurrentUser} from '../actions';
 
 const marketName = 'ShopWare';
-// const marketLogo = './img/bottle_64.png';
-// const cartImg = './img/cart_64.png';
 
 const signOut = async (getUser) => {
   await Axios.get('/api/users/signout')
@@ -15,7 +13,6 @@ const signOut = async (getUser) => {
 
 // Component
 const Navbar = ({user, cart, getUser}) => {
-  console.log(user)
   const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
   const {id:cartOrderId, productCount:cartProdCount} = cart;
   return (
@@ -23,8 +20,7 @@ const Navbar = ({user, cart, getUser}) => {
     <div style={{display:'flex', justifyContent:'space-between'}}>
       <Link to='/'>
         <div style={{display:'flex'}}>
-          {/* <img src={marketLogo} alt="Logo"/> */}
-          <h1>{`💻${marketName}`}</h1>
+          <h1 style={{fontSize: '32px'}}>{`💻${marketName}`}</h1>
         </div>
       </Link>
       <ul style={{display:'flex', width:'30%', justifyContent:'space-between', listStyle:'none'}}>
@@ -44,7 +40,7 @@ const Navbar = ({user, cart, getUser}) => {
           ? <li onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/cart/${cartOrderId}`}>🛒</Link></li>{/* <img src={cartImg}></img>#</Link></li> */}
+        <li><Link to={`/cart/${cartOrderId}`} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
       </ul>
     </div>
   )

@@ -12,7 +12,8 @@ import AdminUsersTable from './AdminUsersTable';
 import AdminOrdersTable from './AdminOrdersTable';
 import Home from './Home';
 import UserInfo from './UserInfo';
-import EditProduct from './EditProduct';
+import ProductForm from './ProductForm';
+import NewProductForm from './NewProductForm';
 import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
 import OrderConfirmation from './OrderConfirmation';
@@ -45,7 +46,8 @@ class App extends React.Component{
         <Route exact path='/products' component={Products}/>
         <Route path='/products/:productId' component={Product}/>
         <Route exact path='/admin/products' component={AdminProductsTable}/>
-        <Route exact path='/admin/products/:productId' component={EditProduct}/>
+        <Route exact path='/admin/products' component={NewProductForm}/>
+        <Route exact path='/admin/products/:productId' component={ProductForm}/>
         <Route path = '/signup' component = {SignUpForm} />
         <Route path = '/signin' component = {SignInForm} />
       </HashRouter>
