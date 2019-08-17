@@ -119,6 +119,19 @@ router.route('/')
         }
     })
 
+router.route('/:orderId')
+    .get(async(req, res, next) => {
+        try{
+            res.send(await Order.findOne({
+                where: {
+                    id: req.params.orderId
+                }
+            }))
+        } catch (err) {
+            console.error(err)
+        }
+    })
+
 router.route('/cart')
     .get(async (req, res, next) => {
         try {
