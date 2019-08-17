@@ -37,6 +37,8 @@ const productsReducer = (state = [], action) => {
     case ACT.GET_PRODUCTS:
       return action.products
     case ACT.CREATE_PRODUCT:
+      console.log("CREATING PRODUCT in productReducer");
+      
       return [...state, action.product]
     case ACT.DELETE_PRODUCT:
       const {productId} = action
