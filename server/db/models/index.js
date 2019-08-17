@@ -8,7 +8,7 @@ User.hasMany(Order);
 Order.belongsTo(User);
 
 Order.hasMany(OrderProduct);
-OrderProduct.belongsTo(Order);
+OrderProduct.belongsTo(Order);      
 
 Product.hasMany(OrderProduct);
 OrderProduct.belongsTo(Product);

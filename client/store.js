@@ -24,13 +24,24 @@ const usersReducer = (state=[], action) => {
 
 const ordersReducer = (state=[], action) => {
   switch (action.type) {
-    case ACT:
-      return;
+    case ACT.GETORDERS:
+      console.log('ORDERS: ', action.orders)
+      return action.orders;
   
     default:
       return state;
   }
 }; //userId => [{id: ..., status:'inCart'}, {}]
+
+const selectedOrderReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ACT.GETORDER:
+      console.log('ORDER: ', action.order)
+      return action.order;
+    default:
+      return state;
+  }
+};
 
 const productsReducer = (state = [], action) => {
   switch (action.type) {
@@ -140,7 +151,8 @@ export default createStore(
     cart: cartReducer,
     products: productsReducer, //TODO: refactor to limit number of products downloaded (paginate)
     categorizedProducts: catProdReducer,
-    selectedProduct: selectedProductReducer
+    selectedProduct: selectedProductReducer,
+    selectedOrder: selectedOrderReducer
   }),
   applyMiddleware(loggingMiddleware, thunkMiddleware.withExtraArgument(axios))
 );

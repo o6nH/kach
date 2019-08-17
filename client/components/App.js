@@ -18,6 +18,7 @@ import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
 import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
+import UserOrder from './UserOrder';
 import {fetchAndCategorizeProducts, getCurrentUser} from '../actions';
 
 class App extends React.Component{
@@ -37,7 +38,7 @@ class App extends React.Component{
         <Route exact path='/admin/users' component={AdminUsersTable}/>
         <Route exact path='admin/users/:userId' component={UserInfo}/>
         <Route exact path='/orders' component={UserOrders}/>
-        {/* <Route exact path='/orders/:orderId' component={UserOrder}/> */}
+        <Route exact path='/orders/:orderId' component={UserOrder}/>
         <Route exact path='/cart' component={Cart}/>
         <Route path='/cart/:cartId/checkout' component={Checkout}/> 
         <Route path='/orders/confirmation' component={OrderConfirmation}/> 

@@ -29,6 +29,7 @@ class UserInfo extends React.Component{
   
   render() {
     const {isAuthenticated:isAuth, isAdmin} = this.props.user;
+    const { orders } = this.props;
     const {firstName, lastName, streetAddress, suite, city, state, zip, email} = this.state.user;
     const {handleChange, handleSubmit} = this;
     
@@ -61,13 +62,15 @@ class UserInfo extends React.Component{
             </form>
           </div>
         }
+        <h3><Link to='/orders'>View Your Orders</Link></h3>
       </div>
-    )
-  }
+      )
+    }
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  orders: state.orders,
 });
 
 const mapDispatchToProps = dispatch => ({
