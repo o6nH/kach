@@ -6,14 +6,14 @@ router.route('/')
         try {
             res.send(await Product.findAll());
         } catch (err){
-            console.error(err);
+            next(err);
         }
     })
     .post(async (req, res, next) => {
         try {
             res.send(await Product.create(req.body));
         } catch (err){
-            console.error(err);
+            next(err);
         }
     });
 
@@ -26,7 +26,7 @@ router.route('/:productId')
                 }
             }))
         } catch (err) {
-            console.error(err);
+            next(err);
         }
     })
     .delete(async (req, res, next) => {
@@ -37,7 +37,7 @@ router.route('/:productId')
                 }
             }))
         } catch (err) {
-            console.error(err);
+            next(err);
         }
     })
     .put(async (req, res, next) => {
