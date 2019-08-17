@@ -13,7 +13,8 @@ const ACT = {
   UPDATE_PRODUCT:'UPDATE_PRODUCT',
   CATEGORIZE_PRODUCTS: 'CATEGORIZE_PRODUCTS',
   GET_CURRENT_USER: 'GET_CURRENT_USER',
-  SIGNUP_USER: 'SIGNUP_USER'
+  SIGNUP_USER: 'SIGNUP_USER',
+  GETORDERS: 'GETORDERS'
 }
 
 
@@ -111,6 +112,12 @@ const getCurrentUser = () => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 };
 
+const getOrders = () => (dispatch, getState, axios) => {
+  axios.get('/api/orders/')
+  .then(({data: orders}) => dispatch({type: ACT.GETORDERS, orders}))
+  .catch(err => console.error(err));
+};
+
 export {
   ACT, 
   getCart, 
@@ -125,5 +132,6 @@ export {
   createProduct,
   deleteProduct,
   updateProduct, 
-  getCurrentUser
+  getCurrentUser,
+  getOrders
 }

@@ -24,8 +24,9 @@ const usersReducer = (state=[], action) => {
 
 const ordersReducer = (state=[], action) => {
   switch (action.type) {
-    case ACT:
-      return;
+    case ACT.GETORDERS:
+      console.log('ORDERS: ', action.orders)
+      return action.orders;
   
     default:
       return state;

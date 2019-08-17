@@ -2,6 +2,20 @@ const router = require('express').Router();
 const {Order, Product, User, OrderProduct} = require('../db/index');
 
 router.route('/')
+    .get(async (req, res, next) => {
+        try {
+            const orders = await Order.findAll(
+                {
+                    where: {
+                        userId: req.session.userId
+                    }
+                }
+            )
+            res.send(orders);
+        } catch (err) {
+            console.error(err);
+        }
+    })
     .post(async (req, res, next) => {
         try {
             let currentCart = await Order.findOrCreate(
