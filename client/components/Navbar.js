@@ -1,22 +1,26 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Axios from 'axios';
+import {getCurrentUser} from '../actions';
 
-const marketName = 'Generic';
-const marketLogo = './img/bottle_64.png';
-const cartImg = './img/cart_64.png';
+const marketName = 'ShopWare';
+
+const signOut = async (getUser) => {
+  await Axios.get('/api/users/signout')
+  getUser();
+}
 
 // Component
-const Navbar = ({user, cart}) => {
+const Navbar = ({user, cart, getUser}) => {
   const {id:userId, isAuthenticated: isAuth, isAdmin} = user;
-  const {id:cartOrderId, productCount:cartProdCount} = cart;
+  const {productCount:cartProdCount} = cart;
   return (
     // TODO: remove inline styles
     <div style={{display:'flex', justifyContent:'space-between'}}>
       <Link to='/'>
         <div style={{display:'flex'}}>
-          <img src={marketLogo} alt="Generic Logo"/>
-          <h1>{`${marketName}`}</h1>
+          <h1 style={{fontSize: '32px'}}>{`💻${marketName}`}</h1>
         </div>
       </Link>
       <ul style={{display:'flex', width:'30%', justifyContent:'space-between', listStyle:'none'}}>
@@ -33,10 +37,10 @@ const Navbar = ({user, cart}) => {
         }
         {
           isAuth
-          ? <li onClick={()=>{console.log('Need to sign user out')}}><Link to='/'>Sign Out</Link></li> 
+          ? <li onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
           : <li><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={`/cart/${cartOrderId}`}><img src={cartImg}></img>#</Link></li>
+        <li><Link to={'/cart'} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
       </ul>
     </div>
   )
@@ -47,4 +51,8 @@ const mapStateToProps = state => ({
   cart: state.orders.filter(order => order.status === 'inCart')
 })
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = (dispatch) => ({
+  getUser: () => dispatch(getCurrentUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchProduct, fetchAndCategorizeProducts, updateProduct, categorizeProducts} from '../actions';
 
-class EditProduct extends Component {
+class ProductForm extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -11,6 +11,7 @@ class EditProduct extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleNewCategories = this.handleNewCategories.bind(this);
   }
@@ -67,7 +68,7 @@ class EditProduct extends Component {
     const {categories} = productUpdates;
     catStrings.split(', ')
     .forEach(catStr => {
-      if (catStr && !categories.includes(catStr)) categories.push(catStr)
+      if (catStr && !categories.includes(catStr)) categories.push(catStr) //TODO: verify this is changing state (i.e. productUpdates) prior to updateProduct call
     })
 
     updateProduct({userId, productUpdates}); //TODO: remove userId from body and get from session after sessions are working
@@ -75,8 +76,18 @@ class EditProduct extends Component {
     history.push(`/products/${productUpdates.id}`);
   }
 
+  handleCancel(){
+    const {history} = this.props;
+    history.goBack()
+  }
+
   render() {
-    const {handleChange, handleSubmit, handleCategoryChange, handleNewCategories} = this;
+    const {
+      handleChange, 
+      handleSubmit, 
+      handleCategoryChange, 
+      handleNewCategories, 
+      handleCancel} = this;
     const {isAdmin, allCategories} = this.props;
     const {product:productUpdates, newCategories} = this.state;
     const {name, quantity, price, categories, description} = productUpdates
@@ -100,14 +111,13 @@ class EditProduct extends Component {
               {
                 allCategories.map((category, index) => 
                 <div key={index}>
-                  }
                   <input type='checkbox' id={category} name={category} onChange={handleCategoryChange} 
                   checked={categories && categories.includes(category) ? true : false}/>
                   <label>{category}</label>
                 </div>)
               }
-              <br/>
               <label>Add new (lower-cased, comma-separated) categories : </label>
+              <br/>
               <input type='text' name='newCategories' value={newCategories} onChange={handleNewCategories}/>
               <br/>
               <label>Description: </label> <br/>
@@ -115,6 +125,7 @@ class EditProduct extends Component {
               <br/>
               <button type='submit'>Update</button>
             </form>
+              <button onClick={handleCancel}>Cancel</button>
           </div>
         }
       </div>
@@ -136,4 +147,4 @@ const mapDispatchToProps = dispatch => ({
   getUpdatedCategories: () => dispatch(fetchAndCategorizeProducts()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductForm);

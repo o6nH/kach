@@ -6,24 +6,10 @@ import {ACT} from './actions'
 import axios from 'axios';
 
 //Reducers
-//TODO: create function to set current user on the store
-const userReducer = (state = {
-    id: '07fb06de-06ea-4231-81ce-f87de4b506c0', 
-    firstName:'Hugo',
-    lastName: 'Campos', 
-    streetAddress: '123 Fake St', 
-    suite: 'A', 
-    city: 'San Luis Obispo', 
-    state: 'CA', 
-    zip: '92555', 
-    email: 'HugoCampos@email.com', 
-    isAdmin: true, 
-    isAuthenticated: true
-  }, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
+    case ACT.GET_CURRENT_USER:
+      return action.currentUser;
     default:
       return state;
   }
@@ -31,15 +17,12 @@ const userReducer = (state = {
 
 const usersReducer = (state=[], action) => {
   switch (action.type) {
-    case ACT:
-      return;
-  
     default:
       return state;
   }
 }; //isAuth ? allUsers : null
 
-const ordersReducer = (state=[{id:'ord123', userOrderId:'', orderProductsId:'', status:'inCart'}], action) => {
+const ordersReducer = (state=[], action) => {
   switch (action.type) {
     case ACT:
       return;
@@ -53,8 +36,13 @@ const productsReducer = (state = [], action) => {
   switch (action.type) {
     case ACT.GET_PRODUCTS:
       return action.products
-    case ACT.ADD_PRODUCT:
+    case ACT.CREATE_PRODUCT:
+      console.log("CREATING PRODUCT in productReducer");
+      
       return [...state, action.product]
+    case ACT.DELETE_PRODUCT:
+      const {productId} = action
+      return state.filter(product => product.id !== productId)
     case ACT.UPDATE_PRODUCT:
       const {updatedProduct} = action;
       const updatedProducts = state.map(product =>{
@@ -88,6 +76,9 @@ const catProdReducer = (state = {}, action) => {
               catProdObj[_category]= {products: [product]};
             }
             catProdObj[_category].count = catProdObj[_category].products.length;
+            catProdObj[_category].availableCount = catProdObj[_category].products
+              .filter(product => product.quantity > 0)
+              .length;
           }
         })
         return catProdObj;
@@ -101,6 +92,8 @@ const selectedProductReducer = (state = {}, action) => {
   switch (action.type) {
     case ACT.GET_PRODUCT:
       return action.foundProduct;
+    case ACT.DESELECT:
+      return {}
     default:
       return state;
   }

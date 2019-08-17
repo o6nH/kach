@@ -2,7 +2,7 @@
   "name": "grace-shopper",
   "version": "1.0.0",
   "description": "An online e-commerce platform for unauthenticated guests, authenticated users, and administrative users.",
-  "main": "index.js",
+  "main": "client/index.js",
   "scripts": {
     "webpack": "webpack",
     "webpack-watch": "webpack -w --mode=development",
@@ -12,7 +12,8 @@
     "start-watch": "nodemon server --ignore public --ignore client",
     "start:dev": "NODE_ENV='development' npm run webpack-watch & NODE_ENV='development' npm run start-watch",
     "test": "NODE_ENV='test' mocha \"./test/*.spec.js\"",
-    "test:users": "NODE_ENV='test' mocha \"./test/user-route-tests.spec.js\""
+    "test:users": "NODE_ENV='test' mocha \"./test/user-route-tests.spec.js\"",
+    "lint": "node_modules/.bin/eslint client server"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,11 @@
     "express",
     "sessions"
   ],
-  "contributors": ["Hugo Campos", "Katherine Peterson", "Conner Stennett"],
+  "contributors": [
+    "Hugo Campos",
+    "Katherine Peterson",
+    "Conner Stennett"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/1904-cpu-projects/kach/issues"
@@ -41,11 +46,22 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-react-redux": "^3.0.1",
     "mocha": "^6.2.0",
+    "mocha-snapshots": "^4.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "supertest": "^4.0.2",
     "supertest-session": "^4.0.0",
     "webpack": "^4.38.0",
@@ -59,10 +75,6 @@
     "express-session": "^1.16.2",
     "heroku": "^7.27.1",
     "pg": "^7.12.0",
-    "query-string": "^6.8.2",
-    "react-redux": "^7.1.0",
-    "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0",
     "sequelize": "^5.12.2"
   }
 }

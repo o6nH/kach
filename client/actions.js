@@ -1,4 +1,3 @@
-
 //Actions
 const ACT = {
   ADDTOCART: 'ADDTOCART',
@@ -7,14 +6,39 @@ const ACT = {
   GETCART: 'GETCART',
   GET_PRODUCTS: 'GET_PRODUCTS',
   GET_PRODUCT: 'GET_PRODUCT',
+  DESELECT: 'DESELECT',
   CHECKOUT: 'CHECKOUT',
-  ADD_PRODUCT:'ADD_PRODUCT',
+  CREATE_PRODUCT: 'CREATE_PRODUCT',
+  DELETE_PRODUCT: 'DELETE_PRODUCT',
   UPDATE_PRODUCT:'UPDATE_PRODUCT',
-  CATEGORIZE_PRODUCTS: 'CATEGORIZE_PRODUCTS'
+  CATEGORIZE_PRODUCTS: 'CATEGORIZE_PRODUCTS',
+  GET_CURRENT_USER: 'GET_CURRENT_USER',
+  SIGNUP_USER: 'SIGNUP_USER'
 }
 
 
 //Thunk Creators
+const fetchProducts = () => (dispatch, getState, axios) => {
+  axios.get('/api/products')
+  .then(({data: products}) => {
+    dispatch({type: ACT.GET_PRODUCTS, products})
+    return products
+  })
+  .catch(err => console.error(err));
+};
+
+
+const fetchProduct = (productId) => (dispatch, getState, axios) => {
+  axios.get(`/api/products/${productId}`)
+  .then(({data: foundProduct}) => dispatch({type: ACT.GET_PRODUCT, foundProduct}))
+  .catch(err => console.error(err));
+};
+
+const categorizeProducts = () => (dispatch, getState) => {
+  const {products} = getState();
+  dispatch({type: ACT.CATEGORIZE_PRODUCTS, products})
+};
+
 const fetchAndCategorizeProducts = () => (dispatch, getState, axios) => {
   axios.get('/api/products')
   .then(({data: products}) => {
@@ -24,6 +48,22 @@ const fetchAndCategorizeProducts = () => (dispatch, getState, axios) => {
   .then(products => dispatch({type: ACT.CATEGORIZE_PRODUCTS, products}))
   .catch(err => console.error(err));
 };
+
+const deselectProduct = () => (dispatch) => {
+  dispatch({type: ACT.DESELECT})
+};
+
+const createProduct = (product) => (dispatch, getState, axios) => {
+  axios.post('/api/products', product)
+    .then(({data:product})=> dispatch({type: ACT.CREATE_PRODUCT, product}))
+    .catch(err => console.error(err));
+}
+
+const deleteProduct = (productId) => (dispatch, getState, axios) => {
+  axios.delete(`/api/products/${productId}`)
+    .then(() => dispatch({type: ACT.DELETE_PRODUCT, productId}))
+    .catch(err => console.error(err));
+}
 
 const updateProduct = (adminProductUpdates) => (dispatch, getState, axios) => {
   //TODO: remove userId from body and get from session after sessions are working (changing adminProductUpdates to only productUpdates)
@@ -65,10 +105,25 @@ const checkout = (info) => (dispatch, getState, axios) => {
     .catch(err => console.error(err));
 }
 
-const fetchProduct = (productId) => (dispatch, getState, axios) => {
-  axios.get(`/api/products/${productId}`)
-  .then(({data: foundProduct}) => dispatch({type: ACT.GET_PRODUCT, foundProduct}))
-  .catch(err => console.error(err));
+const getCurrentUser = () => (dispatch, getState, axios) => {
+  axios.get('/api/users/currentUser')
+    .then(({data: currentUser}) => dispatch({type:ACT.GET_CURRENT_USER, currentUser}))
+    .catch(err => console.error(err));
 };
 
-export {ACT, fetchAndCategorizeProducts, getCart, addToCart, removeFromCart, checkout, fetchProduct, updateProduct}
+export {
+  ACT, 
+  getCart, 
+  addToCart, 
+  removeFromCart, 
+  checkout, 
+  fetchProduct,
+  fetchProducts,
+  categorizeProducts, 
+  fetchAndCategorizeProducts, 
+  deselectProduct,
+  createProduct,
+  deleteProduct,
+  updateProduct, 
+  getCurrentUser
+}
