@@ -125,6 +125,10 @@ router.route('/:orderId')
             res.send(await Order.findOne({
                 where: {
                     id: req.params.orderId
+                },
+                include: {
+                    model: OrderProduct,
+                    include: {model: Product}
                 }
             }))
         } catch (err) {
