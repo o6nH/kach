@@ -1,4 +1,3 @@
-
 //Actions
 const ACT = {
   ADDTOCART: 'ADDTOCART',
@@ -55,8 +54,8 @@ const deselectProduct = () => (dispatch) => {
 };
 
 const createProduct = (product) => (dispatch, getState, axios) => {
-  axios.post(`/api/products`, product)
-    .then(({data:product})=>dispatch({type: ACT.CREATE_PRODUCT, product}))
+  axios.post('/api/products', product)
+    .then(({data:product})=> dispatch({type: ACT.CREATE_PRODUCT, product}))
     .catch(err => console.error(err));
 }
 
