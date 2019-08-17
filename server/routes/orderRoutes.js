@@ -7,7 +7,7 @@ router.route('/')
             let currentCart = await Order.findOrCreate(
                     {
                         where: {
-                                userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                                userId: req.session.userId,
                                 status: 'inCart'
                             },
                     }
@@ -57,7 +57,7 @@ router.route('/')
             let [currentCart] = await Order.findAll(
                 {
                     where: {
-                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            userId: req.session.userId,
                             status: 'inCart'
                         },
                 }
@@ -112,7 +112,7 @@ router.route('/cart')
             let currentCart = await Order.findAll(
                 {
                     where: {
-                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            userId: req.session.userId,
                             status: 'inCart'
                         },
                 }
@@ -141,7 +141,7 @@ router.route('/checkout')
                 }, 
                 {
                     where: {
-                            userId: '058007a1-144e-4b42-96fe-1a59482b9520',
+                            userId: req.session.userId,
                             status: 'inCart'
                         },
                     returning: true,
@@ -155,7 +155,7 @@ router.route('/checkout')
             const [,[userInfo]] = await User.update(req.body,
                 {
                     where: {
-                        id: '058007a1-144e-4b42-96fe-1a59482b9520',
+                        id: req.session.userId,
                     }   
                 })
             
