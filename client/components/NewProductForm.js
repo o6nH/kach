@@ -78,7 +78,7 @@ class NewProductForm extends Component {
 
   async handleSubmit(event){
     event.preventDefault();
-    const {history, createProduct, categorizeProducts} = this.props;
+    const {createProduct, categorizeProducts} = this.props;
     const {product, newCategories:catStrings} = this.state;
     const {categories} = product;
     
@@ -90,8 +90,6 @@ class NewProductForm extends Component {
     await createProduct({...product, categories});
     await categorizeProducts();
     this.setState(initState);
-    // history.replace('/admin/products');//Not refreshing
-
   }
 
   render() {

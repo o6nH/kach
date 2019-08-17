@@ -11,7 +11,7 @@ class Products extends React.Component{
     this.productsByQueryCategory = this.productsByQueryCategory.bind(this);
     this.productsByQuerySearchTerm = this.productsByQuerySearchTerm.bind(this);
     this.hasSearchTerm = this.hasSearchTerm.bind(this);
-  };
+  }
   
   //Filter Products by Category
   productsByQueryCategory(categorizedProducts, allProducts) {
@@ -22,7 +22,7 @@ class Products extends React.Component{
       return filteredProducts.filter(product => product.quantity > 0);
     }
     return allProducts.filter(product => product.quantity > 0);
-  };
+  }
   
   //Filter Products by SearchTerm
   productsByQuerySearchTerm(allProducts) {
@@ -35,14 +35,14 @@ class Products extends React.Component{
       });
     }
     return allProducts;
-  };
+  }
 
   hasSearchTerm(product, searchTerm) {
     searchTerm = searchTerm && searchTerm.toLowerCase();
     const splitName = product.name.toLowerCase().split(' ');
     const splitDescription = product.description.toLowerCase().split(' ');
     return splitName.includes(searchTerm) || splitDescription.includes(searchTerm);
-  };
+  }
   
   render(){
     const {location, products, categorizedProducts, categories} = this.props;
@@ -62,8 +62,8 @@ class Products extends React.Component{
         </div>
       </div>
     )
-  };
-};
+  }
+}
 
 //Mappings from redux store to react component's props
 const mapStateToProps = state => ({
