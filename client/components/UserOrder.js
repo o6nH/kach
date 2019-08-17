@@ -31,7 +31,10 @@ class UserOrder extends Component {
                         Price: {line.purchaseUnitPrice} <br/>
                     </div>) : null
             }
-            
+            <br/>
+            <br/>
+            <br/>
+            <Link to='/orders'>View All Orders</Link>
             </div>
          );
     }
