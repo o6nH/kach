@@ -24,7 +24,7 @@ async handleSubmit(ev){
     ev.preventDefault();
   console.log('HIT');
   const sendObj = {
-    email: this.state.email,
+    email: this.state.email.toLowerCase(),
     password: this.state.password
   }
   const login = await axios.post('/api/users/login', sendObj);
@@ -49,7 +49,7 @@ async handleSubmit(ev){
           </label>
           <label>
             Password:
-            <input type = 'text' name = 'password' onChange = {this.handleChange} />
+            <input type = 'password' name = 'password' onChange = {this.handleChange} />
           </label>
           <input type = 'submit' name = "Submit" />
         </form>

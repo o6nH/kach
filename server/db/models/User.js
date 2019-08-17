@@ -58,6 +58,7 @@ const User = db.define('user', {
         beforeCreate: user =>  {
             if (user.password){
                 user.password = hash(user.password);
+                user.email = user.email.toLowerCase();
             } else {
                 return user
             }
@@ -82,7 +83,7 @@ User.signup = async function (user) {
             const thing = await this.update({
             firstName: user.firstName,
             lastName: user.lastName,
-            email: user.email,
+            email: user.email.toLowerCase(),
             password: hash(user.password),
             streetAddress: user.streetAddress,
             city: user.city,
