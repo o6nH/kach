@@ -28,7 +28,11 @@
     "express",
     "sessions"
   ],
-  "contributors": ["Hugo Campos", "Katherine Peterson", "Conner Stennett"],
+  "contributors": [
+    "Hugo Campos",
+    "Katherine Peterson",
+    "Conner Stennett"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/1904-cpu-projects/kach/issues"
@@ -42,6 +46,7 @@
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
+    "mocha-snapshots": "^4.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
