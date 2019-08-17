@@ -6,26 +6,27 @@ const hash = require('../../script/hash');
 router.post('/login', async (req, res, next) => {
     try {
         const guestToDestroy = req.session.userId
-        if ( guestToDestroy.orderId && guestToDestroy.email === null ){
-            console.log('In the if statement!')
-            await User.update(
-                {
-                    orderId: guestToDestroy.orderId
-                },
-                {
-                where: {
-                    email: req.body.email,
-                    password: hash(req.body.password)
-                }
-            }
-            )
-        }
         const user =  await User.findOne({
             where: {
                 email: req.body.email,
                 password: hash(req.body.password)
             }
-        });
+        })
+        //TODO: check if user has an order and the combine guest and user orders
+        // if ( guestToDestroy.orderId && guestToDestroy.email === null &&  ){
+        //     console.log('In the if statement!')
+        //     await User.update(
+        //         {
+        //             orderId: guestToDestroy.orderId
+        //         },
+        //         {
+        //         where: {
+        //             email: req.body.email,
+        //             password: hash(req.body.password)
+        //         }
+        //     }
+        //     )
+        // }
         if (!user){
             res.status(401).send('Email or password incorrect');
         } else {
@@ -38,7 +39,8 @@ router.post('/login', async (req, res, next) => {
                 id: guestToDestroy
             }
         })
-        res.redirect('/')
+        //TODO: ask Eliot if res.redirect or history.push is best practice
+        return res.redirect('/')
          }
     } catch (err) {
         console.error(err);
