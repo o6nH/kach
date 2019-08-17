@@ -88,9 +88,10 @@ class NewProductForm extends Component {
       })
 
     await createProduct({...product, categories});
-    categorizeProducts();
+    await categorizeProducts();
     this.setState(initState);
-    history.replace('/admin/products');
+    // history.replace('/admin/products');//Not refreshing
+
   }
 
   render() {

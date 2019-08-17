@@ -34,8 +34,9 @@ router.route('/:productId')
             res.send(await Product.destroy({
                 where: {
                     id: req.params.productId
-                }
-            }))
+                },
+                returning: true
+            })[1])
         } catch (err) {
             next(err);
         }
@@ -53,7 +54,7 @@ router.route('/:productId')
                 const updatedProduct = await product.update({...productUpdates});
                 res.send(updatedProduct);
             } else {
-                res.status(401).send(`ERROR: You, ${user.firstName}, are unauthorized to change product information.`);
+                res.sendStatus(401);/* .send(`ERROR: You, ${user.firstName}, are unauthorized to change product information.`); */
             }
         } catch (err){
             next(err);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {deleteProduct} from '../actions';
+import {deleteProduct, categorizeProducts} from '../actions';
 
 class AdminProductsTable extends React.Component {
   constructor(props){
@@ -16,9 +16,10 @@ class AdminProductsTable extends React.Component {
   }
 
   showDeleteAlert(event, product){
-    const {deleteItem} = this.props;
+    const {deleteItem, categorizeProducts} = this.props;
     if(window.confirm(`Please confirm deletion of the following product: ${product.name}`)) {
       deleteItem(product.id);
+      categorizeProducts();
     }
   }
 
@@ -84,7 +85,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  deleteItem: productId => dispatch(deleteProduct(productId))
+  deleteItem: productId => dispatch(deleteProduct(productId)),
+  categorizeProducts: () => dispatch(categorizeProducts())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminProductsTable)
