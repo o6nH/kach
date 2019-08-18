@@ -34,7 +34,10 @@ class Cart extends Component {
                             <br/>
                             <form>
                                 <button onClick={() => {removeFromCart({...prod.product})}}>-</button>
-                                <button onClick={() => {addToCart({...prod.product})}}>+</button>
+                                {
+                                    prod.quantity > 0 ? 
+                                    <button onClick={() => {addToCart({...prod.product})}}>+</button> : null
+                                }
                             </form>
                         </div>)
                 }
