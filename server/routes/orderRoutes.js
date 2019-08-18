@@ -110,6 +110,8 @@ router.route('/')
                     }) 
                 changedLine = changedLine.dataValues;
                 const productFromLine = await Product.findByPk(changedLine.productId)
+                productFromLine.quantity++;
+                await productFromLine.save();
                 changedLine.product = productFromLine.dataValues;
                 res.send(changedLine)
             }
@@ -119,27 +121,11 @@ router.route('/')
         }
     })
 
-router.route('/:orderId')
-    .get(async(req, res, next) => {
-        try{
-            res.send(await Order.findOne({
-                where: {
-                    id: req.params.orderId
-                },
-                include: {
-                    model: OrderProduct,
-                    include: {model: Product}
-                }
-            }))
-        } catch (err) {
-            console.error(err)
-        }
-    })
 
 router.route('/cart')
     .get(async (req, res, next) => {
         try {
-            //TODO: bring in real userId
+            console.log('here')
             let currentCart = await Order.findAll(
                 {
                     where: {
@@ -156,11 +142,29 @@ router.route('/cart')
                 },
                 include: {model: Product}
             });
+            console.log('ORDER LINES: ', orderLines)
             res.send(orderLines);
         } catch (err){
             console.error(err);
         }
     });
+
+    router.route('/:orderId')
+    .get(async(req, res, next) => {
+        try{
+            res.send(await Order.findOne({
+                where: {
+                    id: req.params.orderId
+                },
+                include: {
+                    model: OrderProduct,
+                    include: {model: Product}
+                }
+            }))
+        } catch (err) {
+            console.error(err)
+        }
+    })
 
 router.route('/checkout')
     .put(async (req, res, next) => {

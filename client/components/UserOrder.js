@@ -20,8 +20,14 @@ class UserOrder extends Component {
         return ( 
             <div>
             <h1>Order</h1>
-            #{order.id} <br/>
-            Status: {order.status}
+            {
+                order.orderedAt ? 
+                <div>
+                    #{order.id} <br/>
+                    Status: {order.status} <br/>
+                    Order Date: {order.orderedAt.slice(0,10)}
+                </div> : null
+            }
             <hr/>
             { (order.orderproducts) ? 
                 order.orderproducts.map(line => 
