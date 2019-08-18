@@ -7,7 +7,7 @@ export default function ProductCard({product}) {/* TODO:remove inline styles*/
   return (
     <div key={productId} style={{border:'2px solid black', width:'125px', height:'250px'}}>
       <Link to={`/products/${productId}`}> 
-      <img src={imageUrls[0] ? imageUrls[0] : defaultImg} style={{width:'125px'}}/>
+      <img src={imageUrls && imageUrls[0] ? imageUrls[0] : defaultImg} style={{width:'125px'}}/>
       <h3>{name}</h3>
       </Link>
       <ul>
