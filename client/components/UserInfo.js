@@ -38,7 +38,7 @@ class UserInfo extends React.Component{
         {
           !isAuth
           ? <h1>You are not an authorized user. <Link to='/login'>Please sign in.</Link></h1>
-          : <div>
+          : <div class="container">
               <h3>User Information:</h3>
               <form type='submit' onSubmit={handleSubmit}>
               <label>First Name: </label> <br/>

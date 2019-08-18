@@ -16,7 +16,7 @@ class CategoriesFilter extends React.Component {
     const {categories, categoryCounts} = this.props;
     return (
       <div id='filters'>
-        <h3 >Filter by category: </h3>
+        <h4>Filter by category: </h4>
         <ul name='categories'>
         {
           categories.map((category, index) => {
