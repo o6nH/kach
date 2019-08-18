@@ -7,6 +7,11 @@ const cartId = 'ord123' //TODO: replace
 
 class Cart extends Component {
 
+    constructor(props) {
+        super();
+        this.state = {};
+    }
+
     componentDidMount() {
         const { getCart } = this.props;
         getCart();
@@ -35,8 +40,8 @@ class Cart extends Component {
                             <form>
                                 <button onClick={() => {removeFromCart({...prod.product})}}>-</button>
                                 {
-                                    prod.quantity > 0 ? 
-                                    <button onClick={() => {addToCart({...prod.product})}}>+</button> : null
+                                    prod.product.quantity > 0 ? 
+                                    <button onClick={() => {addToCart({...prod.product}); console.log('working'); }}>+</button> : null
                                 }
                             </form>
                         </div>)
