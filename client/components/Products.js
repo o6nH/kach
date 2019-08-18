@@ -53,7 +53,7 @@ class Products extends React.Component{
       <div>
         <SearchForm location={location}/>
         <CategoriesFilter/>
-        <div style={{display:'flex'}}>
+        <div className="container d-flex justify-content-around flex-wrap">
         {
           categories.length 
           ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 

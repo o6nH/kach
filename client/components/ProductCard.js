@@ -5,17 +5,17 @@ const defaultImg = './img/product-image-placeholder.jpg';
 export default function ProductCard({product}) {/* TODO:remove inline styles*/
   const {id:productId, name, imageUrls, price, aveRating} = product;
   return (
-    <div key={productId} style={{border:'2px solid black', width:'125px', height:'250px'}}>
+    <div key={productId} className="card flex-grow-0 col-2 text-center shadow-lg p-3 mb-5 bg-light rounded">
       <Link to={`/products/${productId}`}> 
-      <img src={imageUrls[0] ? imageUrls[0] : defaultImg} style={{width:'125px'}}/>
+      <img src={imageUrls[0] ? imageUrls[0] : defaultImg} className="card-img-top"/>
       <h3>{name}</h3>
       </Link>
-      <ul>
-        <li>Price: ${`${price}`}</li>
-        {
+        <p style={{listStyle: 'none'}}>${`${price}`}</p>
+        {/* {
           aveRating ? <li>AveRating: {`${Math.round(100*aveRating)/100}`}</li> : ''
-        }
-      </ul>
+        } */}
     </div>
   )
 }
+
+//style={{border:'2px solid black', width:'125px', height:'250px'}}

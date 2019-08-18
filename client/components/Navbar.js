@@ -17,30 +17,30 @@ const Navbar = ({user, cart, getUser}) => {
   const {productCount:cartProdCount} = cart;
   return (
     // TODO: remove inline styles
-    <div style={{display:'flex', justifyContent:'space-between'}}>
-      <Link to='/'>
+    <div>
+      <Link to='/' className="nav">
         <div style={{display:'flex'}}>
           <h1 style={{fontSize: '32px'}}>{`💻${marketName}`}</h1>
         </div>
       </Link>
-      <ul style={{display:'flex', width:'30%', justifyContent:'space-between', listStyle:'none'}}>
-        <li><Link to='/products'>Products</Link></li>
+      <ul className="nav justify-content-end nav-fill">
+        <li className="nav-item"><Link to='/products'>Products</Link></li>
         {
           isAdmin
-          ? <li><Link to={`/admin`}>Admin Dashboard</Link></li>
+          ? <li className="nav-item"><Link to={`/admin`}>Admin Dashboard</Link></li>
           : ''
         }
         {
           isAuth
-          ? <li><Link to={`/users/${userId}`}>Manage Account</Link></li>
-          : <li><Link to='/signup'>Create Account</Link></li> 
+          ? <li className="nav-item"><Link to={`/users/${userId}`}>Manage Account</Link></li>
+          : <li className="nav-item"><Link to='/signup'>Create Account</Link></li> 
         }
         {
           isAuth
-          ? <li onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
-          : <li><Link to='/signin'>Sign In</Link></li>
+          ? <li className="nav-item" onClick={()=>{signOut(getUser)}}><Link to='/'>Sign Out</Link></li> 
+          : <li className="nav-item"><Link to='/signin'>Sign In</Link></li>
         }
-        <li><Link to={'/cart'} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
+        <li className="nav-item"><Link to={'/cart'} style={{fontSize: '32px'}}>🛒{cartProdCount}</Link></li>
       </ul>
     </div>
   )

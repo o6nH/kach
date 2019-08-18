@@ -23,7 +23,7 @@ class CategoriesFilter extends React.Component {
             const query = `category=${category}`;
             return categoryCounts[category] > 0 
             ? 
-            <li key={index}>
+            <li key={index} className="list-group-item">
               <Link to={`/products?${query}`}>
                 {`${category[0].toUpperCase() + category.split('').slice(1).join('') } `}  
                 {`(${categoryCounts[category]})`}
