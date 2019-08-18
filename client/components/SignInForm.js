@@ -14,30 +14,29 @@ class SignInForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-handleChange(ev){
-  const {name, value} = ev.target;
-  this.setState({[name]: value});
-}
+  handleChange(ev){
+    const {name, value} = ev.target;
+    this.setState({[name]: value});
+  }
 
-async handleSubmit(ev){
-  try {
-    ev.preventDefault();
-  console.log('HIT');
-  const sendObj = {
-    email: this.state.email.toLowerCase(),
-    password: this.state.password
+  async handleSubmit(ev){
+    try {
+      ev.preventDefault();
+      const sendObj = {
+        email: this.state.email.toLowerCase(),
+        password: this.state.password
+      }
+      const login = await axios.post('/api/users/login', sendObj);
+      if ( login.data === 'Email or password incorrect'){
+        alert(login.data)
+      } else {
+      this.props.getUser();
+      this.props.history.push('/');
+      }
+    } catch (err){
+      throw err;
+    }
   }
-  const login = await axios.post('/api/users/login', sendObj);
-  if ( login.data === 'Email or password incorrect'){
-    alert(login.data)
-  } else {
-  this.props.getUser();
-  this.props.history.push('/');
-  }
-} catch (err){
-  throw err;
-}
-}
 
   render() {
     return (

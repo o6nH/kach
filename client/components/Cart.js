@@ -6,12 +6,10 @@ import { getCart, addToCart, removeFromCart } from '../actions';
 const cartId = 'ord123' //TODO: replace
 
 class Cart extends Component {
-
     componentDidMount() {
         const { getCart } = this.props;
         getCart();
     }
-
 
     render() { 
         const { cart, addToCart, removeFromCart } = this.props;
