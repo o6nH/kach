@@ -5,7 +5,7 @@ const defaultImg = './img/product-image-placeholder.jpg';
 export default function ProductCard({product}) {/* TODO:remove inline styles*/
   const {id:productId, name, imageUrls, price, aveRating} = product;
   return (
-    <div key={productId} className="card flex-grow-0 col-2 text-center shadow-lg p-3 mb-5 bg-light rounded">
+    <div key={productId} className="card col-2 text-center shadow-lg p-3 mb-5 bg-light rounded">
       <Link to={`/products/${productId}`} className="stretched-link"> 
       <img src={imageUrls[0] ? imageUrls[0] : defaultImg} className="card-img-top"/>
       <h3>{name}</h3>

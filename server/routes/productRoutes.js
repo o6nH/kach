@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const {User, Product} = require('../db/index');
+const isAdmin = require('./customMiddle');
 
 router.route('/')
     .get(async (req, res, next) => {
@@ -9,7 +10,7 @@ router.route('/')
             next(err);
         }
     })
-    .post(async (req, res, next) => {
+    .post(isAdmin, async (req, res, next) => {
         try {
             res.send(await Product.create(req.body));
         } catch (err){
@@ -29,7 +30,7 @@ router.route('/:productId')
             next(err);
         }
     })
-    .delete(async (req, res, next) => {
+    .delete(isAdmin, async (req, res, next) => {
         try {
             res.send(await Product.destroy({
                 where: {
@@ -44,8 +45,8 @@ router.route('/:productId')
     .put(async (req, res, next) => {
         try {
             const productId = req.params.productId;
-            const {userId, productUpdates} = req.body; //TODO: remove userId from body and get from session after sessions are working
-            // const userId = req.session.userId;
+            const userId = req.session.userId;
+            const {productUpdates} = req.body;
 
             const user = await User.findByPk(userId);
             const product = await Product.findByPk(productId);
@@ -54,7 +55,7 @@ router.route('/:productId')
                 const updatedProduct = await product.update({...productUpdates});
                 res.send(updatedProduct);
             } else {
-                res.sendStatus(401);/* .send(`ERROR: You, ${user.firstName}, are unauthorized to change product information.`); */
+                res.status(401).redirect('/')
             }
         } catch (err){
             next(err);

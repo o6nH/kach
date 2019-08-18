@@ -12,7 +12,7 @@ class AdminProductsTable extends React.Component {
   
   openNewProductForm(){
     const {history} = this.props;
-    history.push('/admin/products/new');//TODO: copy ProductForm into NewProductForm
+    history.push('/admin/products/new');
   }
 
   showDeleteAlert(event, product){
@@ -36,8 +36,8 @@ class AdminProductsTable extends React.Component {
                 {
                   productAttributes.map((header, col) => 
                   <th key={col}>{header[0].toUpperCase() + header.slice(1)}</th>)
-                  .concat([<th>Edit</th>])
-                  .concat([<th>Delete</th>])
+                  .concat([<th key={productAttributes.length}>Edit</th>])
+                  .concat([<th key={productAttributes.length + 1}>Delete</th>])
                 }
               </tr>
             </thead>
@@ -59,12 +59,12 @@ class AdminProductsTable extends React.Component {
                             {JSON.stringify(product[attribute])}
                           </td>
                       })
-                      .concat([<td>
+                      .concat([<td key={product.id + 'Edit'}>
                           <Link to={`/admin/products/${product.id}`}><button>Edit</button></Link>
                         </td>])
-                      .concat([<td>
+                      .concat([<td key={product.id + 'Delete'}>
                           <button onClick={event => showDeleteAlert(event, product)}>Delete</button>
-                        </td>]) //TODO: guarantee re-categorizeProducts or delete from each state (products and categorizedProducts) just like with Products component should have
+                        </td>])
                     }
                   </tr>
                 )

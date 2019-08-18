@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchProduct, fetchAndCategorizeProducts, updateProduct, categorizeProducts} from '../actions';
+import {fetchProduct, fetchAndCategorizeProducts, updateProduct} from '../actions';
 
 class ProductForm extends Component {
   constructor(props){
@@ -26,7 +26,8 @@ class ProductForm extends Component {
     const {selectedProduct} = this.props;
     const {product} = this.state;
     
-    if(!product.hasOwnProperty('id') && JSON.stringify(product) !== JSON.stringify(selectedProduct)) {
+    if(!Object.prototype.hasOwnProperty.call(product,'id') 
+    && JSON.stringify(product) !== JSON.stringify(selectedProduct)) {
       this.setState({product:selectedProduct});
     }
   }
