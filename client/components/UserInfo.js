@@ -36,13 +36,8 @@ class UserInfo extends React.Component{
       <div>
         {
           !isAuth
-<<<<<<< HEAD
-          ? <h1>You are not an authorized user. <Link to='/login'>Please sign in.</Link></h1>
-          : <div class="container">
-=======
           ? <h1>You are not an authorized user. <Link to='/signin'>Please sign in.</Link></h1>
           : <div>
->>>>>>> 7d8cd04f3a344b17583f9f20f878cf8566444b36
               <h3>User Information:</h3>
               <form type='submit' onSubmit={handleSubmit}>
               <label>First Name: </label> <br/>
