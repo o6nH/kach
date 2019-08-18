@@ -12,7 +12,7 @@ class AdminProductsTable extends React.Component {
   
   openNewProductForm(){
     const {history} = this.props;
-    history.push('/admin/products/new');//TODO: copy ProductForm into NewProductForm
+    history.push('/admin/products/new');
   }
 
   showDeleteAlert(event, product){
@@ -64,7 +64,7 @@ class AdminProductsTable extends React.Component {
                         </td>])
                       .concat([<td key={product.id + 'Delete'}>
                           <button onClick={event => showDeleteAlert(event, product)}>Delete</button>
-                        </td>]) //TODO: guarantee re-categorizeProducts or delete from each state (products and categorizedProducts) just like with Products component should have
+                        </td>])
                     }
                   </tr>
                 )
