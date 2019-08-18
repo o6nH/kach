@@ -41,7 +41,10 @@ class Cart extends Component {
                 <br/>
                 <h4>Total: ${totalPrice}</h4>
                 <br/>
-                <Link to={`/cart/${cartId}/checkout`}>Check Out</Link>
+                {
+                    cart.length ? 
+                    <Link to={`/cart/${cartId}/checkout`}>Check Out</Link> : null
+                }
             </div>
          );
     }
