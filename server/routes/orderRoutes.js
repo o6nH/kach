@@ -110,7 +110,7 @@ router.route('/')
                     }) 
                 changedLine = changedLine.dataValues;
                 const productFromLine = await Product.findByPk(changedLine.productId)
-                productFromLine.quantity--;
+                productFromLine.quantity++;
                 await productFromLine.save();
                 changedLine.product = productFromLine.dataValues;
                 res.send(changedLine)
