@@ -11,9 +11,8 @@ class Product extends React.Component {
   }
 
   render() {
-    const {user, cart, product, addToCart} = this.props;
+    const {user, product, addToCart} = this.props;
     const {isAdmin} = user;
-    //const {id:cartId} = cart;
     const {id:productId, name, imageUrls, categories, price, aveRating, description, quantity} = product;
 
     return (
@@ -58,13 +57,13 @@ class Product extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  cart: state.orders.filter(order => order.status === 'inCart')[0],
   product: state.selectedProduct
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = {fetchProduct, addToCart}//shorthand dispatch wrapping
+/*dispatch => ({
   fetchProduct: (productId) => dispatch(fetchProduct(productId)),
   addToCart: (info) => dispatch(addToCart(info))
-});
+});*/
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

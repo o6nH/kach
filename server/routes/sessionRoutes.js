@@ -9,7 +9,7 @@ router.use('/', async (req, res, next) => {
         }
         next();
     } catch (err){
-        throw err;
+        next(err);
     }
 }) 
 

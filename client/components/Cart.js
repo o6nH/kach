@@ -17,7 +17,6 @@ class Cart extends Component {
         getCart();
     }
 
-
     render() { 
         const { cart, addToCart, removeFromCart } = this.props;
         console.log('the cart: ', cart)

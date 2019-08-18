@@ -28,8 +28,7 @@ class UserInfo extends React.Component{
   }
   
   render() {
-    const {isAuthenticated:isAuth, isAdmin} = this.props.user;
-    const { orders } = this.props;
+    const {isAuthenticated:isAuth} = this.props.user;
     const {firstName, lastName, streetAddress, suite, city, state, zip, email} = this.state.user;
     const {handleChange, handleSubmit} = this;
     
@@ -37,7 +36,7 @@ class UserInfo extends React.Component{
       <div>
         {
           !isAuth
-          ? <h1>You are not an authorized user. <Link to='/login'>Please sign in.</Link></h1>
+          ? <h1>You are not an authorized user. <Link to='/signin'>Please sign in.</Link></h1>
           : <div>
               <h3>User Information:</h3>
               <form type='submit' onSubmit={handleSubmit}>
