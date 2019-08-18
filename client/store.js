@@ -66,6 +66,12 @@ const productsReducer = (state = [], action) => {
       }
       );
       return updated
+    case ACT.REMOVEFROMCART: 
+    const removedProduct = action.line.product;
+    const updatedState = state.map(product =>{
+      return (product.id === removedProduct.id) ? removedProduct : product 
+    })
+      return updatedState;
     default:
       return state;
   }
