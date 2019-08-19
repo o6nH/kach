@@ -1,4 +1,4 @@
-const { app } = require('./main-get-tests.spec');
+const app = require('./main-get-tests.spec');
 const request = require('supertest');
 const session = require('supertest-session');
 const expect = require('chai').expect
