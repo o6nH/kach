@@ -56,7 +56,7 @@ class Products extends React.Component{
         <div className="container d-flex justify-content-around flex-wrap">
         {
           categories.length 
-          ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 
+        ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 
           : ''
         }
         </div>
