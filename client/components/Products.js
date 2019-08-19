@@ -47,6 +47,7 @@ class Products extends React.Component{
   render(){
     const {location, products, categorizedProducts, categories} = this.props;
     const {productsByQueryCategory, productsByQuerySearchTerm} = this;
+    let counter = 0;
     const filteredProducts = categories.length 
       ? productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts, products)) : '';
     return (/* TODO:remove inline styles*/
@@ -56,7 +57,7 @@ class Products extends React.Component{
         <div className="container d-flex justify-content-around flex-wrap">
         {
           categories.length 
-          ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 
+        ? filteredProducts.map(product => <ProductCard key={product.id} product={product}/>) 
           : ''
         }
         </div>
