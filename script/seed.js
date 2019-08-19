@@ -36,7 +36,7 @@ const products = [
     {id: 'f3015b76-0c17-42d1-a6a5-496385dc46a8', name: 'Eye drops', categories: ['health', 'medication'], aveRating:4.53, price:5.49, imageUrls:['https://upload.wikimedia.org/wikipedia/commons/6/60/%C3%96gondroppar2.jpg'], description: 'Five pack. Natural tears, dryness relief for your eyes.', quantity: 2},
     {id: 'cb9ed9b6-0819-44eb-a5dd-496385dc46a8', name: 'Noise Cancelling Headphones', categories: ['office', 'productivity'], aveRating:4.2, price:150, imageUrls:['https://ae01.alicdn.com/kf/HTB1BRimazzuK1RjSspeq6ziHVXaU.jpg_q50.jpg'], description: 'Block out distractions while you code.', quantity: 20},
     {id: 'cb9ed9b6-0819-44eb-a5dd-4914c1cc11a2', name: 'Coffee Maker', categories: ['health', 'energy'], aveRating:5, price:32.99, imageUrls:['https://ak7.picdn.net/shutterstock/videos/17523817/thumb/11.jpg'], description: 'Makes incredible coffee', quantity: 25},
-    {id: 'f3015b76-0819-44eb-a5dd-4914c1cc11a2', name: 'Pomodoro Timer', categories: ['office', 'productivity'], aveRating:4, price:9.99, imageUrls:['https://st.depositphotos.com/1055484/4334/i/450/depositphotos_43343019-stock-photo-tomato-kitchen-clock-timer.jpg'], description: 'Improve your productivity by using the Pomodoro technique.', quantity: 25}
+    {id: 'f3015b76-0819-44eb-a5dd-4914c1cc11a2', name: 'Pomodoro Timer', categories: ['office', 'productivity'], aveRating:4, price:9.99, imageUrls:['https://images-na.ssl-images-amazon.com/images/I/51ObuwA2MAL._SX425_.jpg'], description: 'Improve your productivity by using the Pomodoro technique.', quantity: 25}
 ];
 
 
