@@ -17,39 +17,44 @@ class Product extends React.Component {
 
     return (
       productId 
-      ? <div>
-        <h2>{name}</h2>
-        <div style={{display:'flex'}}>
-          <div>
-            <img src={Array.isArray(imageUrls) ? imageUrls[0] : imageUrls} style={{width:'270px'}}/>
+      ? <div className="container">
+        <h2>{name}</h2> {isAdmin ? <Link to={`/admin/products/${productId}`}>Edit Product</Link> : ''}
+        <div className="card">
+          <div className="wrapper row">
+          <div className="col-md-6">
+            <img src={Array.isArray(imageUrls) ? imageUrls[0] : imageUrls} className="card-img"/>
           </div>
-          <div>
-            <div><h3>Price:</h3> ${`${price}`}</div>
-            {aveRating ? <div><h3>AveRating:</h3> {Number(aveRating).toFixed(2)}</div> : ''}
-            <br/>
+          <div className="col-md-6">
+          <div id='prodDescription'>
+            <h4>Product Description:</h4>
+            <p>{`${description}`}</p>
+          </div>
+            <div><h4>Price:</h4> ${`${price}`}</div>
+            {aveRating ? <div><h4>AveRating:</h4> {Number(aveRating).toFixed(2)}</div> : ''}
+            
+            <div id='categories'>
+            <h4>Categories:</h4>
+            <p>{categories.map(category => `${category}`).join(', ')}</p>
+          </div>
             {
               quantity > 0
-              ? <button onClick={async ()=>{
+              ? <button className="btn btn-dark" onClick={async ()=>{
                 await addToCart({...product, userId: user.id});
                 this.props.history.push('/cart');
               }}>Add to Cart</button> 
               : <span>{'Currently Unavailable'}</span>
             }
             <br/>
-            {isAdmin ? <Link to={`/admin/products/${productId}`}>Edit</Link> : ''}
-          </div>
-        </div>
+            
+            
         <div>
-          <div id='prodDescription'>
-            <h3>Description:</h3>
-            <p>{`${description}`}</p>
-          </div>
-          <div id='categories'>
-            <h3>Categories:</h3>
-            <p>{categories.map(category => `${category}`).join(', ')}</p>
-          </div>
+          
+          
         </div>
       </div>
+      </div>
+          </div>
+        </div>
       : ''
     )
   }
