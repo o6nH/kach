@@ -47,7 +47,6 @@ class Products extends React.Component{
   render(){
     const {location, products, categorizedProducts, categories} = this.props;
     const {productsByQueryCategory, productsByQuerySearchTerm} = this;
-    let counter = 0;
     const filteredProducts = categories.length 
       ? productsByQuerySearchTerm(productsByQueryCategory(categorizedProducts, products)) : '';
     return (/* TODO:remove inline styles*/
