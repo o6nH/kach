@@ -7,7 +7,8 @@ export default function ProductCard({product}) {/* TODO:remove inline styles*/
   return (
     <div key={productId} className="card col-2 text-center shadow-lg p-3 mb-5 bg-light rounded">
       <Link to={`/products/${productId}`} className="stretched-link"> 
-      <img src={imageUrls[0] ? imageUrls[0] : defaultImg} className="card-img-top"/>
+      <img src={imageUrls && imageUrls[0] ? imageUrls[0] : defaultImg} className="card-img-top"/>
+
       <h3>{name}</h3>
       </Link>
         <p style={{listStyle: 'none'}}>${`${price}`}</p>
