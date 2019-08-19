@@ -12,7 +12,8 @@ router.route('/')
     })
     .post(isAdmin, async (req, res, next) => {
         try {
-            res.send(await Product.create(req.body));
+            const product = await Product.create(req.body);
+            res.status(201).send(product);
         } catch (err){
             next(err);
         }
@@ -42,7 +43,7 @@ router.route('/:productId')
             next(err);
         }
     })
-    .put(async (req, res, next) => {
+    .put(async (req, res, next) => {//alternative to isAdmin middleware
         try {
             const productId = req.params.productId;
             const userId = req.session.userId;
