@@ -9,17 +9,40 @@ const { expect } = require('chai'); //Assertions library
 
 let mockSession = null;
 let authenticatedSession = null;    
+
 //Product created by POST used in PUT and DELETE tests
 const newProduct = {
     name: 'Dingus',
     quantity: 50,
     price: 9.99
 }
+//Product in seeded data to be unchanged in unauthorized PUT and DELETE tests 
+const seededProduct = {
+    id: 'f3015b76-0819-44eb-a5dd-4914c1cc11a2', 
+    name: 'Pomodoro Timer', 
+    quantity: 25,
+    price:9.99, 
+    categories: ['office', 'productivity'], 
+    aveRating:4, 
+    imageUrls:['https://images-na.ssl-images-amazon.com/images/I/51ObuwA2MAL._SX425_.jpg'], 
+    description: 'Improve your productivity by using the Pomodoro technique.', 
+}
 
-before(async () => await syncAndSeed());
-after(() => db.close());
+//Hooks
+before(async () => {
+    await syncAndSeed()
+    console.log('Synced. Then seeded.')
+});
+after(async () => {
+    await db.close()
+    console.log('Database closed.')
+});
 
 describe('Authorized Product Requests', () => {
+    
+    let createdProduct = null;
+    let productId = null;
+
     //Login and get user
     before(function(done) {
         mockSession = session(app);
@@ -55,17 +78,12 @@ describe('Authorized Product Requests', () => {
         })
     })
 
-    let createdProduct = null;
-    let productId = null;
-
     describe('POST request to `/api/products`', () => {
         it('should respond with created newProduct object with an id', (done) => {
             authenticatedSession.post('/api/products').send(newProduct)
             .then(async res => {
                 createdProduct = res.body
                 productId = res.body.id //made available for PUT and DELETE tests
-                console.log(productId);
-                
                 expect(200)
                 expect('Content-Type', /json/)
                 expect(res.body).to.include(newProduct).and.to.have.property('id');
@@ -142,9 +160,38 @@ describe('Unathenticated Product Requests', () => {
 
     describe('POST requests to `/api/products`', () => {
         it('should be blocked and return status 401', async () => {
-            const res = await mockSession.post(`/api/products`, newProduct);
+            const res = await mockSession.post(`/api/products`).send(newProduct);
             expect(401);
             expect(res.body).to.be.empty;
+        });
+    })
+
+    describe('PUT requests to `/api/products`', () => {
+        it('should be blocked and return status 401', async () => {
+            const res = await mockSession.put(`/api/products/${seededProduct.id}`)
+            .send({quantity:999, price: 0});
+            expect(401);
+            expect(res.body).to.be.empty;
+        });
+
+        it('should not have changed the product data', async () =>{
+            const res = await mockSession.get(`/api/products/${seededProduct.id}`)
+            expect(200);
+            expect(res.body).to.deep.include(seededProduct);
+        });
+    })
+
+    describe('DELETE requests to `/api/products`', () => {
+        it('should be blocked and return status 401', async () => {
+            const res = await mockSession.delete(`/api/products/${seededProduct.id}`);
+            expect(401);
+            expect(res.body).to.be.empty;
+        });
+
+        it('should not have changed the product data', async () =>{
+            const res = await mockSession.get(`/api/products/${seededProduct.id}`)
+            expect(200);
+            expect(res.body).to.deep.include(seededProduct);
         });
     })
 })

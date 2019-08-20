@@ -8,7 +8,7 @@ const { db, Session, User, Order, OrderProduct, Product } = require('../server/d
 
 describe('/api/orders routes', () => {
     describe('GET Orders', () => {
-        it('returns a list of all orders for the current user', async () => {
+        xit('returns a list of all orders for the current user', async () => {
           const response = await request(app).get('/api/orders');
           expect(response.status).toEqual(200);
           expect(response.body.length).toBeGreaterThan(1);
