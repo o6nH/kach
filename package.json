@@ -1,8 +1,8 @@
 {
   "name": "grace-shopper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An online e-commerce platform for unauthenticated guests, authenticated users, and administrative users.",
-  "main": "client/index.js",
+  "main": "server/index.js",
   "scripts": {
     "webpack": "webpack",
     "webpack-watch": "webpack -w --mode=development",
@@ -36,9 +36,9 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/1904-cpu-projects/kach/issues"
+    "url": "https://github.com/o6nH/kach/issues"
   },
-  "homepage": "https://github.com/1904-cpu-projects/kach#readme",
+  "homepage": "https://github.com/o6nH/kach#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
