@@ -22,7 +22,7 @@ Grace Shopper is an e-commerce application created by a group of junior develope
  [<abbr title='Node Package Manager'>NPM</abbr>](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry)'s [package.json](package.json) should include all necessary [dependencies](package.json#L36) for both development and production environments as well as some of the [scripts](package.json#L6) that run commands on their respective terminals. 
  
  ## Installation
- To install the dependencies, run:
+ To install the *node_modules* upon which this program is dependent, run:
  ```bash
 npm install
  ```
