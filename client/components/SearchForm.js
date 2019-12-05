@@ -32,7 +32,7 @@ class SearchForm extends Component {
     return (
       <form id='searchBar' onSubmit={handleSubmit}>
         <label htmlFor='searchTerm'></label>
-        <input name='searchTerm' type='text' value={searchTerm} onChange={handleChange}></input>
+        <input name='searchTerm' type='text' value={searchTerm} placeholder="Search..." onChange={handleChange}></input>
         <input type='submit' value='🔎'/>
       </form>
     )

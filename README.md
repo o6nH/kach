@@ -1,6 +1,4 @@
 # Grace Shopper Setup
-## KaCH Team
-Katherine, Conner, Hugo
 
 ## Purpose
 Grace Shopper is an e-commerce application created by a group of junior developers looking to:

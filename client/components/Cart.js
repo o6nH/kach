@@ -8,7 +8,7 @@ const cartId = 'ord123' //TODO: replace
 class Cart extends Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.state = {};
     }
 
@@ -60,13 +60,11 @@ class Cart extends Component {
 const mapStateToProps = state => ({
     cart: state.cart,
 })
-const mapDispatchToProps = dispatch => {
-    return {
-        getCart: () => dispatch(getCart()),
-        addToCart: (info) => dispatch(addToCart(info)),
-        removeFromCart: (info) => dispatch(removeFromCart(info)),
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    getCart,
+    addToCart: (info) => dispatch(addToCart(info)),
+    removeFromCart: (info) => dispatch(removeFromCart(info)),
+});
  
  
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

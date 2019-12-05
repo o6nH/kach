@@ -23,7 +23,7 @@ const users = [
     const firstName = nameArr[0];
     const lastName = nameArr[1];
     const email = `${firstName}${lastName}@email.com`;
-    const password = 'password1234';
+    const password = 'password';
     return { ...user, firstName, lastName, email, password }
 })
 
