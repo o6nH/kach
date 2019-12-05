@@ -18,7 +18,7 @@ const Navbar = ({user, cart, getUser}) => {
   const {productCount:cartProdCount} = cart;
   return (
     // TODO: remove inline styles
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <Link to='/' className="navbar-brand" style={{fontFamily: 'Monserrat', fontStyle:'bold', fontSize: '32px'}}>
         {`💻${marketName}`}
       </Link>

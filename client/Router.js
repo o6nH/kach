@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Products from './components/Products';
+import Products from './views/Products';
 import Product from './components/Product';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';

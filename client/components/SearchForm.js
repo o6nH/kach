@@ -31,9 +31,9 @@ class SearchForm extends Component {
     const {handleChange, handleSubmit} = this;
     return (
       <form id='searchBar' onSubmit={handleSubmit}>
-        <label htmlFor='searchTerm'>🔎</label>
+        <label htmlFor='searchTerm'></label>
         <input name='searchTerm' type='text' value={searchTerm} onChange={handleChange}></input>
-        <input type='submit' value='Search'/>
+        <input type='submit' value='🔎'/>
       </form>
     )
   }

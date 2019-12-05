@@ -17,22 +17,19 @@ class CategoriesFilter extends React.Component {
     return (
       <div id='filters'>
         <h4>Filter by category: </h4>
-        <ul name='categories'>
+        <div className="list-group">
         {
           categories.map((category, index) => {
             const query = `category=${category}`;
             return categoryCounts[category] > 0 
-            ? 
-            <li key={index} className="list-group-item">
-              <Link to={`/products?${query}`}>
+            ? <Link key={index} to={`/products?${query}`} className="list-group-item list-group-item-action">
                 {`${category[0].toUpperCase() + category.split('').slice(1).join('') } `}  
                 {`(${categoryCounts[category]})`}
               </Link>
-            </li>
             : ''
           })
         }
-        </ul>
+        </div>
       </div>
     )
   }
